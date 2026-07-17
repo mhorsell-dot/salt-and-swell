@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 export default function ContactPage() {
   return (
     <main className="mx-auto max-w-7xl px-8 py-32">

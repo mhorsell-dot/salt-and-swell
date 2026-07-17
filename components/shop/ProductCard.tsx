@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 type Props={
     product:{
         name:string;
@@ -13,7 +15,9 @@ return(
 
 <div className="overflow-hidden rounded-3xl bg-white shadow-md transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
 
-<img
+<Image
+        width={800}
+        height={1000}
 src={product.image}
 alt={product.name}
 className="aspect-square w-full object-cover"
