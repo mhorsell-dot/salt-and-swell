@@ -25,13 +25,6 @@ import SavingsCard from "./components/SavingsCard";
 import PromoCard from "./components/PromoCard";
 import GiftCard from "./components/GiftCard";
 import ExpressCheckout from "./components/ExpressCheckout";
-import CheckoutShell from "./components/layout/CheckoutShell";
-import CheckoutSidebar from "./components/layout/CheckoutSidebar";
-import CheckoutCard from "./components/layout/CheckoutCard";
-import SectionTitle from "./components/layout/SectionTitle";
-import CheckoutSection from "./components/layout/CheckoutSection";
-import PremiumSummaryHeader from "./components/PremiumSummaryHeader";
-import PaymentLogos from "./components/PaymentLogos";
 
 
 type ShippingMethod = "standard" | "express";
@@ -172,13 +165,11 @@ export default function CheckoutClient() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-
-          <CheckoutShell
-
-            left={
-
-              <div className="space-y-7">
+        <form
+          onSubmit={handleSubmit}
+          className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_420px]"
+        >
+          <div className="space-y-7">
             <section className="rounded-[2rem] border border-black/8 bg-white p-6 shadow-[0_18px_60px_rgba(0,0,0,0.05)] sm:p-8">
               <div className="flex items-center gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#171715] text-sm font-semibold text-white">
@@ -492,21 +483,7 @@ export default function CheckoutClient() {
               Free standard delivery applies automatically when your subtotal
               reaches {formatCurrency(FREE_SHIPPING_THRESHOLD)}.
             </div>
-
-            }
-
-            right={
-
-              <CheckoutSidebar>
-
           </aside>
-
-              </CheckoutSidebar>
-
-            }
-
-          />
-
         </form>
       </div>
     </main>
