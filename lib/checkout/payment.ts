@@ -8,7 +8,7 @@ export interface CreatePaymentIntentResponse {
 }
 
 export async function createPaymentIntent(
-  payload: CreatePaymentIntentRequest
+  payload: CreatePaymentIntentRequest,
 ): Promise<CreatePaymentIntentResponse> {
   const response = await fetch("/api/stripe/create-payment-intent", {
     method: "POST",

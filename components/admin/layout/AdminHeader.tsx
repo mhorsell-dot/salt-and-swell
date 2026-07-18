@@ -1,18 +1,8 @@
 "use client";
 
-import {
-  Bell,
-  HelpCircle,
-  Menu,
-  Search,
-  Store,
-} from "lucide-react";
+import { Bell, HelpCircle, Menu, Search, Store } from "lucide-react";
 
-export default function AdminHeader({
-  onOpenMenu,
-}: {
-  onOpenMenu: () => void;
-}) {
+export default function AdminHeader({ onOpenMenu }: { onOpenMenu: () => void }) {
   return (
     <header className="sticky top-0 z-30 border-b border-black/[0.06] bg-white/90 backdrop-blur-xl">
       <div className="flex h-[72px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-10">
@@ -74,9 +64,7 @@ export default function AdminHeader({
             </div>
 
             <div className="hidden text-left xl:block">
-              <p className="text-sm font-semibold leading-tight text-slate-900">
-                Mark Horsell
-              </p>
+              <p className="text-sm font-semibold leading-tight text-slate-900">Mark Horsell</p>
               <p className="text-[11px] text-slate-500">Administrator</p>
             </div>
           </button>

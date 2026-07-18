@@ -21,9 +21,7 @@ function formatCurrency(value: string): string {
   }).format(Number(value));
 }
 
-export async function generateMetadata({
-  params,
-}: CollectionPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: CollectionPageProps): Promise<Metadata> {
   const { slug } = await params;
 
   const collection = await prisma.collection.findUnique({
@@ -43,8 +41,7 @@ export async function generateMetadata({
   }
 
   const description =
-    collection.description ??
-    `Shop the ${collection.name} collection from Salt & Swell.`;
+    collection.description ?? `Shop the ${collection.name} collection from Salt & Swell.`;
 
   return {
     title: `${collection.name} | Salt & Swell`,
@@ -144,9 +141,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
 
             <div className="lg:pb-2">
               {collection.description && (
-                <p className="text-sm leading-7 text-black/55">
-                  {collection.description}
-                </p>
+                <p className="text-sm leading-7 text-black/55">{collection.description}</p>
               )}
 
               <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
@@ -169,8 +164,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
               </h2>
 
               <p className="mt-4 max-w-md text-sm leading-7 text-black/50">
-                Products assigned to {collection.name} will appear here
-                automatically.
+                Products assigned to {collection.name} will appear here automatically.
               </p>
 
               <Link
@@ -184,9 +178,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
           ) : (
             <div className="grid gap-x-5 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {collection.products.map((product) => {
-                const image =
-                  product.images[0]?.url ??
-                  "/mockups/products/essential-tee-front.svg";
+                const image = product.images[0]?.url ?? "/mockups/products/essential-tee-front.svg";
 
                 const inventory = product.variants.reduce(
                   (total, variant) => total + variant.inventory,
@@ -194,11 +186,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                 );
 
                 return (
-                  <Link
-                    key={product.id}
-                    href={`/shop/${product.slug}`}
-                    className="group block"
-                  >
+                  <Link key={product.id} href={`/shop/${product.slug}`} className="group block">
                     <div className="relative aspect-[4/5] overflow-hidden bg-[#dedbd3]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -234,9 +222,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
 
                         {product.variants.length > 0 && (
                           <p className="mt-2 text-xs text-black/40">
-                            {inventory > 0
-                              ? `${inventory} available`
-                              : "Out of stock"}
+                            {inventory > 0 ? `${inventory} available` : "Out of stock"}
                           </p>
                         )}
                       </div>

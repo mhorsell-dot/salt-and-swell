@@ -38,8 +38,8 @@ async function main() {
         price: new Prisma.Decimal(79.95),
         featured: true,
         active: true,
-      }
-    ]
+      },
+    ],
   });
 
   console.log("✅ Salt & Swell products seeded.");

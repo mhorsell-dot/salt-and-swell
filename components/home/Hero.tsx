@@ -10,10 +10,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/45" />
 
       <div className="relative z-10 max-w-4xl px-8 text-center text-white">
-
-        <p className="mb-6 uppercase tracking-[0.5em]">
-          Australian Coastal Apparel
-        </p>
+        <p className="mb-6 uppercase tracking-[0.5em]">Australian Coastal Apparel</p>
 
         <h1 className="text-7xl font-black md:text-8xl">
           Surfwear
@@ -22,12 +19,11 @@ export default function Hero() {
         </h1>
 
         <p className="mx-auto mt-8 max-w-2xl text-xl text-slate-200">
-          Premium coastal apparel inspired by endless summers,
-          clean waves and life beside the ocean.
+          Premium coastal apparel inspired by endless summers, clean waves and life beside the
+          ocean.
         </p>
 
         <div className="mt-12 flex justify-center gap-5">
-
           <button className="rounded-full bg-white px-8 py-4 font-semibold text-slate-900 hover:scale-105 transition">
             Shop Collection
           </button>
@@ -35,9 +31,7 @@ export default function Hero() {
           <button className="rounded-full border border-white px-8 py-4 hover:bg-white hover:text-slate-900 transition">
             Our Story
           </button>
-
         </div>
-
       </div>
     </section>
   );

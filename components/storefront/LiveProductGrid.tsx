@@ -61,8 +61,8 @@ export default async function LiveProductGrid({
         </h3>
 
         <p className="mt-3 max-w-md text-sm leading-7 text-black/55">
-          Products created and activated through the Salt &amp; Swell admin will
-          automatically appear here.
+          Products created and activated through the Salt &amp; Swell admin will automatically
+          appear here.
         </p>
 
         <Link
@@ -80,15 +80,11 @@ export default async function LiveProductGrid({
     <div className="mt-10 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
       {products.map((product, index) => {
         const primaryImage =
-          product.images[0]?.url ??
-          fallbackImages[index % fallbackImages.length];
+          product.images[0]?.url ?? fallbackImages[index % fallbackImages.length];
 
         const secondaryImage = product.images[1]?.url ?? primaryImage;
 
-        const inventory = product.variants.reduce(
-          (total, variant) => total + variant.inventory,
-          0,
-        );
+        const inventory = product.variants.reduce((total, variant) => total + variant.inventory, 0);
 
         const hasVariants = product.variants.length > 0;
         const isOutOfStock = hasVariants && inventory === 0;
@@ -108,9 +104,7 @@ export default async function LiveProductGrid({
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={secondaryImage}
-                  alt={
-                    product.images[1]?.alt || `${product.name} alternate view`
-                  }
+                  alt={product.images[1]?.alt || `${product.name} alternate view`}
                   className="absolute inset-0 h-full w-full scale-[1.025] object-cover opacity-0 transition duration-700 group-hover:scale-100 group-hover:opacity-100"
                 />
 
@@ -153,9 +147,7 @@ export default async function LiveProductGrid({
                     </h3>
 
                     <p className="mt-1.5 text-sm text-black/50">
-                      {product.category?.name ??
-                        product.collection?.name ??
-                        "Salt & Swell"}
+                      {product.category?.name ?? product.collection?.name ?? "Salt & Swell"}
                     </p>
                   </div>
 

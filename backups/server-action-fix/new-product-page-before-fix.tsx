@@ -52,9 +52,8 @@ export default async function NewProductPage() {
             </h1>
 
             <p className="mt-2 max-w-2xl text-sm leading-6 text-neutral-600">
-              Add a new Salt &amp; Swell product to the live catalogue.
-              Variants, inventory and images will be managed in the next
-              product-management stage.
+              Add a new Salt &amp; Swell product to the live catalogue. Variants, inventory and
+              images will be managed in the next product-management stage.
             </p>
           </div>
 
@@ -72,9 +71,7 @@ export default async function NewProductPage() {
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-neutral-950">
-                Product information
-              </h2>
+              <h2 className="text-lg font-semibold text-neutral-950">Product information</h2>
 
               <p className="mt-1 text-sm text-neutral-500">
                 Enter the core details customers will see in the store.
@@ -120,9 +117,7 @@ export default async function NewProductPage() {
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-neutral-950">
-                Pricing
-              </h2>
+              <h2 className="text-lg font-semibold text-neutral-950">Pricing</h2>
 
               <p className="mt-1 text-sm text-neutral-500">
                 Product prices are stored and displayed in Australian dollars.
@@ -164,9 +159,7 @@ export default async function NewProductPage() {
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-neutral-950">
-                Organisation
-              </h2>
+              <h2 className="text-lg font-semibold text-neutral-950">Organisation</h2>
 
               <p className="mt-1 text-sm text-neutral-500">
                 Organise the product by category and collection.
@@ -220,8 +213,8 @@ export default async function NewProductPage() {
 
           {categories.length === 0 && collections.length === 0 && (
             <div className="mt-6 rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 px-4 py-3 text-sm text-neutral-500">
-              There are no categories or collections yet. You can still create
-              the product and organise it later.
+              There are no categories or collections yet. You can still create the product and
+              organise it later.
             </div>
           )}
         </section>
@@ -233,9 +226,7 @@ export default async function NewProductPage() {
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-neutral-950">
-                Product status
-              </h2>
+              <h2 className="text-lg font-semibold text-neutral-950">Product status</h2>
 
               <p className="mt-1 text-sm text-neutral-500">
                 Control whether the product is available and promoted.
@@ -297,10 +288,7 @@ function Field({
 }) {
   return (
     <div>
-      <label
-        htmlFor={htmlFor}
-        className="mb-2 block text-sm font-semibold text-neutral-800"
-      >
+      <label htmlFor={htmlFor} className="mb-2 block text-sm font-semibold text-neutral-800">
         {label}
 
         {required && <span className="ml-1 text-red-500">*</span>}
@@ -308,9 +296,7 @@ function Field({
 
       {children}
 
-      {help && (
-        <p className="mt-2 text-xs leading-5 text-neutral-500">{help}</p>
-      )}
+      {help && <p className="mt-2 text-xs leading-5 text-neutral-500">{help}</p>}
     </div>
   );
 }

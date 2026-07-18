@@ -1,8 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-export async function processSuccessfulPayment(
-  paymentIntentId: string
-) {
+export async function processSuccessfulPayment(paymentIntentId: string) {
   const order = await prisma.order.findFirst({
     where: {
       paymentIntentId,
@@ -13,9 +11,7 @@ export async function processSuccessfulPayment(
   });
 
   if (!order) {
-    throw new Error(
-      `Order not found for Payment Intent ${paymentIntentId}`
-    );
+    throw new Error(`Order not found for Payment Intent ${paymentIntentId}`);
   }
 
   await prisma.$transaction(async (tx) => {

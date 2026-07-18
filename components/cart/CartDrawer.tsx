@@ -1,16 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ArrowRight,
-  Check,
-  Minus,
-  PackageCheck,
-  Plus,
-  ShoppingBag,
-  Trash2,
-  X,
-} from "lucide-react";
+import { ArrowRight, Check, Minus, PackageCheck, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 
 import { useCart, type CartItem } from "./CartProvider";
 
@@ -52,15 +43,9 @@ export default function CartDrawer() {
     closeCart,
   } = useCart();
 
-  const remainingForFreeShipping = Math.max(
-    0,
-    FREE_SHIPPING_THRESHOLD - subtotal,
-  );
+  const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
-  const shippingProgress = Math.min(
-    100,
-    (subtotal / FREE_SHIPPING_THRESHOLD) * 100,
-  );
+  const shippingProgress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
 
   return (
     <>
@@ -69,9 +54,7 @@ export default function CartDrawer() {
         aria-label="Close shopping bag"
         onClick={closeCart}
         className={`fixed inset-0 z-[90] bg-black/45 backdrop-blur-[2px] transition duration-300 ${
-          isOpen
-            ? "pointer-events-auto opacity-100"
-            : "pointer-events-none opacity-0"
+          isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
       />
 
@@ -91,9 +74,7 @@ export default function CartDrawer() {
             <h2 className="mt-1 text-xl font-semibold tracking-[-0.03em]">
               Your bag
               {isHydrated && itemCount > 0 && (
-                <span className="ml-2 text-sm font-medium text-black/45">
-                  ({itemCount})
-                </span>
+                <span className="ml-2 text-sm font-medium text-black/45">({itemCount})</span>
               )}
             </h2>
           </div>
@@ -116,10 +97,7 @@ export default function CartDrawer() {
           <EmptyCart closeCart={closeCart} />
         ) : (
           <>
-            <ShippingProgress
-              remaining={remainingForFreeShipping}
-              progress={shippingProgress}
-            />
+            <ShippingProgress remaining={remainingForFreeShipping} progress={shippingProgress} />
 
             <div className="flex-1 overflow-y-auto px-5 py-2 sm:px-7">
               <div className="divide-y divide-black/10">
@@ -142,8 +120,7 @@ export default function CartDrawer() {
                   <p className="text-sm font-semibold">Estimated delivery</p>
 
                   <p className="mt-1 text-xs leading-5 text-black/50">
-                    Standard Australian delivery estimated between{" "}
-                    {getEstimatedDeliveryText()}.
+                    Standard Australian delivery estimated between {getEstimatedDeliveryText()}.
                   </p>
                 </div>
               </div>
@@ -186,13 +163,7 @@ export default function CartDrawer() {
   );
 }
 
-function ShippingProgress({
-  remaining,
-  progress,
-}: {
-  remaining: number;
-  progress: number;
-}) {
+function ShippingProgress({ remaining, progress }: { remaining: number; progress: number }) {
   const qualified = remaining <= 0;
 
   return (
@@ -250,11 +221,7 @@ function CartLine({
         className="aspect-[4/5] overflow-hidden bg-[#e4e0d7]"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={item.imageUrl}
-          alt={item.name}
-          className="h-full w-full object-cover"
-        />
+        <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover" />
       </Link>
 
       <div className="min-w-0">
@@ -268,9 +235,7 @@ function CartLine({
               {item.name}
             </Link>
 
-            {variantDetails && (
-              <p className="mt-1 text-xs text-black/45">{variantDetails}</p>
-            )}
+            {variantDetails && <p className="mt-1 text-xs text-black/45">{variantDetails}</p>}
 
             {item.sku && (
               <p className="mt-1 text-[10px] uppercase tracking-[0.1em] text-black/30">
@@ -301,9 +266,7 @@ function CartLine({
               <Minus className="h-3.5 w-3.5" />
             </button>
 
-            <span className="w-8 text-center text-xs font-semibold">
-              {item.quantity}
-            </span>
+            <span className="w-8 text-center text-xs font-semibold">{item.quantity}</span>
 
             <button
               type="button"
@@ -316,9 +279,7 @@ function CartLine({
             </button>
           </div>
 
-          <p className="text-sm font-semibold">
-            {formatCurrency(item.price * item.quantity)}
-          </p>
+          <p className="text-sm font-semibold">{formatCurrency(item.price * item.quantity)}</p>
         </div>
 
         {item.quantity >= item.inventory && (
@@ -345,13 +306,10 @@ function EmptyCart({ closeCart }: { closeCart: () => void }) {
         <ShoppingBag className="h-8 w-8 text-black/45" />
       </div>
 
-      <h3 className="mt-7 text-3xl font-semibold tracking-[-0.04em]">
-        Your bag is empty
-      </h3>
+      <h3 className="mt-7 text-3xl font-semibold tracking-[-0.04em]">Your bag is empty</h3>
 
       <p className="mt-3 max-w-xs text-sm leading-7 text-black/50">
-        Discover considered coastal essentials designed for salty days and open
-        roads.
+        Discover considered coastal essentials designed for salty days and open roads.
       </p>
 
       <Link

@@ -1,12 +1,5 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Camera,
-  Menu,
-  Search,
-  ShoppingBag,
-  UserRound,
-} from "lucide-react";
+import { ArrowRight, Camera, Menu, Search, ShoppingBag, UserRound } from "lucide-react";
 
 const products = [
   {
@@ -106,14 +99,10 @@ export default function HomePage() {
                         {product.name}
                       </h3>
 
-                      <p className="mt-1 text-sm text-black/55">
-                        {product.category}
-                      </p>
+                      <p className="mt-1 text-sm text-black/55">{product.category}</p>
                     </div>
 
-                    <p className="shrink-0 text-sm font-semibold">
-                      {product.price}
-                    </p>
+                    <p className="shrink-0 text-sm font-semibold">{product.price}</p>
                   </div>
                 </Link>
               </article>
@@ -154,9 +143,9 @@ export default function HomePage() {
             </h2>
 
             <p className="mt-8 max-w-lg text-base leading-8 text-white/65">
-              Salt &amp; Swell is an independent Australian coastal label
-              creating considered apparel for people drawn to the ocean. Every
-              piece is designed to feel effortless, honest and lived in.
+              Salt &amp; Swell is an independent Australian coastal label creating considered
+              apparel for people drawn to the ocean. Every piece is designed to feel effortless,
+              honest and lived in.
             </p>
 
             <Link
@@ -218,11 +207,7 @@ export default function HomePage() {
 
           <div className="mt-10 grid gap-8 md:grid-cols-3">
             {journalPosts.map((post, index) => (
-              <Link
-                key={`${post.title}-${index}`}
-                href="/journal"
-                className="group block"
-              >
+              <Link key={`${post.title}-${index}`} href="/journal" className="group block">
                 <div
                   className="aspect-[4/3] overflow-hidden bg-neutral-200 bg-cover bg-center transition duration-700 group-hover:scale-[0.99]"
                   style={{ backgroundImage: `url("${post.image}")` }}
@@ -233,9 +218,7 @@ export default function HomePage() {
                 </p>
 
                 <div className="mt-3 flex items-center justify-between gap-5">
-                  <h3 className="text-2xl font-semibold tracking-tight">
-                    {post.title}
-                  </h3>
+                  <h3 className="text-2xl font-semibold tracking-tight">{post.title}</h3>
 
                   <ArrowRight className="h-5 w-5 shrink-0 transition group-hover:translate-x-1" />
                 </div>
@@ -281,10 +264,7 @@ function Hero() {
             <Link href="/shop" className="transition hover:text-white/65">
               Shop
             </Link>
-            <Link
-              href="/collections"
-              className="transition hover:text-white/65"
-            >
+            <Link href="/collections" className="transition hover:text-white/65">
               Collections
             </Link>
             <Link href="/journal" className="transition hover:text-white/65">
@@ -383,13 +363,9 @@ function EditorialCard({
       <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent transition duration-500 group-hover:bg-black/30" />
 
       <div className="relative p-8 sm:p-12">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/70">
-          {eyebrow}
-        </p>
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/70">{eyebrow}</p>
 
-        <h2 className="mt-4 text-5xl font-semibold tracking-[-0.045em] sm:text-6xl">
-          {title}
-        </h2>
+        <h2 className="mt-4 text-5xl font-semibold tracking-[-0.045em] sm:text-6xl">{title}</h2>
 
         <span className="mt-7 inline-flex items-center gap-3 border-b border-white pb-2 text-sm font-semibold uppercase tracking-[0.15em]">
           {buttonText}
@@ -416,17 +392,11 @@ function SectionHeader({
   return (
     <div className="flex flex-col gap-7 border-b border-black/10 pb-7 md:flex-row md:items-end md:justify-between">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-black/45">
-          {eyebrow}
-        </p>
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-black/45">{eyebrow}</p>
 
-        <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
-          {title}
-        </h2>
+        <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">{title}</h2>
 
-        <p className="mt-4 max-w-xl text-sm leading-7 text-black/55">
-          {description}
-        </p>
+        <p className="mt-4 max-w-xl text-sm leading-7 text-black/55">{description}</p>
       </div>
 
       <Link
@@ -454,8 +424,7 @@ function Newsletter() {
           </h2>
 
           <p className="mt-5 max-w-xl text-sm leading-7 text-black/55">
-            New releases, coastal stories and members-only offers, delivered
-            occasionally.
+            New releases, coastal stories and members-only offers, delivered occasionally.
           </p>
         </div>
 
@@ -489,10 +458,7 @@ function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 border-b border-white/15 pb-16 sm:grid-cols-2 lg:grid-cols-4">
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link
-              href="/"
-              className="text-3xl font-semibold tracking-[-0.045em]"
-            >
+            <Link href="/" className="text-3xl font-semibold tracking-[-0.045em]">
               Salt &amp; Swell
             </Link>
 
@@ -546,18 +512,10 @@ function Footer() {
   );
 }
 
-function FooterColumn({
-  title,
-  links,
-}: {
-  title: string;
-  links: Array<[string, string]>;
-}) {
+function FooterColumn({ title, links }: { title: string; links: Array<[string, string]> }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/45">
-        {title}
-      </p>
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/45">{title}</p>
 
       <div className="mt-5 flex flex-col gap-3">
         {links.map(([label, href]) => (

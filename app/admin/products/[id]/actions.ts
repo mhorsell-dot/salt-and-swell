@@ -14,10 +14,7 @@ function createBaseSlug(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-async function createUniqueSlug(
-  name: string,
-  currentProductId: string,
-): Promise<string> {
+async function createUniqueSlug(name: string, currentProductId: string): Promise<string> {
   const baseSlug = createBaseSlug(name) || `product-${Date.now()}`;
 
   let slug = baseSlug;
@@ -122,9 +119,7 @@ export async function deleteProductAction(formData: FormData) {
   });
 
   if (orderItemCount > 0) {
-    throw new Error(
-      "This product has existing order history and cannot be deleted.",
-    );
+    throw new Error("This product has existing order history and cannot be deleted.");
   }
 
   await prisma.product.delete({

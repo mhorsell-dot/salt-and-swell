@@ -25,10 +25,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
     });
 
     if (!variant) {
-      return redirectTo(
-        request,
-        `/admin/products/${productId}/variants?error=variant-not-found`,
-      );
+      return redirectTo(request, `/admin/products/${productId}/variants?error=variant-not-found`);
     }
 
     await prisma.productVariant.delete({
@@ -37,16 +34,10 @@ export async function POST(request: NextRequest, context: RouteContext) {
       },
     });
 
-    return redirectTo(
-      request,
-      `/admin/products/${productId}/variants?deleted=1`,
-    );
+    return redirectTo(request, `/admin/products/${productId}/variants?deleted=1`);
   } catch (error: unknown) {
     console.error("Variant deletion failed:", error);
 
-    return redirectTo(
-      request,
-      `/admin/products/${productId}/variants?error=server`,
-    );
+    return redirectTo(request, `/admin/products/${productId}/variants?error=server`);
   }
 }

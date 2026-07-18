@@ -5,10 +5,7 @@ type Props = {
   className?: string;
 };
 
-export default function CheckoutCard({
-  children,
-  className = "",
-}: Props) {
+export default function CheckoutCard({ children, className = "" }: Props) {
   return (
     <section
       className={[

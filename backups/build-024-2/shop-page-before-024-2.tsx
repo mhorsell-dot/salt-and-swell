@@ -50,8 +50,8 @@ export default function ShopPage() {
             </h1>
 
             <p className="max-w-md text-sm leading-7 text-black/55">
-              Explore considered coastal essentials designed in Australia for
-              long days, open roads and wherever the tide takes you.
+              Explore considered coastal essentials designed in Australia for long days, open roads
+              and wherever the tide takes you.
             </p>
           </div>
         </div>
@@ -65,9 +65,7 @@ export default function ShopPage() {
                 Current range
               </p>
 
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight">
-                Shop all
-              </h2>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight">Shop all</h2>
             </div>
 
             <Link

@@ -8,9 +8,7 @@ export function getPublicOrigin(request: NextRequest): string {
 
   const protocol =
     forwardedProtocol ??
-    (host?.includes("localhost") || host?.startsWith("127.0.0.1")
-      ? "http"
-      : "https");
+    (host?.includes("localhost") || host?.startsWith("127.0.0.1") ? "http" : "https");
 
   if (!host) {
     return request.nextUrl.origin;
@@ -19,12 +17,6 @@ export function getPublicOrigin(request: NextRequest): string {
   return `${protocol}://${host}`;
 }
 
-export function redirectTo(
-  request: NextRequest,
-  pathname: string,
-): NextResponse {
-  return NextResponse.redirect(
-    new URL(pathname, getPublicOrigin(request)),
-    303,
-  );
+export function redirectTo(request: NextRequest, pathname: string): NextResponse {
+  return NextResponse.redirect(new URL(pathname, getPublicOrigin(request)), 303);
 }

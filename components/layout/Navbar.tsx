@@ -18,11 +18,7 @@ export default function Navbar() {
 
         <div className="hidden gap-10 text-white md:flex">
           {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="transition hover:text-slate-300"
-            >
+            <Link key={link.href} href={link.href} className="transition hover:text-slate-300">
               {link.label}
             </Link>
           ))}

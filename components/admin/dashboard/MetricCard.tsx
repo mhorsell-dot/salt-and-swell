@@ -21,14 +21,10 @@ export default function MetricCard({
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-slate-500">{label}</p>
-          <p className="mt-3 text-3xl font-bold tracking-tight text-slate-950">
-            {value}
-          </p>
+          <p className="mt-3 text-3xl font-bold tracking-tight text-slate-950">{value}</p>
         </div>
 
-        <div className="rounded-xl bg-slate-100 p-2.5 text-slate-700">
-          {icon}
-        </div>
+        <div className="rounded-xl bg-slate-100 p-2.5 text-slate-700">{icon}</div>
       </div>
 
       <div className="mt-5 flex items-center gap-2 text-xs">
@@ -36,9 +32,7 @@ export default function MetricCard({
           <span
             className={[
               "inline-flex items-center gap-1 rounded-full px-2 py-1 font-semibold",
-              positive
-                ? "bg-emerald-50 text-emerald-700"
-                : "bg-rose-50 text-rose-700",
+              positive ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700",
             ].join(" ")}
           >
             {positive ? (

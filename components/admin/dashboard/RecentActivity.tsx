@@ -1,8 +1,4 @@
-import {
-  PackageCheck,
-  ShoppingBag,
-  UserPlus,
-} from "lucide-react";
+import { PackageCheck, ShoppingBag, UserPlus } from "lucide-react";
 
 const activity = [
   {
@@ -30,9 +26,7 @@ export default function RecentActivity() {
     <section className="rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.03)] sm:p-6">
       <div>
         <p className="text-sm font-semibold text-slate-950">Recent activity</p>
-        <p className="mt-1 text-xs text-slate-400">
-          Latest changes across your store
-        </p>
+        <p className="mt-1 text-xs text-slate-400">Latest changes across your store</p>
       </div>
 
       <div className="mt-6 space-y-5">
@@ -46,12 +40,8 @@ export default function RecentActivity() {
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-slate-800">
-                  {item.title}
-                </p>
-                <p className="mt-0.5 truncate text-xs text-slate-500">
-                  {item.detail}
-                </p>
+                <p className="text-sm font-semibold text-slate-800">{item.title}</p>
+                <p className="mt-0.5 truncate text-xs text-slate-500">{item.detail}</p>
                 <p className="mt-1 text-[10px] font-medium uppercase tracking-wide text-slate-400">
                   {item.time}
                 </p>

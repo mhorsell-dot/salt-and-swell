@@ -16,14 +16,11 @@ export default function Button({
   ...props
 }: Props) {
   const variants = {
-    primary:
-      "bg-[#171715] text-white hover:bg-black/80 focus:ring-black/10",
+    primary: "bg-[#171715] text-white hover:bg-black/80 focus:ring-black/10",
 
-    secondary:
-      "bg-[#f7f5ef] text-[#171715] border border-black/10 hover:bg-[#f2efe7]",
+    secondary: "bg-[#f7f5ef] text-[#171715] border border-black/10 hover:bg-[#f2efe7]",
 
-    ghost:
-      "bg-transparent text-[#171715] hover:bg-black/5",
+    ghost: "bg-transparent text-[#171715] hover:bg-black/5",
   };
 
   return (

@@ -33,9 +33,7 @@ async function main() {
   });
 
   if (!product) {
-    throw new Error(
-      "No product was found. Create a product before attaching mockups."
-    );
+    throw new Error("No product was found. Create a product before attaching mockups.");
   }
 
   for (const [index, mockup] of mockups.entries()) {

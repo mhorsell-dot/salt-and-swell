@@ -144,28 +144,16 @@ function NavigationSection({
       <nav className="space-y-1">
         {items.map((item) => {
           const active =
-            item.href === "/admin"
-              ? pathname === "/admin"
-              : pathname.startsWith(item.href);
+            item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
 
-          return (
-            <NavigationLink
-              key={item.href}
-              {...item}
-              active={active}
-              onClick={onNavigate}
-            />
-          );
+          return <NavigationLink key={item.href} {...item} active={active} onClick={onNavigate} />;
         })}
       </nav>
     </div>
   );
 }
 
-export default function AdminSidebar({
-  mobileOpen,
-  onClose,
-}: SidebarProps) {
+export default function AdminSidebar({ mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   const content = (
@@ -193,11 +181,7 @@ export default function AdminSidebar({
       </div>
 
       <div className="space-y-7 overflow-y-auto">
-        <NavigationSection
-          items={mainNavigation}
-          pathname={pathname}
-          onNavigate={onClose}
-        />
+        <NavigationSection items={mainNavigation} pathname={pathname} onNavigate={onClose} />
 
         <NavigationSection
           title="Catalogue"
@@ -244,9 +228,7 @@ export default function AdminSidebar({
 
   return (
     <>
-      <div className="fixed inset-y-0 left-0 z-40 hidden w-[272px] lg:block">
-        {content}
-      </div>
+      <div className="fixed inset-y-0 left-0 z-40 hidden w-[272px] lg:block">{content}</div>
 
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">

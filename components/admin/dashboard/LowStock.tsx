@@ -8,21 +8,13 @@ type StockItem = {
   sku: string;
 };
 
-export default function LowStock({
-  items,
-}: {
-  items: StockItem[];
-}) {
+export default function LowStock({ items }: { items: StockItem[] }) {
   return (
     <section className="rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.03)] sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold text-slate-950">
-            Inventory attention
-          </p>
-          <p className="mt-1 text-xs text-slate-400">
-            Products that may need restocking
-          </p>
+          <p className="text-sm font-semibold text-slate-950">Inventory attention</p>
+          <p className="mt-1 text-xs text-slate-400">Products that may need restocking</p>
         </div>
 
         <div className="rounded-xl bg-amber-50 p-2 text-amber-600">
@@ -33,12 +25,8 @@ export default function LowStock({
       <div className="mt-6 space-y-3">
         {items.length === 0 ? (
           <div className="rounded-xl bg-emerald-50 px-4 py-5 text-center">
-            <p className="text-sm font-semibold text-emerald-800">
-              Inventory looks healthy
-            </p>
-            <p className="mt-1 text-xs text-emerald-600">
-              No low-stock variants detected.
-            </p>
+            <p className="text-sm font-semibold text-emerald-800">Inventory looks healthy</p>
+            <p className="mt-1 text-xs text-emerald-600">No low-stock variants detected.</p>
           </div>
         ) : (
           items.map((item) => (
@@ -47,9 +35,7 @@ export default function LowStock({
               className="flex items-center justify-between gap-3 rounded-xl border border-slate-100 px-3 py-3"
             >
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-slate-800">
-                  {item.name}
-                </p>
+                <p className="truncate text-sm font-semibold text-slate-800">{item.name}</p>
                 <p className="mt-0.5 text-[11px] text-slate-400">{item.sku}</p>
               </div>
 

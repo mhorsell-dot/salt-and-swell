@@ -80,10 +80,7 @@ function sanitiseStoredItems(value: unknown): CartItem[] {
       cartId: item.cartId || createCartId(item.productId, item.variantId),
       quantity: Math.max(
         1,
-        Math.min(
-          Math.floor(item.quantity),
-          Math.max(1, Math.floor(item.inventory)),
-        ),
+        Math.min(Math.floor(item.quantity), Math.max(1, Math.floor(item.inventory))),
       ),
       inventory: Math.max(0, Math.floor(item.inventory)),
     }))
@@ -172,10 +169,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
               ...item,
               ...input,
               cartId,
-              quantity: Math.min(
-                item.quantity + input.quantity,
-                input.inventory,
-              ),
+              quantity: Math.min(item.quantity + input.quantity, input.inventory),
             }
           : item,
       );
@@ -195,10 +189,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         item.cartId === cartId
           ? {
               ...item,
-              quantity: Math.max(
-                1,
-                Math.min(Math.floor(quantity), item.inventory),
-              ),
+              quantity: Math.max(1, Math.min(Math.floor(quantity), item.inventory)),
             }
           : item,
       ),
@@ -206,9 +197,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const removeItem = useCallback((cartId: string) => {
-    setItems((currentItems) =>
-      currentItems.filter((item) => item.cartId !== cartId),
-    );
+    setItems((currentItems) => currentItems.filter((item) => item.cartId !== cartId));
   }, []);
 
   const clearCart = useCallback(() => {
@@ -227,10 +216,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setIsOpen((current) => !current);
   }, []);
 
-  const itemCount = useMemo(
-    () => items.reduce((total, item) => total + item.quantity, 0),
-    [items],
-  );
+  const itemCount = useMemo(() => items.reduce((total, item) => total + item.quantity, 0), [items]);
 
   const subtotal = useMemo(
     () => items.reduce((total, item) => total + item.price * item.quantity, 0),

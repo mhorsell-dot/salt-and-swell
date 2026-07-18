@@ -27,9 +27,7 @@ function getErrorMessage(error?: string): string | null {
   }
 }
 
-export default async function CategoriesPage({
-  searchParams,
-}: CategoriesPageProps) {
+export default async function CategoriesPage({ searchParams }: CategoriesPageProps) {
   const query = await searchParams;
 
   const categories = await prisma.category.findMany({
@@ -54,13 +52,10 @@ export default async function CategoriesPage({
           Catalogue organisation
         </p>
 
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-neutral-950">
-          Categories
-        </h1>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-neutral-950">Categories</h1>
 
         <p className="mt-2 text-sm text-neutral-500">
-          Organise products into practical groups such as Tees, Fleece, Shorts
-          and Accessories.
+          Organise products into practical groups such as Tees, Fleece, Shorts and Accessories.
         </p>
       </header>
 
@@ -77,9 +72,7 @@ export default async function CategoriesPage({
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-neutral-950">
-              Create category
-            </h2>
+            <h2 className="text-lg font-semibold text-neutral-950">Create category</h2>
 
             <p className="mt-1 text-sm text-neutral-500">
               The URL slug will be generated automatically.
@@ -111,9 +104,7 @@ export default async function CategoriesPage({
 
       <section className="overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm">
         <div className="border-b border-neutral-200 px-6 py-5">
-          <h2 className="text-lg font-semibold text-neutral-950">
-            Current categories
-          </h2>
+          <h2 className="text-lg font-semibold text-neutral-950">Current categories</h2>
 
           <p className="mt-1 text-sm text-neutral-500">
             {categories.length} categor
@@ -133,9 +124,7 @@ export default async function CategoriesPage({
                 className="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
-                  <p className="font-semibold text-neutral-950">
-                    {category.name}
-                  </p>
+                  <p className="font-semibold text-neutral-950">{category.name}</p>
 
                   <p className="mt-1 text-xs text-neutral-500">
                     /{category.slug} · {category._count.products} product
@@ -143,10 +132,7 @@ export default async function CategoriesPage({
                   </p>
                 </div>
 
-                <form
-                  action={`/api/admin/categories/${category.id}/delete`}
-                  method="POST"
-                >
+                <form action={`/api/admin/categories/${category.id}/delete`} method="POST">
                   <button
                     type="submit"
                     disabled={category._count.products > 0}

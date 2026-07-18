@@ -11,16 +11,13 @@ export async function POST(req: NextRequest) {
     const signature = req.headers.get("stripe-signature");
 
     if (!signature) {
-      return NextResponse.json(
-        { error: "Missing Stripe signature." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing Stripe signature." }, { status: 400 });
     }
 
     const event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET!,
     );
 
     switch (event.type) {
@@ -29,19 +26,13 @@ export async function POST(req: NextRequest) {
 
         await processSuccessfulPayment(paymentIntent.id);
 
-        console.log(
-          "✅ Payment processed:",
-          paymentIntent.id
-        );
+        console.log("✅ Payment processed:", paymentIntent.id);
 
         break;
       }
 
       case "payment_intent.payment_failed":
-        console.log(
-          "❌ Payment failed:",
-          event.data.object.id
-        );
+        console.log("❌ Payment failed:", event.data.object.id);
         break;
 
       default:
@@ -49,13 +40,9 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ received: true });
-
   } catch (err) {
     console.error(err);
 
-    return NextResponse.json(
-      { error: "Webhook Error" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Webhook Error" }, { status: 400 });
   }
 }

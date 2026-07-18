@@ -53,9 +53,7 @@ export default function ShippingOption({
 
         <div
           className={`flex h-5 w-5 items-center justify-center rounded-full border ${
-            selected
-              ? "border-black bg-black text-white"
-              : "border-black/20 bg-white"
+            selected ? "border-black bg-black text-white" : "border-black/20 bg-white"
           }`}
         >
           {selected && <Check className="h-3 w-3" />}

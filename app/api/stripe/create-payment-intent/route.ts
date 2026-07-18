@@ -6,10 +6,7 @@ export async function POST(req: NextRequest) {
     const { amount, currency = "aud" } = await req.json();
 
     if (!amount || amount <= 0) {
-      return NextResponse.json(
-        { error: "Invalid amount" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
@@ -26,9 +23,6 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json(
-      { error: "Unable to create Payment Intent" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Unable to create Payment Intent" }, { status: 500 });
   }
 }

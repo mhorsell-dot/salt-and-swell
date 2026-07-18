@@ -3,16 +3,12 @@ type Props = {
   threshold: number;
 };
 
-export default function ShippingProgress({
-  subtotal,
-  threshold,
-}: Props) {
+export default function ShippingProgress({ subtotal, threshold }: Props) {
   const percent = Math.min((subtotal / threshold) * 100, 100);
   const remaining = Math.max(threshold - subtotal, 0);
 
   return (
     <section className="rounded-2xl border border-black/8 bg-[#faf9f6] p-5">
-
       <div className="flex justify-between text-sm">
         <span>Free Shipping Progress</span>
         <span>{Math.round(percent)}%</span>
@@ -30,7 +26,6 @@ export default function ShippingProgress({
           ? `Spend $${remaining.toFixed(2)} more to unlock free shipping.`
           : "Congratulations! Free shipping unlocked."}
       </p>
-
     </section>
   );
 }

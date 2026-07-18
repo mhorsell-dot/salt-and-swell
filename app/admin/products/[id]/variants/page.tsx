@@ -1,13 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  AlertTriangle,
-  ArrowLeft,
-  Boxes,
-  PackagePlus,
-  Plus,
-  Trash2,
-} from "lucide-react";
+import { AlertTriangle, ArrowLeft, Boxes, PackagePlus, Plus, Trash2 } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
@@ -46,10 +39,7 @@ function getErrorMessage(error?: string): string | null {
   }
 }
 
-export default async function VariantsPage({
-  params,
-  searchParams,
-}: VariantsPageProps) {
+export default async function VariantsPage({ params, searchParams }: VariantsPageProps) {
   const { id } = await params;
   const query = await searchParams;
 
@@ -75,18 +65,13 @@ export default async function VariantsPage({
     notFound();
   }
 
-  const totalInventory = product.variants.reduce(
-    (total, variant) => total + variant.inventory,
-    0,
-  );
+  const totalInventory = product.variants.reduce((total, variant) => total + variant.inventory, 0);
 
   const lowStockVariants = product.variants.filter(
     (variant) => variant.inventory > 0 && variant.inventory <= 5,
   ).length;
 
-  const outOfStockVariants = product.variants.filter(
-    (variant) => variant.inventory === 0,
-  ).length;
+  const outOfStockVariants = product.variants.filter((variant) => variant.inventory === 0).length;
 
   const errorMessage = getErrorMessage(query.error);
 
@@ -144,13 +129,10 @@ export default async function VariantsPage({
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-neutral-950">
-              Add variant
-            </h2>
+            <h2 className="text-lg font-semibold text-neutral-950">Add variant</h2>
 
             <p className="mt-1 text-sm text-neutral-500">
-              Create a size and colour combination with its own SKU and
-              inventory level.
+              Create a size and colour combination with its own SKU and inventory level.
             </p>
           </div>
         </div>
@@ -224,9 +206,7 @@ export default async function VariantsPage({
             <Boxes className="h-5 w-5 text-neutral-500" />
 
             <div>
-              <h2 className="text-lg font-semibold text-neutral-950">
-                Current variants
-              </h2>
+              <h2 className="text-lg font-semibold text-neutral-950">Current variants</h2>
 
               <p className="mt-1 text-sm text-neutral-500">
                 Inventory is automatically totalled across all variants.
@@ -239,9 +219,7 @@ export default async function VariantsPage({
           <div className="px-6 py-16 text-center">
             <Boxes className="mx-auto h-9 w-9 text-neutral-300" />
 
-            <h3 className="mt-4 text-lg font-semibold text-neutral-950">
-              No variants yet
-            </h3>
+            <h3 className="mt-4 text-lg font-semibold text-neutral-950">No variants yet</h3>
 
             <p className="mt-2 text-sm text-neutral-500">
               Add the first size and colour combination above.
@@ -289,10 +267,7 @@ export default async function VariantsPage({
                       </td>
 
                       <td className="whitespace-nowrap px-6 py-4">
-                        <StockBadge
-                          inventory={variant.inventory}
-                          label={status}
-                        />
+                        <StockBadge inventory={variant.inventory} label={status} />
                       </td>
 
                       <td className="whitespace-nowrap px-6 py-4 text-right">
@@ -334,9 +309,7 @@ function MetricCard({ label, value }: { label: string; value: number }) {
     <div className="rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm">
       <p className="text-sm font-medium text-neutral-500">{label}</p>
 
-      <p className="mt-3 text-3xl font-semibold tracking-tight text-neutral-950">
-        {value}
-      </p>
+      <p className="mt-3 text-3xl font-semibold tracking-tight text-neutral-950">{value}</p>
     </div>
   );
 }
@@ -352,10 +325,7 @@ function Field({
 }) {
   return (
     <div>
-      <label
-        htmlFor={htmlFor}
-        className="mb-2 block text-sm font-semibold text-neutral-800"
-      >
+      <label htmlFor={htmlFor} className="mb-2 block text-sm font-semibold text-neutral-800">
         {label}
       </label>
 
@@ -380,13 +350,7 @@ function Heading({
   );
 }
 
-function StockBadge({
-  inventory,
-  label,
-}: {
-  inventory: number;
-  label: string;
-}) {
+function StockBadge({ inventory, label }: { inventory: number; label: string }) {
   const classes =
     inventory === 0
       ? "bg-red-100 text-red-800"
@@ -395,9 +359,7 @@ function StockBadge({
         : "bg-emerald-100 text-emerald-800";
 
   return (
-    <span
-      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${classes}`}
-    >
+    <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${classes}`}>
       {label}
     </span>
   );

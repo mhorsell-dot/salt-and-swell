@@ -26,9 +26,7 @@ function formatCurrency(value: string) {
   }).format(Number(value));
 }
 
-export async function generateMetadata({
-  params,
-}: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
 
   const product = await prisma.product.findUnique({
@@ -122,10 +120,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     new Set(product.variants.map((variant) => variant.colour).filter(Boolean)),
   );
 
-  const inventory = product.variants.reduce(
-    (total, variant) => total + variant.inventory,
-    0,
-  );
+  const inventory = product.variants.reduce((total, variant) => total + variant.inventory, 0);
 
   return (
     <main className="min-h-screen bg-[#f5f3ee] text-[#171715]">
@@ -189,18 +184,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <div className="lg:sticky lg:top-10 lg:self-start">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45">
-            {product.category?.name ??
-              product.collection?.name ??
-              "Salt & Swell"}
+            {product.category?.name ?? product.collection?.name ?? "Salt & Swell"}
           </p>
 
           <h1 className="mt-4 text-5xl font-semibold leading-[0.95] tracking-[-0.05em] sm:text-6xl">
             {product.name}
           </h1>
 
-          <p className="mt-6 text-xl font-semibold">
-            {formatCurrency(product.price.toString())}
-          </p>
+          <p className="mt-6 text-xl font-semibold">{formatCurrency(product.price.toString())}</p>
 
           <div className="mt-8 border-y border-black/10 py-7">
             <p className="whitespace-pre-line text-sm leading-7 text-black/65">
@@ -229,9 +220,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <Package className="mt-0.5 h-5 w-5 shrink-0 text-black" />
 
               <div>
-                <p className="font-semibold text-black">
-                  Complimentary delivery over $150
-                </p>
+                <p className="font-semibold text-black">Complimentary delivery over $150</p>
                 <p className="mt-1 leading-6">
                   Standard Australian delivery is calculated at checkout.
                 </p>
@@ -242,8 +231,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <p className="font-semibold text-black">Easy 30-day returns</p>
 
               <p className="mt-1 leading-6">
-                Return unworn products in their original condition within 30
-                days.
+                Return unworn products in their original condition within 30 days.
               </p>
             </div>
           </div>
@@ -252,9 +240,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           {product.variants.length > 0 && (
             <p className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-black/45">
-              {inventory > 0
-                ? `${inventory} units currently available`
-                : "Currently unavailable"}
+              {inventory > 0 ? `${inventory} units currently available` : "Currently unavailable"}
             </p>
           )}
         </div>

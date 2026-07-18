@@ -1,13 +1,5 @@
 import Link from "next/link";
-import {
-  BadgeCheck,
-  Box,
-  CircleDollarSign,
-  Package,
-  Plus,
-  Star,
-  Tags,
-} from "lucide-react";
+import { BadgeCheck, Box, CircleDollarSign, Package, Plus, Star, Tags } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
@@ -40,17 +32,12 @@ export default async function ProductsPage() {
 
   const totalProducts = products.length;
   const activeProducts = products.filter((product) => product.active).length;
-  const featuredProducts = products.filter(
-    (product) => product.featured,
-  ).length;
+  const featuredProducts = products.filter((product) => product.featured).length;
 
   const totalInventory = products.reduce(
     (productTotal, product) =>
       productTotal +
-      product.variants.reduce(
-        (variantTotal, variant) => variantTotal + variant.inventory,
-        0,
-      ),
+      product.variants.reduce((variantTotal, variant) => variantTotal + variant.inventory, 0),
     0,
   );
 
@@ -62,13 +49,10 @@ export default async function ProductsPage() {
             Catalogue
           </p>
 
-          <h1 className="text-3xl font-semibold tracking-tight text-neutral-950">
-            Products
-          </h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-neutral-950">Products</h1>
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-neutral-600">
-            Manage the Salt &amp; Swell product catalogue, pricing, status and
-            inventory.
+            Manage the Salt &amp; Swell product catalogue, pricing, status and inventory.
           </p>
         </div>
 
@@ -94,11 +78,7 @@ export default async function ProductsPage() {
           icon={<BadgeCheck className="h-5 w-5" />}
         />
 
-        <MetricCard
-          label="Featured"
-          value={featuredProducts}
-          icon={<Star className="h-5 w-5" />}
-        />
+        <MetricCard label="Featured" value={featuredProducts} icon={<Star className="h-5 w-5" />} />
 
         <MetricCard
           label="Units in stock"
@@ -110,13 +90,9 @@ export default async function ProductsPage() {
       <section className="overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm">
         <div className="flex flex-col gap-3 border-b border-neutral-200 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-neutral-950">
-              Product catalogue
-            </h2>
+            <h2 className="text-lg font-semibold text-neutral-950">Product catalogue</h2>
 
-            <p className="mt-1 text-sm text-neutral-500">
-              Live product data from PostgreSQL.
-            </p>
+            <p className="mt-1 text-sm text-neutral-500">Live product data from PostgreSQL.</p>
           </div>
 
           <div className="inline-flex w-fit items-center gap-2 rounded-full bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-600">
@@ -131,13 +107,11 @@ export default async function ProductsPage() {
               <Package className="h-7 w-7 text-neutral-500" />
             </div>
 
-            <h3 className="mt-5 text-lg font-semibold text-neutral-950">
-              No products yet
-            </h3>
+            <h3 className="mt-5 text-lg font-semibold text-neutral-950">No products yet</h3>
 
             <p className="mt-2 max-w-md text-sm leading-6 text-neutral-500">
-              Create the first Salt &amp; Swell product to begin building the
-              live storefront catalogue.
+              Create the first Salt &amp; Swell product to begin building the live storefront
+              catalogue.
             </p>
 
             <Link
@@ -172,10 +146,7 @@ export default async function ProductsPage() {
                   const image = product.images[0];
 
                   return (
-                    <tr
-                      key={product.id}
-                      className="transition hover:bg-neutral-50/80"
-                    >
+                    <tr key={product.id} className="transition hover:bg-neutral-50/80">
                       <td className="whitespace-nowrap px-6 py-4">
                         <div className="flex items-center gap-4">
                           <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-neutral-100">
@@ -193,18 +164,14 @@ export default async function ProductsPage() {
 
                           <div>
                             <div className="flex items-center gap-2">
-                              <p className="font-semibold text-neutral-950">
-                                {product.name}
-                              </p>
+                              <p className="font-semibold text-neutral-950">{product.name}</p>
 
                               {product.featured && (
                                 <Star className="h-4 w-4 fill-current text-neutral-900" />
                               )}
                             </div>
 
-                            <p className="mt-1 text-xs text-neutral-500">
-                              /{product.slug}
-                            </p>
+                            <p className="mt-1 text-xs text-neutral-500">/{product.slug}</p>
 
                             <p className="mt-1 text-xs text-neutral-400">
                               {product.variants.length} variant
@@ -291,9 +258,7 @@ function MetricCard({
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-neutral-500">{label}</p>
-          <p className="mt-3 text-3xl font-semibold tracking-tight text-neutral-950">
-            {value}
-          </p>
+          <p className="mt-3 text-3xl font-semibold tracking-tight text-neutral-950">{value}</p>
         </div>
 
         <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-neutral-100 text-neutral-700">

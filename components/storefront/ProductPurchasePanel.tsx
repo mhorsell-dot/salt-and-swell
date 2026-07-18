@@ -24,10 +24,7 @@ type ProductPurchasePanelProps = {
   variants: Variant[];
 };
 
-export default function ProductPurchasePanel({
-  product,
-  variants,
-}: ProductPurchasePanelProps) {
+export default function ProductPurchasePanel({ product, variants }: ProductPurchasePanelProps) {
   const { addItem } = useCart();
 
   const availableVariants = useMemo(
@@ -57,21 +54,16 @@ export default function ProductPurchasePanel({
   );
 
   const initialVariant =
-    availableVariants.find((variant) => variant.colour === selectedColour) ??
-    availableVariants[0];
+    availableVariants.find((variant) => variant.colour === selectedColour) ?? availableVariants[0];
 
-  const [selectedVariantId, setSelectedVariantId] = useState(
-    initialVariant?.id ?? "",
-  );
+  const [selectedVariantId, setSelectedVariantId] = useState(initialVariant?.id ?? "");
 
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
   const selectedVariant =
     variants.find((variant) => variant.id === selectedVariantId) ??
-    variants.find(
-      (variant) => variant.colour === selectedColour && variant.inventory > 0,
-    );
+    variants.find((variant) => variant.colour === selectedColour && variant.inventory > 0);
 
   function selectColour(colour: string) {
     setSelectedColour(colour);
@@ -86,8 +78,7 @@ export default function ProductPurchasePanel({
 
   function selectSize(size: string) {
     const variant = variants.find(
-      (candidate) =>
-        candidate.colour === selectedColour && candidate.size === size,
+      (candidate) => candidate.colour === selectedColour && candidate.size === size,
     );
 
     setSelectedVariantId(variant?.id ?? "");
@@ -133,9 +124,7 @@ export default function ProductPurchasePanel({
       {colours.length > 0 && (
         <div>
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em]">
-              Colour
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em]">Colour</p>
 
             <p className="text-xs text-black/50">{selectedColour}</p>
           </div>
@@ -165,9 +154,7 @@ export default function ProductPurchasePanel({
 
       <div className="mt-8">
         <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em]">
-            Size
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em]">Size</p>
 
           <button
             type="button"
@@ -180,8 +167,7 @@ export default function ProductPurchasePanel({
         <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-6">
           {availableSizes.map((size) => {
             const variant = variants.find(
-              (candidate) =>
-                candidate.colour === selectedColour && candidate.size === size,
+              (candidate) => candidate.colour === selectedColour && candidate.size === size,
             );
 
             const isSelected = variant?.id === selectedVariant?.id;
@@ -209,8 +195,8 @@ export default function ProductPurchasePanel({
 
       {selectedVariant && (
         <p className="mt-4 text-xs text-black/50">
-          {selectedVariant.inventory} available in {selectedVariant.colour},
-          size {selectedVariant.size}
+          {selectedVariant.inventory} available in {selectedVariant.colour}, size{" "}
+          {selectedVariant.size}
         </p>
       )}
 
@@ -232,9 +218,7 @@ export default function ProductPurchasePanel({
           <button
             type="button"
             onClick={() =>
-              setQuantity((current) =>
-                Math.min(selectedVariant?.inventory ?? 1, current + 1),
-              )
+              setQuantity((current) => Math.min(selectedVariant?.inventory ?? 1, current + 1))
             }
             disabled={!selectedVariant || quantity >= selectedVariant.inventory}
             className="flex h-full w-10 items-center justify-center disabled:opacity-30"

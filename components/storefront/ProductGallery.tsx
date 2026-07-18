@@ -25,15 +25,11 @@ export default function ProductGallery({
   const activeImage = images[activeIndex];
 
   function showPrevious() {
-    setActiveIndex((current) =>
-      current === 0 ? images.length - 1 : current - 1,
-    );
+    setActiveIndex((current) => (current === 0 ? images.length - 1 : current - 1));
   }
 
   function showNext() {
-    setActiveIndex((current) =>
-      current === images.length - 1 ? 0 : current + 1,
-    );
+    setActiveIndex((current) => (current === images.length - 1 ? 0 : current + 1));
   }
 
   return (

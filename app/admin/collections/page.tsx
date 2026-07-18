@@ -27,9 +27,7 @@ function getErrorMessage(error?: string): string | null {
   }
 }
 
-export default async function CollectionsPage({
-  searchParams,
-}: CollectionsPageProps) {
+export default async function CollectionsPage({ searchParams }: CollectionsPageProps) {
   const query = await searchParams;
 
   const collections = await prisma.collection.findMany({
@@ -54,23 +52,16 @@ export default async function CollectionsPage({
           Curated ranges
         </p>
 
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-neutral-950">
-          Collections
-        </h1>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-neutral-950">Collections</h1>
 
         <p className="mt-2 text-sm text-neutral-500">
-          Build editorial ranges such as New Arrivals, Coastal Utility and Tide
-          Collection.
+          Build editorial ranges such as New Arrivals, Coastal Utility and Tide Collection.
         </p>
       </header>
 
-      {query.created === "1" && (
-        <Notice>Collection created successfully.</Notice>
-      )}
+      {query.created === "1" && <Notice>Collection created successfully.</Notice>}
 
-      {query.deleted === "1" && (
-        <Notice>Collection deleted successfully.</Notice>
-      )}
+      {query.deleted === "1" && <Notice>Collection deleted successfully.</Notice>}
 
       {errorMessage && <ErrorNotice message={errorMessage} />}
 
@@ -81,9 +72,7 @@ export default async function CollectionsPage({
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-neutral-950">
-              Create collection
-            </h2>
+            <h2 className="text-lg font-semibold text-neutral-950">Create collection</h2>
 
             <p className="mt-1 text-sm text-neutral-500">
               Add a customer-facing name and optional description.
@@ -91,11 +80,7 @@ export default async function CollectionsPage({
           </div>
         </div>
 
-        <form
-          action="/api/admin/collections/create"
-          method="POST"
-          className="mt-7 grid gap-4"
-        >
+        <form action="/api/admin/collections/create" method="POST" className="mt-7 grid gap-4">
           <input
             name="name"
             required
@@ -122,9 +107,7 @@ export default async function CollectionsPage({
 
       <section className="overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm">
         <div className="border-b border-neutral-200 px-6 py-5">
-          <h2 className="text-lg font-semibold text-neutral-950">
-            Current collections
-          </h2>
+          <h2 className="text-lg font-semibold text-neutral-950">Current collections</h2>
 
           <p className="mt-1 text-sm text-neutral-500">
             {collections.length} collection
@@ -144,9 +127,7 @@ export default async function CollectionsPage({
                 className="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
-                  <p className="font-semibold text-neutral-950">
-                    {collection.name}
-                  </p>
+                  <p className="font-semibold text-neutral-950">{collection.name}</p>
 
                   <p className="mt-1 text-xs text-neutral-500">
                     /{collection.slug} · {collection._count.products} product
@@ -160,10 +141,7 @@ export default async function CollectionsPage({
                   )}
                 </div>
 
-                <form
-                  action={`/api/admin/collections/${collection.id}/delete`}
-                  method="POST"
-                >
+                <form action={`/api/admin/collections/${collection.id}/delete`} method="POST">
                   <button
                     type="submit"
                     disabled={collection._count.products > 0}
