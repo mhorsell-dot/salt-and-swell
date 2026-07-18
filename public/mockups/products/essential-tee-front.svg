@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#eeeae2"/>
+  <circle cx="600" cy="570" r="440" fill="#e3ded4"/>
+  <path d="M420 410 515 350h170l95 60 150 115-95 145-85-60v545H450V610l-85 60-95-145z"
+        fill="#f8f7f3" stroke="#c9c4ba" stroke-width="6"/>
+  <path d="M515 350c10 75 160 75 170 0" fill="none" stroke="#c9c4ba" stroke-width="7"/>
+  <text x="600" y="690" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700"
+        fill="#1a211f">SALT &amp; SWELL</text>
+  <text x="600" y="740" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="18"
+        letter-spacing="7" fill="#56615d">SALTY SOULS</text>
+  <text x="600" y="1335" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="24"
+        letter-spacing="6" fill="#77736c">ESSENTIAL TEE — FRONT</text>
+</svg>

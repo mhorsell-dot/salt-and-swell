@@ -10,17 +10,9 @@ datasource db {
 enum OrderStatus {
   PENDING
   PAID
-  PACKED
   SHIPPED
   DELIVERED
   CANCELLED
-}
-
-enum PaymentStatus {
-  PENDING
-  PAID
-  FAILED
-  REFUNDED
 }
 
 model Category {
@@ -65,8 +57,7 @@ model Product {
 }
 
 model ProductImage {
-  id String @id @default(cuid())
-
+  id        String  @id @default(cuid())
   url       String
   alt       String?
   sortOrder Int     @default(0)
@@ -76,8 +67,7 @@ model ProductImage {
 }
 
 model ProductVariant {
-  id String @id @default(cuid())
-
+  id        String @id @default(cuid())
   size      String
   colour    String
   sku       String @unique
@@ -88,11 +78,8 @@ model ProductVariant {
 }
 
 model Customer {
-  id String @id @default(cuid())
-
-  email String  @unique
-  phone String?
-
+  id        String @id @default(cuid())
+  email     String @unique
   firstName String
   lastName  String
 
@@ -103,42 +90,9 @@ model Customer {
 }
 
 model Order {
-  id String @id @default(cuid())
-
-  orderNumber String @unique
-
+  id     String      @id @default(cuid())
   status OrderStatus @default(PENDING)
-
-  paymentStatus PaymentStatus @default(PENDING)
-
-  paymentProvider String?
-  paymentIntentId String?
-
-  total        Decimal
-  shippingCost Decimal @default(0)
-
-  emailSnapshot String
-  phoneSnapshot String?
-
-  shippingMethod String?
-
-  notes String?
-
-  trackingNumber String?
-
-  paidAt      DateTime?
-  fulfilledAt DateTime?
-  cancelledAt DateTime?
-
-  shippingFirstName String
-  shippingLastName  String
-  shippingCompany   String?
-  shippingAddress1  String
-  shippingAddress2  String?
-  shippingCity      String
-  shippingState     String
-  shippingPostcode  String
-  shippingCountry   String
+  total  Decimal
 
   customerId String
   customer   Customer @relation(fields: [customerId], references: [id])
@@ -149,21 +103,9 @@ model Order {
 }
 
 model OrderItem {
-  id String @id @default(cuid())
-
-  productName String
-
-  sku String?
-
-  colour String?
-
-  size String?
-
+  id       String  @id @default(cuid())
   quantity Int
-
-  unitPrice Decimal
-
-  price Decimal
+  price    Decimal
 
   orderId String
   order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
@@ -173,8 +115,7 @@ model OrderItem {
 }
 
 model Review {
-  id String @id @default(cuid())
-
+  id      String  @id @default(cuid())
   rating  Int
   title   String?
   comment String
@@ -189,23 +130,18 @@ model Review {
 }
 
 model JournalArticle {
-  id String @id @default(cuid())
-
-  title String
-  slug  String @unique
-
-  excerpt String?
-  content String
-
+  id        String  @id @default(cuid())
+  title     String
+  slug      String  @unique
+  excerpt   String?
+  content   String
   published Boolean @default(false)
 
   createdAt DateTime @default(now())
 }
 
 model NewsletterSubscriber {
-  id String @id @default(cuid())
-
-  email String @unique
-
+  id        String   @id @default(cuid())
+  email     String   @unique
   createdAt DateTime @default(now())
 }

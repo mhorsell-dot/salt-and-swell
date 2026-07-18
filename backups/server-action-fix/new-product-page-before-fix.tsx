@@ -12,6 +12,8 @@ import {
 
 import prisma from "@/lib/prisma";
 
+import { createProductAction } from "./actions";
+
 export const dynamic = "force-dynamic";
 
 export default async function NewProductPage() {
@@ -62,11 +64,7 @@ export default async function NewProductPage() {
         </div>
       </div>
 
-      <form
-        action="/api/admin/products/create"
-        method="POST"
-        className="space-y-6"
-      >
+      <form action={createProductAction} className="space-y-6">
         <section className="rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
           <div className="mb-7 flex items-start gap-4">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-neutral-100">

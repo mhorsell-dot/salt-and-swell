@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#dfe5e1"/>
+  <circle cx="600" cy="570" r="440" fill="#cfd9d4"/>
+  <path d="M420 410 515 350h170l95 60 150 115-95 145-85-60v545H450V610l-85 60-95-145z"
+        fill="#202725" stroke="#303a37" stroke-width="6"/>
+  <path d="M515 350c10 75 160 75 170 0" fill="none" stroke="#46514d" stroke-width="7"/>
+  <circle cx="600" cy="690" r="132" fill="none" stroke="#f1eee6" stroke-width="7"/>
+  <path d="M495 710c80-150 175-150 225 0-70-50-145-50-225 0z"
+        fill="none" stroke="#f1eee6" stroke-width="7"/>
+  <text x="600" y="895" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="25"
+        letter-spacing="7" fill="#f1eee6">SURFWEAR FOR SALTY SOULS</text>
+  <text x="600" y="1335" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="24"
+        letter-spacing="6" fill="#68736f">ESSENTIAL TEE — BACK</text>
+</svg>

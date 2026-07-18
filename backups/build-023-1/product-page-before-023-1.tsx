@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Package, ShoppingBag } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -6,9 +5,6 @@ import { notFound } from "next/navigation";
 import ProductGallery from "@/components/storefront/ProductGallery";
 import ProductPurchasePanel from "@/components/storefront/ProductPurchasePanel";
 
-import ProductInformation from "@/components/storefront/ProductInformation";
-import RelatedProducts from "@/components/storefront/RelatedProducts";
-import RecentlyViewedTracker from "@/components/storefront/RecentlyViewedTracker";
 import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -24,45 +20,6 @@ function formatCurrency(value: string) {
     style: "currency",
     currency: "AUD",
   }).format(Number(value));
-}
-
-export async function generateMetadata({
-  params,
-}: ProductPageProps): Promise<Metadata> {
-  const { slug } = await params;
-
-  const product = await prisma.product.findUnique({
-    where: {
-      slug,
-    },
-    select: {
-      name: true,
-      description: true,
-      active: true,
-      images: {
-        orderBy: {
-          sortOrder: "asc",
-        },
-        take: 1,
-      },
-    },
-  });
-
-  if (!product || !product.active) {
-    return {
-      title: "Product Not Found | Salt & Swell",
-    };
-  }
-
-  return {
-    title: `${product.name} | Salt & Swell`,
-    description: product.description.slice(0, 160),
-    openGraph: {
-      title: product.name,
-      description: product.description.slice(0, 160),
-      images: product.images[0]?.url ? [product.images[0].url] : [],
-    },
-  };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
@@ -129,15 +86,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <main className="min-h-screen bg-[#f5f3ee] text-[#171715]">
-      <RecentlyViewedTracker
-        product={{
-          id: product.id,
-          slug: product.slug,
-          name: product.name,
-          price: Number(product.price),
-          imageUrl: primaryImage,
-        }}
-      />
       <header className="border-b border-black/10 bg-[#182321] text-white">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-10">
           <Link href="/" className="text-2xl font-semibold tracking-[-0.04em]">
@@ -248,8 +196,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
-          <ProductInformation />
-
           {product.variants.length > 0 && (
             <p className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-black/45">
               {inventory > 0
@@ -259,11 +205,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
           )}
         </div>
       </section>
-      <RelatedProducts
-        productId={product.id}
-        categoryId={product.categoryId}
-        collectionId={product.collectionId}
-      />
     </main>
   );
 }

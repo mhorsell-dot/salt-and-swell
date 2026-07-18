@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9d2d0"/>
+      <stop offset="0.55" stop-color="#e6d6bd"/>
+      <stop offset="1" stop-color="#c89f72"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#sky)"/>
+  <circle cx="860" cy="330" r="115" fill="#f2d49a" opacity="0.9"/>
+  <path d="M0 760c180-55 335-45 510 10 210 65 420 85 690-10v740H0z" fill="#2d6869"/>
+  <path d="M0 850c240-65 410-45 595 20 210 72 390 60 605-10" fill="none"
+        stroke="#e7eee9" stroke-width="22" opacity="0.8"/>
+  <path d="M510 540c55-45 125-45 180 0l72 72-45 80-45-38v330H528V654l-45 38-45-80z"
+        fill="#f4f1ea" stroke="#d7d1c7" stroke-width="5"/>
+  <circle cx="600" cy="455" r="76" fill="#9a6a48"/>
+  <path d="M548 445c30-75 118-82 145-4-45-22-96-20-145 4z" fill="#302a26"/>
+  <text x="600" y="775" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700"
+        fill="#1d2522">SALT &amp; SWELL</text>
+  <text x="600" y="1370" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="24"
+        letter-spacing="6" fill="#f5efe6">COASTAL LIFESTYLE MOCKUP</text>
+</svg>

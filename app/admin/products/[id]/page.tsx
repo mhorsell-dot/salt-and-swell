@@ -121,6 +121,20 @@ export default async function ProductManagementPage({
             )}
 
             <Link
+              href={`/admin/products/${product.id}/images`}
+              className="inline-flex h-11 items-center justify-center rounded-full border border-neutral-300 px-5 text-sm font-semibold text-neutral-700 transition hover:border-neutral-400 hover:bg-neutral-50"
+            >
+              Manage images
+            </Link>
+
+            <Link
+              href={`/admin/products/${product.id}/variants`}
+              className="inline-flex h-11 items-center justify-center rounded-full border border-neutral-300 px-5 text-sm font-semibold text-neutral-700 transition hover:border-neutral-400 hover:bg-neutral-50"
+            >
+              Manage variants
+            </Link>
+
+            <Link
               href="/admin/products/new"
               className="inline-flex h-11 items-center justify-center rounded-full bg-neutral-950 px-5 text-sm font-semibold text-white transition hover:bg-neutral-800"
             >

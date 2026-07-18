@@ -116,7 +116,7 @@ export default async function CollectionsPage() {
                       )}
 
                       <Link
-                        href={`/collections/${collection.slug}`}
+                        href="/shop"
                         className="mt-7 inline-flex items-center gap-3 border-b border-white pb-2 text-xs font-semibold uppercase tracking-[0.15em]"
                       >
                         Explore collection

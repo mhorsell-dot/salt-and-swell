@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <defs>
+    <pattern id="fabric" width="24" height="24" patternUnits="userSpaceOnUse">
+      <rect width="24" height="24" fill="#f2f0ea"/>
+      <path d="M0 5h24M0 13h24M0 21h24" stroke="#ddd9d0" stroke-width="2"/>
+      <path d="M5 0v24M13 0v24M21 0v24" stroke="#e8e4dc" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="1500" fill="#1c2522"/>
+  <rect x="110" y="120" width="980" height="1120" rx="45" fill="url(#fabric)"/>
+  <rect x="390" y="480" width="420" height="250" rx="18" fill="#f8f7f3"
+        stroke="#bdb7ad" stroke-width="5"/>
+  <text x="600" y="585" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="46" font-weight="700"
+        fill="#17201d">SALT &amp; SWELL</text>
+  <text x="600" y="650" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="18"
+        letter-spacing="8" fill="#5f6965">AUSTRALIAN COASTAL APPAREL</text>
+  <path d="M190 1060c260-130 560-130 820 0" fill="none"
+        stroke="#aaa49b" stroke-width="8" stroke-dasharray="13 12"/>
+  <text x="600" y="1345" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="24"
+        letter-spacing="6" fill="#c6cec9">FABRIC &amp; LABEL DETAIL</text>
+</svg>
