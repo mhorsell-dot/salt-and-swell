@@ -90,7 +90,7 @@ export default async function LiveProductGrid({
 
         return (
           <article key={product.id} className="group">
-            <Link href={`/shop/${product.slug}`} className="block">
+            <Link href="/shop" className="block">
               <div
                 className="relative aspect-[4/5] overflow-hidden bg-neutral-200 bg-cover bg-center"
                 style={{
