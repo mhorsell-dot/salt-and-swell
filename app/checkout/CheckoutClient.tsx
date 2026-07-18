@@ -30,6 +30,8 @@ import CheckoutSidebar from "./components/layout/CheckoutSidebar";
 import CheckoutCard from "./components/layout/CheckoutCard";
 import SectionTitle from "./components/layout/SectionTitle";
 import CheckoutSection from "./components/layout/CheckoutSection";
+import PremiumSummaryHeader from "./components/PremiumSummaryHeader";
+import PaymentLogos from "./components/PaymentLogos";
 
 
 type ShippingMethod = "standard" | "express";
