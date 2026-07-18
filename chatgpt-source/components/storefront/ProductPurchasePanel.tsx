@@ -102,7 +102,7 @@ export default function ProductPurchasePanel({
     addItem({
       productId: product.id,
       slug: product.slug,
-      name: product.name,
+      productName: product.name,
       variantId: selectedVariant.id,
       size: selectedVariant.size,
       colour: selectedVariant.colour,

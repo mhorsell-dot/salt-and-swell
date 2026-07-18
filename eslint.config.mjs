@@ -15,4 +15,6 @@ const eslintConfig = defineConfig([
   ]),
 ]);
 
+const ignores = { ignores: ["backups/**"] };
+
 export default eslintConfig;
