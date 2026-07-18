@@ -19,6 +19,7 @@ import ShippingOption from "./components/ShippingOption";
 import SummaryRow from "./components/SummaryRow";
 import TrustSection from "./components/TrustSection";
 import PaymentSection from "./components/PaymentSection";
+import CheckoutProgress from "./components/CheckoutProgress";
 
 
 type ShippingMethod = "standard" | "express";
