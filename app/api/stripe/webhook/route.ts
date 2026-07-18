@@ -1,4 +1,4 @@
-import { processSuccessfulPayment } from "@/lib/services/order-processing";
+import { processSuccessfulPayment } from "@/features/orders/service";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
