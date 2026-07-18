@@ -18,23 +18,46 @@ export async function processSuccessfulPayment(
     );
   }
 
-  await prisma.order.update({
-    where: {
-      id: order.id,
-    },
-    data: {
-      status: "PAID",
-      paymentStatus: "PAID",
-      paidAt: new Date(),
-    },
-  });
+  await prisma.$transaction(async (tx) => {
+    await tx.order.update({
+      where: {
+        id: order.id,
+      },
+      data: {
+        status: "PAID",
+        paymentStatus: "PAID",
+        paidAt: new Date(),
+      },
+    });
 
-  await prisma.orderEvent.create({
-    data: {
-      orderId: order.id,
-      event: "PAYMENT_RECEIVED",
-      message: "Payment successfully received from Stripe.",
-    },
+    await tx.orderEvent.create({
+      data: {
+        orderId: order.id,
+        event: "PAYMENT_RECEIVED",
+        message: "Payment successfully received from Stripe.",
+      },
+    });
+
+    if (order.paymentIntentId) {
+      await tx.payment.upsert({
+        where: {
+          orderId: order.id,
+        },
+        update: {
+          status: "PAID",
+          providerReference: paymentIntentId,
+          transactionDate: new Date(),
+        },
+        create: {
+          orderId: order.id,
+          method: "STRIPE",
+          amount: order.total,
+          status: "PAID",
+          providerReference: paymentIntentId,
+          transactionDate: new Date(),
+        },
+      });
+    }
   });
 
   return order;
