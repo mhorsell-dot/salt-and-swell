@@ -4,8 +4,8 @@
   ],
   "portsAttributes": {
     "3000": {
-      "label": "Salt & Swell Store",
-      "onAutoForward": "openBrowser"
+      "label": "Salt & Swell",
+      "onAutoForward": "notify"
     }
   }
 }

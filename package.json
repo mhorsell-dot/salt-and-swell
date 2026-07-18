@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "dev:codespaces": "bash scripts/start-codespaces.sh"
+    "dev:codespaces": "bash scripts/start-codespaces.sh",
+    "dev:stable": "bash scripts/dev-server.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
