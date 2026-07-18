@@ -145,12 +145,6 @@ model Order {
 
   items OrderItem[]
 
-  payment Payment?
-
-  shipment Shipment?
-
-  events OrderEvent[]
-
   createdAt DateTime @default(now())
 }
 
@@ -215,74 +209,3 @@ model NewsletterSubscriber {
 
   createdAt DateTime @default(now())
 }
-
-enum ShipmentStatus {
-  PENDING
-  PICKING
-  PACKED
-  SHIPPED
-  DELIVERED
-  RETURNED
-}
-
-enum PaymentMethod {
-  STRIPE
-  PAYPAL
-  MANUAL
-}
-
-model Payment {
-  id String @id @default(cuid())
-
-  method PaymentMethod
-
-  providerReference String?
-
-  amount Decimal
-
-  currency String @default("AUD")
-
-  status PaymentStatus @default(PENDING)
-
-  transactionDate DateTime?
-
-  orderId String @unique
-  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-}
-
-model Shipment {
-  id String @id @default(cuid())
-
-  carrier String?
-
-  trackingNumber String?
-
-  trackingUrl String?
-
-  status ShipmentStatus @default(PENDING)
-
-  dispatchedAt DateTime?
-
-  deliveredAt DateTime?
-
-  orderId String @unique
-  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-}
-
-model OrderEvent {
-  id String @id @default(cuid())
-
-  orderId String
-  order   Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  event String
-
-  message String?
-
-  createdAt DateTime @default(now())
-}
-

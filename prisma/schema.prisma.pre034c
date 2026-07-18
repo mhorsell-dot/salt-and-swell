@@ -145,12 +145,6 @@ model Order {
 
   items OrderItem[]
 
-  payment Payment?
-
-  shipment Shipment?
-
-  events OrderEvent[]
-
   createdAt DateTime @default(now())
 }
 
