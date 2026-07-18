@@ -10,7 +10,8 @@
     "dev:codespaces": "bash scripts/start-codespaces.sh",
     "dev:stable": "bash scripts/dev-server.sh",
     "format": "prettier . --write",
-    "format:check": "prettier . --check"
+    "format:check": "prettier . --check",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
