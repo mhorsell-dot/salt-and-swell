@@ -20,6 +20,11 @@ import SummaryRow from "./components/SummaryRow";
 import TrustSection from "./components/TrustSection";
 import PaymentSection from "./components/PaymentSection";
 import CheckoutProgress from "./components/CheckoutProgress";
+import ShippingProgress from "./components/ShippingProgress";
+import SavingsCard from "./components/SavingsCard";
+import PromoCard from "./components/PromoCard";
+import GiftCard from "./components/GiftCard";
+import ExpressCheckout from "./components/ExpressCheckout";
 
 
 type ShippingMethod = "standard" | "express";
@@ -363,6 +368,17 @@ export default function CheckoutClient() {
           </div>
 
           <TrustSection />
+
+            <SavingsCard savings={0} />
+
+            <ShippingProgress
+              subtotal={subtotal}
+              threshold={FREE_SHIPPING_THRESHOLD}
+            />
+
+            <PromoCard />
+
+            <GiftCard />
 
           <aside className="lg:sticky lg:top-6">
             <section className="rounded-[2rem] border border-black/8 bg-white p-6 shadow-[0_24px_80px_rgba(0,0,0,0.07)] sm:p-7">
