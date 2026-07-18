@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ZodError } from "zod";
 import { getProducts, createProduct } from "@/lib/services/productService";
 import { productSchema } from "@/lib/validators/product";
 
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error: unknown) {
 
-    if (error.name === "ZodError") {
+    if (error instanceof ZodError) {
       return NextResponse.json(
         {
           error: "Validation failed",
