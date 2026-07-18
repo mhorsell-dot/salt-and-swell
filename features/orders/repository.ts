@@ -11,4 +11,27 @@ export const orderRepository = {
       },
     });
   },
+
+  markPaid(orderId: string) {
+    return prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        status: "PAID",
+        paymentStatus: "PAID",
+        paidAt: new Date(),
+      },
+    });
+  },
+
+  createOrderEvent(orderId: string) {
+    return prisma.orderEvent.create({
+      data: {
+        orderId,
+        event: "PAYMENT_RECEIVED",
+        message: "Payment successfully received.",
+      },
+    });
+  },
 };
