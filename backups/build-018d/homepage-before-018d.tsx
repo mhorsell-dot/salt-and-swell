@@ -1,6 +1,4 @@
 import Link from "next/link";
-
-import LiveProductGrid from "@/components/storefront/LiveProductGrid";
 import {
   ArrowRight,
   Camera,
@@ -9,6 +7,37 @@ import {
   ShoppingBag,
   UserRound,
 } from "lucide-react";
+
+const products = [
+  {
+    name: "Salted Essential Tee",
+    category: "Heavyweight Cotton",
+    price: "$69.95",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=85",
+  },
+  {
+    name: "Tidal Overshirt",
+    category: "Premium Layering",
+    price: "$129.95",
+    image:
+      "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=1200&q=85",
+  },
+  {
+    name: "Coastal Fleece",
+    category: "Relaxed Fit",
+    price: "$119.95",
+    image:
+      "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1200&q=85",
+  },
+  {
+    name: "Swell Cap",
+    category: "Everyday Essentials",
+    price: "$44.95",
+    image:
+      "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=1200&q=85",
+  },
+];
 
 const journalPosts = [
   {
@@ -54,7 +83,42 @@ export default function HomePage() {
             linkText="Shop all"
           />
 
-          <LiveProductGrid limit={4} />
+          <div className="mt-10 grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+            {products.map((product) => (
+              <article key={product.name} className="group">
+                <Link href="/shop" className="block">
+                  <div
+                    className="relative aspect-[4/5] overflow-hidden bg-neutral-200 bg-cover bg-center"
+                    style={{ backgroundImage: `url("${product.image}")` }}
+                  >
+                    <div className="absolute inset-0 bg-black/5 transition duration-500 group-hover:bg-black/15" />
+
+                    <div className="absolute bottom-4 left-4 right-4 translate-y-3 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                      <span className="flex h-11 items-center justify-center bg-white text-sm font-semibold text-black">
+                        Quick view
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-sm font-semibold uppercase tracking-wide">
+                        {product.name}
+                      </h3>
+
+                      <p className="mt-1 text-sm text-black/55">
+                        {product.category}
+                      </p>
+                    </div>
+
+                    <p className="shrink-0 text-sm font-semibold">
+                      {product.price}
+                    </p>
+                  </div>
+                </Link>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
