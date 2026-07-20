@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
+import { cn } from "@/lib/utils/cn";
 
 type Variant = "primary" | "secondary" | "ghost";
 
@@ -6,13 +7,17 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: Variant;
   fullWidth?: boolean;
+  loading?: boolean;
 }
 
 export default function Button({
   children,
+  type = "button",
   variant = "primary",
   fullWidth = false,
-  className = "",
+  loading = false,
+  className,
+  disabled,
   ...props
 }: Props) {
   const variants = {
@@ -25,19 +30,24 @@ export default function Button({
 
   return (
     <button
+      type={type}
+      disabled={disabled || loading}
       {...props}
-      className={[
+      className={cn(
         "inline-flex items-center justify-center gap-2",
         "h-14 rounded-full px-6",
         "font-semibold uppercase tracking-[0.16em]",
         "transition-all duration-200",
         "focus:outline-none focus:ring-4",
-        fullWidth ? "w-full" : "",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        fullWidth && "w-full",
         variants[variant],
         className,
-      ].join(" ")}
+      )}
     >
-      {children}
+      {loading ? "Loading..." : children}
     </button>
   );
 }
+
+Button.displayName = "Button";

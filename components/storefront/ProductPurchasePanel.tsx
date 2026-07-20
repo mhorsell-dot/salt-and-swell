@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Check, Minus, Plus, ShoppingBag } from "lucide-react";
 
 import { useCart } from "@/components/cart/CartProvider";
+import TrustBar from "@/components/storefront/TrustBar";
 
 type Variant = {
   id: string;
@@ -250,6 +251,7 @@ export default function ProductPurchasePanel({ product, variants }: ProductPurch
           )}
         </button>
       </div>
+      <TrustBar />
     </div>
   );
 }

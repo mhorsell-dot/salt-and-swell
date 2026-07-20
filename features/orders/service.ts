@@ -1,58 +1,21 @@
-import { prisma } from "@/lib/prisma";
+import { orderRepository } from "./repository";
 import { validatePaymentIntentId } from "./validation";
 
 export async function processSuccessfulPayment(paymentIntentId: string) {
   validatePaymentIntentId(paymentIntentId);
 
-  const order = await prisma.order.findFirst({
-    where: {
-      paymentIntentId,
-    },
-    include: {
-      items: true,
-    },
-  });
+  const order = await orderRepository.findByPaymentIntent(paymentIntentId);
 
   if (!order) {
     throw new Error(`Order not found for Payment Intent ${paymentIntentId}`);
   }
 
-  await prisma.$transaction(async (tx) => {
-    await tx.order.update({
-      where: { id: order.id },
-      data: {
-        status: "PAID",
-        paymentStatus: "PAID",
-        paidAt: new Date(),
-      },
-    });
+  await orderRepository.transaction(async () => {
+    await orderRepository.markPaid(order.id);
 
-    await tx.payment.upsert({
-      where: {
-        orderId: order.id,
-      },
-      update: {
-        status: "PAID",
-        providerReference: paymentIntentId,
-        transactionDate: new Date(),
-      },
-      create: {
-        orderId: order.id,
-        method: "STRIPE",
-        amount: order.total,
-        status: "PAID",
-        providerReference: paymentIntentId,
-        transactionDate: new Date(),
-      },
-    });
+    await orderRepository.upsertPayment(order, paymentIntentId);
 
-    await tx.orderEvent.create({
-      data: {
-        orderId: order.id,
-        event: "PAYMENT_RECEIVED",
-        message: "Payment successfully received from Stripe.",
-      },
-    });
+    await orderRepository.createTimeline(order.id);
   });
 
   return order;

@@ -101,12 +101,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   });
   const [isOpen, setIsOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(typeof window !== "undefined");
   const [lastAddedCartId, setLastAddedCartId] = useState<string | null>(null);
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
 
   useEffect(() => {
     if (!isHydrated) {

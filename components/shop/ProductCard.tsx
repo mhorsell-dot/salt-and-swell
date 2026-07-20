@@ -1,4 +1,5 @@
 import Image from "next/image";
+import WishlistButton from "@/components/wishlist/WishlistButton";
 type Props = {
   product: {
     name: string;

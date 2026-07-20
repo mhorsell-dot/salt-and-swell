@@ -7,9 +7,12 @@ import ProductGallery from "@/components/storefront/ProductGallery";
 import ProductPurchasePanel from "@/components/storefront/ProductPurchasePanel";
 
 import ProductInformation from "@/components/storefront/ProductInformation";
+import ProductReviews from "@/components/storefront/reviews/ProductReviews";
 import RelatedProducts from "@/components/storefront/RelatedProducts";
 import RecentlyViewedTracker from "@/components/storefront/RecentlyViewedTracker";
 import prisma from "@/lib/prisma";
+import CompleteTheLook from "@/components/storefront/CompleteTheLook";
+import WishlistButton from "@/components/wishlist/WishlistButton";
 
 export const dynamic = "force-dynamic";
 
@@ -171,7 +174,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </Link>
       </div>
 
-      <section className="mx-auto grid max-w-7xl gap-12 px-6 pb-20 lg:grid-cols-[1.15fr_0.85fr] lg:px-10 lg:pb-28">
+      <section className="mx-auto grid max-w-7xl gap-12 px-6 pb-20 max-w-[1600px] gap-16 px-6 pb-24 lg:grid-cols-[1.4fr_0.6fr] lg:px-12 lg:pb-32">
         <ProductGallery
           productName={product.name}
           featured={product.featured}
@@ -182,19 +185,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
           }))}
         />
 
-        <div className="lg:sticky lg:top-10 lg:self-start">
+        <div className="lg:sticky lg:top-16 lg:self-start lg:pl-6">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45">
             {product.category?.name ?? product.collection?.name ?? "Salt & Swell"}
           </p>
 
-          <h1 className="mt-4 text-5xl font-semibold leading-[0.95] tracking-[-0.05em] sm:text-6xl">
-            {product.name}
-          </h1>
+          <div className="mt-4 flex items-start justify-between gap-6">
+            <h1 className="text-5xl font-bold leading-[0.9] tracking-[-0.06em] sm:text-7xl">
+              {product.name}
+            </h1>
+
+            <WishlistButton productId={product.id} />
+          </div>
 
           <p className="mt-6 text-xl font-semibold">{formatCurrency(product.price.toString())}</p>
 
-          <div className="mt-8 border-y border-black/10 py-7">
-            <p className="whitespace-pre-line text-sm leading-7 text-black/65">
+          <div className="mt-10 border-y border-black/10 py-8">
+            <p className="max-w-prose whitespace-pre-line text-base leading-8 text-black/65">
               {product.description}
             </p>
           </div>
@@ -236,6 +243,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
+          <ProductReviews productId={product.id} />
+
           <ProductInformation />
 
           {product.variants.length > 0 && (
@@ -245,6 +254,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
           )}
         </div>
       </section>
+
+      <CompleteTheLook
+        productId={product.id}
+        categoryId={product.categoryId}
+        collectionId={product.collectionId}
+      />
+
       <RelatedProducts
         productId={product.id}
         categoryId={product.categoryId}

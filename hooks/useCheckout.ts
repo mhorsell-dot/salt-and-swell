@@ -29,7 +29,7 @@ export function useCheckout(total: number) {
     if (total > 0) {
       initialise();
     } else {
-      setLoading(false);
+      return;
     }
 
     return () => {

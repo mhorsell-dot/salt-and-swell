@@ -12,7 +12,7 @@ export default function SavingsCard({ savings }: Props) {
       <h3 className="mt-2 text-3xl font-semibold text-emerald-700">${savings.toFixed(2)}</h3>
 
       <p className="mt-2 text-sm text-emerald-700/80">
-        Nice! You're already saving on today's order.
+        Nice! You&apos;re already saving on today&apos;s order.
       </p>
     </section>
   );

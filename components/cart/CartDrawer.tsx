@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Check, Minus, PackageCheck, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 
 import { useCart, type CartItem } from "./CartProvider";
+import CartRecommendations from "./CartRecommendations";
 
 const FREE_SHIPPING_THRESHOLD = 150;
 
@@ -112,6 +113,8 @@ export default function CartDrawer() {
                   />
                 ))}
               </div>
+
+              <CartRecommendations />
 
               <div className="my-5 flex items-start gap-3 rounded-2xl bg-white/65 p-4">
                 <PackageCheck className="mt-0.5 h-5 w-5 shrink-0" />

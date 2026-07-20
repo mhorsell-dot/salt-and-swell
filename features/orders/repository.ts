@@ -12,7 +12,7 @@ export const orderRepository = {
     });
   },
 
-  markPaid(orderId: string) {
+  async markPaid(orderId: string) {
     return prisma.order.update({
       where: {
         id: orderId,
@@ -25,7 +25,28 @@ export const orderRepository = {
     });
   },
 
-  createOrderEvent(orderId: string) {
+  async upsertPayment(order: unknown, paymentIntentId: string) {
+    return prisma.payment.upsert({
+      where: {
+        orderId: order.id,
+      },
+      update: {
+        status: "PAID",
+        providerReference: paymentIntentId,
+        transactionDate: new Date(),
+      },
+      create: {
+        orderId: order.id,
+        method: "STRIPE",
+        amount: order.total,
+        status: "PAID",
+        providerReference: paymentIntentId,
+        transactionDate: new Date(),
+      },
+    });
+  },
+
+  async createTimeline(orderId: string) {
     return prisma.orderEvent.create({
       data: {
         orderId,
@@ -34,4 +55,6 @@ export const orderRepository = {
       },
     });
   },
+
+  transaction: prisma.$transaction.bind(prisma),
 };

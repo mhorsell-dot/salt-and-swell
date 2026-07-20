@@ -1,19 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
-cd /workspaces/salt-and-swell
+echo "======================================="
+echo "Salt & Swell Stable Dev Server"
+echo "======================================="
 
-if curl --silent --fail http://127.0.0.1:3000/shop >/dev/null 2>&1; then
-  echo "Salt & Swell is already running on port 3000."
-  echo ""
-  echo "Store:"
-  echo "https://${CODESPACE_NAME}-3000.app.github.dev/shop"
-  echo ""
-  echo "Admin:"
-  echo "https://${CODESPACE_NAME}-3000.app.github.dev/admin/products"
-  exit 0
-fi
+echo ""
+echo "Stopping existing Next.js processes..."
 
+pkill -f "next dev" || true
+pkill -f "next-server" || true
+
+sleep 2
+
+echo ""
+echo "Clearing stale Next locks..."
+
+rm -f .next/dev/lock 2>/dev/null || true
+
+echo ""
 echo "Starting Salt & Swell on port 3000..."
 
-exec npm run dev -- --hostname 0.0.0.0 --port 3000
+npm run dev:next

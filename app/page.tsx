@@ -1,4 +1,7 @@
 import Link from "next/link";
+import StaggerItem from "@/components/animation/StaggerItem";
+import Stagger from "@/components/animation/Stagger";
+import FadeIn from "@/components/animation/FadeIn";
 
 import LiveProductGrid from "@/components/storefront/LiveProductGrid";
 import { ArrowRight, Camera, Menu, Search, ShoppingBag, UserRound } from "lucide-react";
