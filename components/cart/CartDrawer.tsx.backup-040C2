@@ -72,13 +72,12 @@ export default function CartDrawer() {
               Salt &amp; Swell
             </p>
 
-            <h2 className="mt-1 text-xl font-semibold tracking-[-0.03em]">Your bag</h2>
-
-            {isHydrated && itemCount > 0 && (
-              <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-black/45">
-                {itemCount} {itemCount === 1 ? "item" : "items"}
-              </p>
-            )}
+            <h2 className="mt-1 text-xl font-semibold tracking-[-0.03em]">
+              Your bag
+              {isHydrated && itemCount > 0 && (
+                <span className="ml-2 text-sm font-medium text-black/45">({itemCount})</span>
+              )}
+            </h2>
           </div>
 
           <button
@@ -143,18 +142,12 @@ export default function CartDrawer() {
                 Shipping and discounts are calculated at checkout.
               </p>
 
-              <div className="mb-4 grid grid-cols-3 gap-2 rounded-2xl bg-white/60 p-4 text-center text-[10px] font-semibold uppercase tracking-[0.08em] text-black/55">
-                <span>Secure payments</span>
-                <span>Australian shipping</span>
-                <span>Easy returns</span>
-              </div>
-
               <Link
                 href="/checkout"
                 onClick={closeCart}
                 className="mt-5 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-[#182321] px-6 text-sm font-semibold text-white transition hover:bg-[#263633]"
               >
-                Checkout
+                Secure checkout
                 <ArrowRight className="h-4 w-4" />
               </Link>
 

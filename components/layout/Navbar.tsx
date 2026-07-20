@@ -20,7 +20,7 @@ const links = [
 ];
 
 export default function Navbar() {
-  const { itemCount } = useCart();
+  const { itemCount, openCart } = useCart();
   const pathname = usePathname();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -106,7 +106,11 @@ export default function Navbar() {
               </span>
             </Link>
 
-            <button className="relative rounded-full p-2 hover:bg-black/5">
+            <button
+              onClick={openCart}
+              className="relative rounded-full p-2 hover:bg-black/5"
+              aria-label="Open shopping bag"
+            >
               <ShoppingBag className="h-5 w-5" />
 
               {itemCount > 0 && (
