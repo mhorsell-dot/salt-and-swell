@@ -7,7 +7,7 @@ export default function PremiumHero() {
   return (
     <section className="relative h-screen overflow-hidden">
       <motion.img
-        src="/images/hero.jpg"
+        src="/images/hero.png"
         alt="Salt & Swell coastal lifestyle"
         initial={{ scale: 1.15 }}
         animate={{ scale: 1 }}
