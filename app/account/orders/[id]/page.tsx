@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 
 import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
 import OrderTimeline from "@/components/orders/OrderTimeline";
+import DeliveryCard from "@/components/orders/DeliveryCard";
+import OrderProgress from "@/components/orders/OrderProgress";
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("en-AU", {
@@ -54,6 +56,10 @@ export default async function OrderDetailPage({
           <OrderStatusBadge status={order.status} />
         </div>
 
+        <div className="mt-8">
+          <OrderProgress status={order.status} />
+        </div>
+
         <section className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
           <h2 className="text-xl font-semibold">Order summary</h2>
 
@@ -94,6 +100,8 @@ export default async function OrderDetailPage({
 
           {order.shipment && (
             <div className="mt-10 border-t border-black/10 pt-8">
+              <DeliveryCard shipment={order.shipment} />
+
               <div className="rounded-3xl bg-[#f4f1ea] p-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.25em] text-black/40">
                   Shipment
