@@ -25,33 +25,120 @@ const products = [
 
 export default function FeaturedProducts() {
   return (
-    <section className="mx-auto max-w-7xl px-8 py-24">
-      <div className="flex items-center justify-between">
+    <section className="mx-auto max-w-7xl px-8 py-32">
+      <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="uppercase tracking-[0.3em] text-neutral-500">Featured</p>
+          <p
+            className="
+text-xs
+uppercase
+tracking-[0.45em]
+text-neutral-500
+"
+          >
+            The Essential Collection
+          </p>
 
-          <h2 className="mt-3 text-5xl font-black">New Arrivals</h2>
+          <h2
+            className="
+mt-5
+max-w-3xl
+text-5xl
+font-black
+leading-tight
+tracking-[-0.04em]
+"
+          >
+            Designed for salt air, slow mornings and endless summers.
+          </h2>
+
+          <p
+            className="
+mt-6
+max-w-xl
+text-lg
+leading-relaxed
+text-neutral-500
+"
+          >
+            Premium everyday pieces inspired by the Australian coastline and built for wherever the
+            journey takes you.
+          </p>
         </div>
 
-        <Link href="/shop" className="font-semibold">
-          View All →
+        <Link
+          href="/shop"
+          className="
+rounded-full
+border
+border-black
+px-8
+py-4
+text-sm
+font-semibold
+transition
+hover:bg-black
+hover:text-white
+"
+        >
+          Explore Collection →
         </Link>
       </div>
 
-      <div className="mt-14 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+      <div
+        className="
+mt-16
+grid
+gap-10
+sm:grid-cols-2
+xl:grid-cols-4
+"
+      >
         {products.map((product) => (
           <Link href="/shop" key={product.title} className="group">
-            <div className="overflow-hidden rounded-3xl bg-neutral-100">
+            <div
+              className="
+overflow-hidden
+rounded-[2rem]
+bg-neutral-100
+"
+            >
               <img
                 src={product.image}
+
                 alt={product.title}
-                className="aspect-square w-full object-cover transition duration-700 group-hover:scale-110"
+
+                className="
+aspect-[4/5]
+w-full
+object-cover
+transition
+duration-700
+group-hover:scale-105
+"
               />
             </div>
 
-            <h3 className="mt-6 text-xl font-semibold">{product.title}</h3>
+            <div className="mt-6">
+              <h3
+                className="
+text-xl
+font-semibold
+tracking-tight
+"
+              >
+                {product.title}
+              </h3>
 
-            <p className="mt-2 text-neutral-500">{product.price}</p>
+              <p
+                className="
+mt-2
+text-neutral-500
+"
+              >
+                {product.price}
+              </p>
+            </div>
           </Link>
         ))}
       </div>
