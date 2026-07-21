@@ -86,6 +86,10 @@ export default async function LiveProductGrid({
 
         const inventory = product.variants.reduce((total, variant) => total + variant.inventory, 0);
 
+        const colours = Array.from(
+          new Set(product.variants.map((variant) => variant.colour).filter(Boolean)),
+        );
+
         const hasVariants = product.variants.length > 0;
         const isOutOfStock = hasVariants && inventory === 0;
         const isLowStock = hasVariants && inventory > 0 && inventory <= 5;
@@ -93,7 +97,7 @@ export default async function LiveProductGrid({
         return (
           <article key={product.id} className="group">
             <Link href={`/shop/${product.slug}`} className="block">
-              <div className="relative aspect-[4/5] overflow-hidden bg-[#e7e4dc]">
+              <div className="relative aspect-[3/4] overflow-hidden bg-[#e7e4dc]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={primaryImage}
@@ -139,41 +143,38 @@ export default async function LiveProductGrid({
                 </div>
               </div>
 
-              <div className="mt-5">
+              <div className="mt-6">
                 <div className="flex items-start justify-between gap-5">
                   <div>
-                    <h3 className="text-sm font-semibold uppercase tracking-[0.04em]">
+                    <h3 className="text-sm font-semibold uppercase tracking-[0.12em]">
                       {product.name}
                     </h3>
 
-                    <p className="mt-1.5 text-sm text-black/50">
+                    <p className="mt-2 text-xs uppercase tracking-[0.2em] text-black/45">
                       {product.category?.name ?? product.collection?.name ?? "Salt & Swell"}
                     </p>
                   </div>
 
-                  <p className="shrink-0 text-sm font-semibold">
+                  <p className="shrink-0 text-sm font-medium">
                     {formatCurrency(product.price.toString())}
                   </p>
                 </div>
 
-                {hasVariants && (
-                  <div className="mt-3 flex items-center justify-between border-t border-black/10 pt-3">
-                    <p className="text-xs text-black/45">
-                      {product.variants.length} size option
-                      {product.variants.length === 1 ? "" : "s"}
-                    </p>
+                {hasVariants && colours.length > 0 && (
+                  <div className="mt-5 flex items-center gap-3">
+                    <div className="flex gap-1.5">
+                      {colours.slice(0, 5).map((colour) => (
+                        <span
+                          key={colour}
+                          title={colour}
+                          className="h-4 w-4 rounded-full border border-black/20 bg-neutral-200"
+                        />
+                      ))}
+                    </div>
 
-                    <p
-                      className={
-                        isOutOfStock
-                          ? "text-xs font-semibold text-red-700"
-                          : isLowStock
-                            ? "text-xs font-semibold text-amber-700"
-                            : "text-xs font-semibold text-black/55"
-                      }
-                    >
-                      {isOutOfStock ? "Unavailable" : `${inventory} available`}
-                    </p>
+                    <span className="text-[10px] uppercase tracking-[0.18em] text-black/45">
+                      {colours.length} colours
+                    </span>
                   </div>
                 )}
               </div>
