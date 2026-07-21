@@ -13,22 +13,20 @@ function buildMessage(type: NotificationType, payload: NotificationPayload) {
 
     case "ORDER_DELIVERED":
       return `Hi ${payload.customerName}, your order ${payload.orderNumber} has been delivered. Enjoy your Salt & Swell pieces.`;
+
+    case "WISHLIST_BACK_IN_STOCK":
+      return `Hi ${payload.customerName}, ${payload.productName} from your wishlist is back in stock.`;
+
+    case "WISHLIST_PRICE_DROP":
+      return `Hi ${payload.customerName}, ${payload.productName} from your wishlist is now available for ${payload.productPrice}.`;
+
+    case "WISHLIST_REMINDER":
+      return `Hi ${payload.customerName}, ${payload.productName} is still waiting in your Salt & Swell wishlist.`;
   }
 }
 
 export async function sendNotification(type: NotificationType, payload: NotificationPayload) {
   const message = buildMessage(type, payload);
-
-  /*
- Future integrations:
-
- - Resend
- - SendGrid
- - Postmark
- - SMS provider
- - Push notifications
-
-*/
 
   console.log("NOTIFICATION:", {
     type,
