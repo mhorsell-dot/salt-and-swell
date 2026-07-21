@@ -1,4 +1,4 @@
-import StatusButton from "./StatusButton";
+import OrderWorkflow from "@/components/orders/OrderWorkflow";
 
 async function getOrder(id: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ""}/api/admin/orders/${id}`, {
@@ -44,7 +44,7 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
       </div>
 
       <div className="mt-8">
-        <StatusButton id={order.id} currentStatus={order.status} />
+        <OrderWorkflow id={order.id} currentStatus={order.status} />
       </div>
     </div>
   );
