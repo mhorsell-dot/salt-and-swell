@@ -1,4 +1,5 @@
 import OrderWorkflow from "@/components/orders/OrderWorkflow";
+import ShipmentPanel from "@/components/admin/orders/ShipmentPanel";
 
 async function getOrder(id: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ""}/api/admin/orders/${id}`, {
@@ -45,6 +46,10 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
 
       <div className="mt-8">
         <OrderWorkflow id={order.id} currentStatus={order.status} />
+      </div>
+
+      <div className="mt-8">
+        <ShipmentPanel orderId={order.id} existingShipment={order.shipment} />
       </div>
     </div>
   );

@@ -40,7 +40,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         events: {
           create: {
             event: "ORDER_SHIPPED",
-            message: `Order shipped via ${carrier}`,
+            message: "Your order has left our studio and is on its way.",
           },
         },
       },
@@ -51,7 +51,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     });
 
     await sendNotification("ORDER_SHIPPED", {
-      customerName: order.shippingFirstName + " " + order.shippingLastName,
+      customerName: `${order.shippingFirstName} ${order.shippingLastName}`,
 
       customerEmail: order.emailSnapshot,
 
@@ -61,7 +61,6 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     });
 
     return NextResponse.json({
-      success: true,
       shipment,
       order,
     });
@@ -70,7 +69,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
     return NextResponse.json(
       {
-        error: "Shipment update failed",
+        error: "Shipment creation failed",
       },
       {
         status: 500,
