@@ -17,19 +17,7 @@ function formatCurrency(value: number): string {
 }
 
 function getEstimatedDeliveryText(): string {
-  const start = new Date();
-  const end = new Date();
-
-  start.setDate(start.getDate() + 3);
-  end.setDate(end.getDate() + 6);
-
-  return `${start.toLocaleDateString("en-AU", {
-    day: "numeric",
-    month: "short",
-  })}–${end.toLocaleDateString("en-AU", {
-    day: "numeric",
-    month: "short",
-  })}`;
+  return "3–6 business days";
 }
 
 export default function CartDrawer() {
