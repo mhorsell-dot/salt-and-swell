@@ -31,6 +31,18 @@ import SavedAddressSelector from "./components/SavedAddressSelector";
 
 type ShippingMethod = "standard" | "express";
 
+type SavedAddress = {
+  id: string;
+  label: string;
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  postcode: string;
+  country: string;
+};
+
 const STANDARD_SHIPPING = 9.95;
 const EXPRESS_SHIPPING = 16.95;
 const FREE_SHIPPING_THRESHOLD = 100;
@@ -47,6 +59,10 @@ export default function CheckoutClient() {
 
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod>("standard");
 
+  const [selectedAddress, setSelectedAddress] = useState<SavedAddress | null>(null);
+
+  const [saveAddress, setSaveAddress] = useState(false);
+
   const [submitted, setSubmitted] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -57,6 +73,30 @@ export default function CheckoutClient() {
   const shipping = shippingMethod === "express" ? EXPRESS_SHIPPING : standardShipping;
 
   const total = subtotal + shipping;
+
+  function handleSavedAddressSelect(address: SavedAddress) {
+    setSelectedAddress(address);
+
+    const fields = {
+      firstName: address.firstName,
+      lastName: address.lastName,
+      address1: address.address1,
+      city: address.city,
+      state: address.state,
+      postcode: address.postcode,
+      country: address.country,
+    };
+
+    Object.entries(fields).forEach(([name, value]) => {
+      const input = document.querySelector(`[name="${name}"]`) as
+        HTMLInputElement | HTMLSelectElement | null;
+
+      if (input) {
+        input.value = value || "";
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    });
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     console.log("CHECKOUT SUBMIT STARTED");
@@ -121,6 +161,8 @@ export default function CheckoutClient() {
         phone: checkoutCustomer.phone,
 
         shipping: shippingDetails,
+
+        saveAddress,
       }),
     });
 
@@ -261,7 +303,24 @@ export default function CheckoutClient() {
           className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_420px]"
         >
           <div className="space-y-7">
-            <SavedAddressSelector />
+            <SavedAddressSelector onSelect={handleSavedAddressSelect} />
+
+            <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-2xl border border-black/10 bg-white p-5">
+              <input
+                type="checkbox"
+                checked={saveAddress}
+                onChange={(e) => setSaveAddress(e.target.checked)}
+                className="mt-1 h-4 w-4"
+              />
+
+              <span>
+                <span className="block font-semibold">Save this address to my account</span>
+
+                <span className="mt-1 block text-sm text-black/50">
+                  Use this address for faster checkout next time.
+                </span>
+              </span>
+            </label>
 
             <section className="rounded-[2rem] border border-black/8 bg-white p-6 shadow-[0_18px_60px_rgba(0,0,0,0.05)] sm:p-8">
               <div className="flex items-center gap-4">

@@ -51,11 +51,13 @@ export async function POST(req: Request) {
       shipping,
       email,
       phone,
+      saveAddress,
     }: {
       items: CheckoutItem[];
       shipping: ShippingDetails;
       email: string;
       phone?: string;
+      saveAddress?: boolean;
     } = body;
 
     if (!items || items.length === 0) {
@@ -153,6 +155,34 @@ export async function POST(req: Request) {
         },
       },
     });
+
+    if (customerId && saveAddress) {
+      await prisma.customerAddress.create({
+        data: {
+          customerId,
+
+          label: "Checkout",
+
+          firstName: shipping.firstName,
+
+          lastName: shipping.lastName,
+
+          address1: shipping.address1,
+
+          address2: shipping.address2,
+
+          city: shipping.city,
+
+          state: shipping.state,
+
+          postcode: shipping.postcode,
+
+          country: shipping.country || "Australia",
+
+          isDefault: false,
+        },
+      });
+    }
 
     return NextResponse.json({
       orderId: order.id,

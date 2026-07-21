@@ -2,6 +2,9 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import AddressForm from "@/components/account/AddressForm";
+import AddressActions from "@/components/account/AddressActions";
+import EditAddress from "@/components/account/EditAddress";
 
 export const dynamic = "force-dynamic";
 
@@ -59,9 +62,19 @@ export default async function AddressesPage() {
                   <br />
                   {address.country}
                 </p>
+
+                <div className="mt-6 flex gap-3">
+                  <EditAddress address={address} />
+
+                  <AddressActions id={address.id} isDefault={address.isDefault} />
+                </div>
               </div>
             ))
           )}
+        </div>
+
+        <div className="mt-10">
+          <AddressForm />
         </div>
       </div>
     </main>

@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import prisma from "@/lib/prisma";
-import { Bell, Heart, MapPin, Package, User, type LucideIcon } from "lucide-react";
+import { Bell, Heart, MapPin, Package, User } from "lucide-react";
+import AccountCard from "@/components/account/AccountCard";
 
 export const dynamic = "force-dynamic";
 
@@ -108,70 +109,38 @@ export default async function AccountPage() {
           </Link>
         )}
 
-        <div className="mt-8 grid gap-6 md:grid-cols-4">
-          <Card
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <AccountCard
             title="Orders"
-            value={String(customer.orders.length)}
+            description="View your purchases and track your Salt & Swell journey."
             href="/account/orders"
-            icon={Package}
           />
 
-          <Card
-            title="Notifications"
-            value={String(notifications)}
-            href="/account/notifications"
-            icon={Bell}
-          />
-
-          <Card
+          <AccountCard
             title="Wishlist"
-            value={String(customer.wishlistItems.length)}
+            description="Your saved pieces ready for your next order."
             href="/account/wishlist"
-            icon={Heart}
           />
 
-          <Card
+          <AccountCard
             title="Addresses"
-            value={String(customer.addresses.length)}
+            description="Manage your delivery details."
             href="/account/addresses"
-            icon={MapPin}
           />
-        </div>
 
-        <div className="mt-8">
-          <Card
+          <AccountCard
+            title="Notifications"
+            description="See updates about your orders."
+            href="/account/notifications"
+          />
+
+          <AccountCard
             title="Profile"
-            value={`${customer.firstName} ${customer.lastName}`}
+            description="Update your personal details."
             href="/account/profile"
-            icon={User}
           />
         </div>
       </div>
     </main>
-  );
-}
-
-function Card({
-  title,
-  value,
-  href,
-  icon: Icon,
-}: {
-  title: string;
-  value: string;
-  href: string;
-  icon: LucideIcon;
-}) {
-  return (
-    <Link
-      href={href}
-      className="rounded-3xl bg-white p-7 transition hover:-translate-y-1 hover:shadow-xl"
-    >
-      <Icon className="h-5 w-5" />
-
-      <h2 className="mt-5 font-semibold">{title}</h2>
-
-      <p className="mt-2 text-sm text-black/50">{value}</p>
-    </Link>
   );
 }
