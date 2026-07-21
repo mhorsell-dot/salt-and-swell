@@ -5,14 +5,14 @@ const cards = [
     title: "MEN",
     eyebrow: "Coastal Essentials",
     description: "Premium pieces designed for salt air, road trips and everyday adventures.",
-    image: "/images/collections-men.jpg",
+    image: "/images/collections/mens.png",
     link: "/collections/mens",
   },
   {
     title: "WOMEN",
     eyebrow: "Ocean Inspired",
     description: "Timeless styles inspired by the Australian coastline and slow living.",
-    image: "/images/collections-women.jpg",
+    image: "/images/collections/womens.png",
     link: "/collections/womens",
   },
 ];

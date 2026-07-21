@@ -3,6 +3,7 @@ import StaggerItem from "@/components/animation/StaggerItem";
 import Stagger from "@/components/animation/Stagger";
 import FadeIn from "@/components/animation/FadeIn";
 import PremiumHero from "@/components/home/PremiumHero";
+import Collections from "@/components/home/Collections";
 
 import LiveProductGrid from "@/components/storefront/LiveProductGrid";
 import { ArrowRight, Camera, Menu, Search, ShoppingBag, UserRound } from "lucide-react";
@@ -41,12 +42,14 @@ export default function HomePage() {
         </div>
       </section>
 
+      <Collections />
+
       <section className="px-6 py-20 sm:py-24 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeader
-            eyebrow="Latest drop"
-            title="New Arrivals"
-            description="Purposeful essentials shaped by salt air, endless summers and life lived beside the ocean."
+            eyebrow="The Collection"
+            title="Featured Essentials"
+            description="Considered pieces designed for salt air, slow mornings and everyday adventures by the coast."
             link="/shop"
             linkText="Shop all"
           />
@@ -138,6 +141,8 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+
+      <Collections />
 
       <section className="px-6 py-20 sm:py-24 lg:px-10">
         <div className="mx-auto max-w-7xl">
