@@ -5,14 +5,14 @@ import Link from "next/link";
 
 export default function PremiumHero() {
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-[90vh] overflow-hidden">
       <motion.img
         src="/images/hero.png"
         alt="Salt & Swell coastal lifestyle"
         initial={{ scale: 1.15 }}
         animate={{ scale: 1 }}
         transition={{ duration: 12 }}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover object-center"
       />
 
       {/* Cinematic overlay */}
@@ -27,7 +27,7 @@ export default function PremiumHero() {
       />
 
       <div className="relative z-10 flex h-full items-center">
-        <div className="mx-auto max-w-7xl px-8">
+        <div className="mx-auto max-w-7xl px-8 lg:px-16 lg:px-12">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
