@@ -1,5 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import prisma from "@/lib/prisma";
+import WishlistActions from "@/components/wishlist/WishlistActions";
 
 const DEMO_CUSTOMER_ID = "demo-customer";
 
@@ -17,6 +19,7 @@ export default async function WishlistPage() {
     where: {
       customerId: DEMO_CUSTOMER_ID,
     },
+
     include: {
       product: {
         include: {
@@ -29,6 +32,7 @@ export default async function WishlistPage() {
         },
       },
     },
+
     orderBy: {
       createdAt: "desc",
     },
@@ -37,9 +41,9 @@ export default async function WishlistPage() {
   return (
     <main className="min-h-screen bg-[#f5f3ee] px-6 py-20">
       <div className="mx-auto max-w-7xl">
-        <p className="text-xs uppercase tracking-[0.3em] text-black/50">Saved items</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-black/50">Saved pieces</p>
 
-        <h1 className="mt-4 text-5xl font-bold tracking-tight">Your Wishlist</h1>
+        <h1 className="mt-4 text-5xl font-bold">Your Wishlist</h1>
 
         {items.length === 0 ? (
           <div className="mt-20 text-center">
@@ -49,7 +53,7 @@ export default async function WishlistPage() {
 
             <Link
               href="/shop"
-              className="mt-8 inline-block bg-black px-8 py-4 text-sm font-semibold uppercase tracking-widest text-white"
+              className="mt-8 inline-block rounded-full bg-black px-8 py-4 text-white"
             >
               Explore Collection
             </Link>
@@ -57,21 +61,43 @@ export default async function WishlistPage() {
         ) : (
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {items.map((item) => (
-              <Link key={item.id} href={`/shop/${item.product.slug}`} className="group">
-                <div className="aspect-[4/5] overflow-hidden bg-white">
-                  <img
-                    src={item.product.images[0]?.url ?? "/mockups/products/essential-tee-front.svg"}
-                    alt={item.product.name}
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                </div>
+              <div key={item.id} className="rounded-3xl bg-white p-5">
+                <Link href={`/shop/${item.product.slug}`}>
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+                    <Image
+                      src={
+                        item.product.images[0]?.url || "/mockups/products/essential-tee-front.svg"
+                      }
 
-                <h2 className="mt-4 font-semibold">{item.product.name}</h2>
+                      alt={item.product.name}
 
-                <p className="mt-2 text-sm text-black/60">
-                  {formatCurrency(item.product.price.toString())}
-                </p>
-              </Link>
+                      fill
+
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <h2 className="mt-5 font-semibold">{item.product.name}</h2>
+
+                  <p className="mt-2 text-sm text-black/60">
+                    {formatCurrency(item.product.price.toString())}
+                  </p>
+                </Link>
+
+                <WishlistActions
+                  product={{
+                    id: item.product.id,
+
+                    slug: item.product.slug,
+
+                    name: item.product.name,
+
+                    price: Number(item.product.price),
+
+                    imageUrl: item.product.images[0]?.url || "",
+                  }}
+                />
+              </div>
             ))}
           </div>
         )}
