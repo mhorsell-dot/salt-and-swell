@@ -2,6 +2,7 @@ import Link from "next/link";
 import StaggerItem from "@/components/animation/StaggerItem";
 import Stagger from "@/components/animation/Stagger";
 import FadeIn from "@/components/animation/FadeIn";
+import PremiumHero from "@/components/home/PremiumHero";
 
 import LiveProductGrid from "@/components/storefront/LiveProductGrid";
 import { ArrowRight, Camera, Menu, Search, ShoppingBag, UserRound } from "lucide-react";
@@ -30,7 +31,7 @@ const journalPosts = [
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#f5f3ee] text-[#171715]">
-      <Hero />
+      <PremiumHero />
 
       <section className="border-b border-black/10 bg-[#f5f3ee]">
         <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-black/10 px-6 py-5 text-center text-xs font-semibold uppercase tracking-[0.2em] md:grid-cols-3 md:divide-x md:divide-y-0 lg:px-10">
