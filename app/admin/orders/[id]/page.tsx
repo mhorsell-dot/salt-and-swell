@@ -1,73 +1,51 @@
-import { notFound } from "next/navigation";
-import prisma from "@/lib/prisma";
-import OrderFulfilmentControls from "@/components/admin/orders/OrderFulfilmentControls";
+import StatusButton from "./StatusButton";
 
-export default async function AdminOrderDetail({
-  params,
-}: {
-  params: {
-    id: string;
-  };
-}) {
-  const order = await prisma.order.findUnique({
-    where: {
-      id: params.id,
-    },
-
-    include: {
-      customer: true,
-      items: true,
-      payment: true,
-      shipment: true,
-      events: true,
-    },
+async function getOrder(id: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ""}/api/admin/orders/${id}`, {
+    cache: "no-store",
   });
 
-  if (!order) {
-    notFound();
-  }
+  return res.json();
+}
+
+export default async function OrderPage({ params }: { params: { id: string } }) {
+  const order = await getOrder(params.id);
 
   return (
-    <main className="min-h-screen bg-[#f4f1ea] px-6 py-12">
-      <div className="mx-auto max-w-5xl">
-        <h1 className="text-4xl font-semibold">{order.orderNumber}</h1>
+    <div className="p-10">
+      <h1 className="text-3xl font-semibold">Order #{order.orderNumber}</h1>
 
-        <div className="mt-8 rounded-3xl bg-white p-8">
-          <h2 className="text-xl font-semibold">Customer</h2>
+      <div className="mt-8 grid gap-6 md:grid-cols-2">
+        <div className="border rounded-xl p-6">
+          <h2 className="font-semibold">Customer</h2>
 
-          <p className="mt-3">
-            {order.customer
-              ? `${order.customer.firstName} ${order.customer.lastName}`
-              : order.shippingFirstName + " " + order.shippingLastName}
+          <p>
+            {order.shippingFirstName} {order.shippingLastName}
           </p>
 
-          <p className="text-black/50">
-            {order.customer ? order.customer.email : order.emailSnapshot}
-          </p>
-
-          <hr className="my-6" />
-
-          <h2 className="text-xl font-semibold">Status</h2>
-
-          <p className="mt-3">{order.status}</p>
-
-          <p>Payment: {order.paymentStatus}</p>
-
-          <hr className="my-6" />
-
-          <h2 className="text-xl font-semibold">Items</h2>
-
-          <div className="mt-4 space-y-3">
-            {order.items.map((item) => (
-              <div key={item.id}>
-                {item.productName}× {item.quantity}
-              </div>
-            ))}
-          </div>
+          <p>{order.emailSnapshot}</p>
         </div>
 
-        <OrderFulfilmentControls orderId={order.id} currentStatus={order.status} />
+        <div className="border rounded-xl p-6">
+          <h2 className="font-semibold">Status</h2>
+
+          <p>{order.status}</p>
+        </div>
       </div>
-    </main>
+
+      <div className="mt-8 border rounded-xl p-6">
+        <h2 className="font-semibold">Items</h2>
+
+        {order.items.map((item: { id: string; productName: string; quantity: number }) => (
+          <p key={item.id}>
+            {item.productName} x {item.quantity}
+          </p>
+        ))}
+      </div>
+
+      <div className="mt-8">
+        <StatusButton id={order.id} />
+      </div>
+    </div>
   );
 }
