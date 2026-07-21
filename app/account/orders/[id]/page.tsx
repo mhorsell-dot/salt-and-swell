@@ -94,19 +94,43 @@ export default async function OrderDetailPage({
 
           {order.shipment && (
             <div className="mt-10 border-t border-black/10 pt-8">
-              <h3 className="text-lg font-semibold">Shipment</h3>
+              <div className="rounded-3xl bg-[#f4f1ea] p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-black/40">
+                  Shipment
+                </p>
 
-              <p className="mt-3 text-black/50">{order.shipment.carrier || "Carrier"}</p>
+                <h3 className="mt-3 text-2xl font-semibold">Your order is on the way</h3>
 
-              {order.shipment.trackingNumber && (
-                <a
-                  href={order.shipment.trackingUrl || "#"}
-                  target="_blank"
-                  className="mt-3 inline-block font-semibold underline"
-                >
-                  Track shipment: {order.shipment.trackingNumber}
-                </a>
-              )}
+                <div className="mt-6 space-y-3 text-sm">
+                  <p>
+                    <span className="font-semibold">Carrier:</span>{" "}
+                    {order.shipment.carrier || "Preparing"}
+                  </p>
+
+                  {order.shipment.trackingNumber && (
+                    <p>
+                      <span className="font-semibold">Tracking:</span>{" "}
+                      {order.shipment.trackingNumber}
+                    </p>
+                  )}
+
+                  {order.shipment.dispatchedAt && (
+                    <p className="text-black/50">
+                      Dispatched {order.shipment.dispatchedAt.toLocaleDateString("en-AU")}
+                    </p>
+                  )}
+                </div>
+
+                {order.shipment.trackingUrl && (
+                  <a
+                    href={order.shipment.trackingUrl}
+                    target="_blank"
+                    className="mt-6 inline-flex rounded-full bg-black px-6 py-3 text-sm font-semibold text-white"
+                  >
+                    Track Package
+                  </a>
+                )}
+              </div>
             </div>
           )}
         </section>
