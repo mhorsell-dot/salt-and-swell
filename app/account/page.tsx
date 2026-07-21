@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import prisma from "@/lib/prisma";
 import { Bell, Heart, MapPin, Package, User } from "lucide-react";
 import AccountCard from "@/components/account/AccountCard";
+import RecentlyViewedProducts from "@/components/storefront/RecentlyViewedProducts";
 
 export const dynamic = "force-dynamic";
 
@@ -140,6 +141,8 @@ export default async function AccountPage() {
             href="/account/profile"
           />
         </div>
+
+        <RecentlyViewedProducts />
       </div>
     </main>
   );
