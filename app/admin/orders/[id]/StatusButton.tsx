@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 
-export default function StatusButton({ id }: { id: string }) {
+const statuses = ["PAID", "PACKED", "SHIPPED", "DELIVERED", "CANCELLED"];
+
+export default function StatusButton({ id, currentStatus }: { id: string; currentStatus: string }) {
+  const [status, setStatus] = useState(currentStatus);
   const [loading, setLoading] = useState(false);
 
   async function updateStatus() {
@@ -14,7 +17,7 @@ export default function StatusButton({ id }: { id: string }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        status: "PACKED",
+        status,
       }),
     });
 
@@ -24,12 +27,24 @@ export default function StatusButton({ id }: { id: string }) {
   }
 
   return (
-    <button
-      onClick={updateStatus}
-      disabled={loading}
-      className="rounded-full bg-black px-6 py-3 text-white"
-    >
-      {loading ? "Updating..." : "Mark Packed"}
-    </button>
+    <div className="flex gap-3 items-center">
+      <select
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+        className="rounded-lg border px-4 py-2"
+      >
+        {statuses.map((item) => (
+          <option key={item}>{item}</option>
+        ))}
+      </select>
+
+      <button
+        onClick={updateStatus}
+        disabled={loading}
+        className="rounded-lg bg-black px-5 py-2 text-white"
+      >
+        {loading ? "Saving..." : "Update Status"}
+      </button>
+    </div>
   );
 }

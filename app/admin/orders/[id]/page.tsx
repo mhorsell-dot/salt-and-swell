@@ -44,7 +44,7 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
       </div>
 
       <div className="mt-8">
-        <StatusButton id={order.id} />
+        <StatusButton id={order.id} currentStatus={order.status} />
       </div>
     </div>
   );
