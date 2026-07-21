@@ -12,14 +12,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     const token = (await cookies()).get("salt_swell_token")?.value;
 
     if (!token) {
-      return NextResponse.json(
-        {
-          error: "Unauthorised",
-        },
-        {
-          status: 401,
-        },
-      );
+      return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
     }
 
     const customer = jwt.verify(
@@ -49,22 +42,67 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       );
     }
 
+    const products = await Promise.all(
+      order.items.map(async (item) => {
+        const product = await prisma.product.findUnique({
+          where: {
+            id: item.productId,
+          },
+
+          include: {
+            images: {
+              orderBy: {
+                sortOrder: "asc",
+              },
+              take: 1,
+            },
+
+            variants: true,
+          },
+        });
+
+        if (!product) {
+          return null;
+        }
+
+        const variant =
+          product.variants.find((variant) => variant.sku === item.sku) ||
+          product.variants.find(
+            (variant) => variant.colour === item.colour && variant.size === item.size,
+          );
+
+        if (!variant || variant.inventory <= 0) {
+          return null;
+        }
+
+        return {
+          productId: product.id,
+
+          variantId: variant.id,
+
+          slug: product.slug,
+
+          name: product.name,
+
+          price: Number(product.price),
+
+          imageUrl: product.images[0]?.url || "",
+
+          size: variant.size,
+
+          colour: variant.colour,
+
+          sku: variant.sku,
+
+          quantity: Math.min(item.quantity, variant.inventory),
+
+          inventory: variant.inventory,
+        };
+      }),
+    );
+
     return NextResponse.json({
-      items: order.items.map((item) => ({
-        productId: item.productId,
-
-        name: item.productName,
-
-        sku: item.sku,
-
-        colour: item.colour,
-
-        size: item.size,
-
-        quantity: item.quantity,
-
-        price: Number(item.unitPrice),
-      })),
+      items: products.filter(Boolean),
     });
   } catch (error) {
     console.error(error);
