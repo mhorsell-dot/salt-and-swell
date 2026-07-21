@@ -29,13 +29,13 @@ export default function CartRecommendations() {
             onClick={() =>
               addItem({
                 productId: product.id,
-                variantId: product.variants?.[0]?.id ?? "default",
+                variantId: "default",
                 slug: product.slug,
                 name: product.name,
                 price: Number(product.price),
                 imageUrl: product.images?.[0]?.url ?? "/mockups/products/essential-tee-front.svg",
                 quantity: 1,
-                inventory: product.variants?.[0]?.inventory ?? 1,
+                inventory: 1,
               })
             }
           >

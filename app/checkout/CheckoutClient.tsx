@@ -11,6 +11,8 @@ import {
   Truck,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import StripeProvider from "./components/StripeProvider";
+import StripePaymentForm from "./components/StripePaymentForm";
 
 import { useCart } from "@/components/cart/CartProvider";
 
@@ -25,6 +27,7 @@ import SavingsCard from "./components/SavingsCard";
 import PromoCard from "./components/PromoCard";
 import GiftCard from "./components/GiftCard";
 import ExpressCheckout from "./components/ExpressCheckout";
+import SavedAddressSelector from "./components/SavedAddressSelector";
 
 type ShippingMethod = "standard" | "express";
 
@@ -45,6 +48,9 @@ export default function CheckoutClient() {
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod>("standard");
 
   const [submitted, setSubmitted] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [paymentReady, setPaymentReady] = useState(false);
 
   const standardShipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
 
@@ -52,9 +58,101 @@ export default function CheckoutClient() {
 
   const total = subtotal + shipping;
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    console.log("CHECKOUT SUBMIT STARTED");
+
     event.preventDefault();
-    setSubmitted(true);
+
+    const formData = new FormData(event.currentTarget);
+
+    const checkoutCustomer = {
+      firstName: String(formData.get("firstName") || ""),
+
+      lastName: String(formData.get("lastName") || ""),
+
+      email: String(formData.get("email") || ""),
+
+      phone: String(formData.get("phone") || ""),
+    };
+
+    const shippingDetails = {
+      firstName: String(formData.get("firstName") || ""),
+
+      lastName: String(formData.get("lastName") || ""),
+
+      address1: String(formData.get("address") || ""),
+
+      address2: String(formData.get("addressLine2") || ""),
+
+      city: String(formData.get("suburb") || ""),
+
+      state: String(formData.get("state") || ""),
+
+      postcode: String(formData.get("postcode") || ""),
+
+      country: String(formData.get("country") || "Australia"),
+    };
+
+    console.log("Creating order...");
+    console.table(items);
+    console.log(
+      "FULL CART PAYLOAD",
+      JSON.stringify(
+        {
+          items,
+          checkoutCustomer,
+          shippingDetails,
+        },
+        null,
+        2,
+      ),
+    );
+
+    const orderResponse = await fetch("/api/orders/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items,
+
+        email: checkoutCustomer.email,
+
+        phone: checkoutCustomer.phone,
+
+        shipping: shippingDetails,
+      }),
+    });
+
+    const orderData = await orderResponse.json();
+
+    console.log("ORDER RESPONSE:", orderData);
+
+    if (!orderResponse.ok) {
+      console.error(orderData);
+      return;
+    }
+
+    const paymentResponse = await fetch("/api/orders/payment-intent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderId: orderData.orderId,
+      }),
+    });
+
+    const paymentData = await paymentResponse.json();
+
+    if (!paymentResponse.ok) {
+      console.error(paymentData);
+      return;
+    }
+
+    setOrderId(orderData.orderId);
+    setClientSecret(paymentData.clientSecret);
+    setPaymentReady(true);
 
     window.scrollTo({
       top: 0,
@@ -77,7 +175,7 @@ export default function CheckoutClient() {
     );
   }
 
-  if (items.length === 0) {
+  if (isHydrated && items.length === 0) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#f4f1ea] px-5 py-20 text-[#171715]">
         <section className="w-full max-w-xl rounded-[2rem] border border-black/10 bg-white px-7 py-12 text-center shadow-[0_24px_80px_rgba(0,0,0,0.07)] sm:px-12">
@@ -158,10 +256,13 @@ export default function CheckoutClient() {
         )}
 
         <form
+          noValidate
           onSubmit={handleSubmit}
           className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_420px]"
         >
           <div className="space-y-7">
+            <SavedAddressSelector />
+
             <section className="rounded-[2rem] border border-black/8 bg-white p-6 shadow-[0_18px_60px_rgba(0,0,0,0.05)] sm:p-8">
               <div className="flex items-center gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#171715] text-sm font-semibold text-white">
@@ -428,13 +529,27 @@ export default function CheckoutClient() {
                 </p>
               </div>
 
-              <button
-                type="submit"
-                className="mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#171715] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-black/80 focus:outline-none focus:ring-4 focus:ring-black/10"
-              >
-                Continue to payment
-                <ChevronRight className="h-4 w-4" />
-              </button>
+              {paymentReady && clientSecret && (
+                <div className="mt-8 rounded-3xl border border-black/10 bg-white p-6">
+                  <h3 className="text-lg font-semibold">Payment details</h3>
+
+                  <div className="mt-5">
+                    <StripeProvider clientSecret={clientSecret}>
+                      <StripePaymentForm />
+                    </StripeProvider>
+                  </div>
+                </div>
+              )}
+
+              {!paymentReady && (
+                <button
+                  type="submit"
+                  className="mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#171715] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-black/80 focus:outline-none focus:ring-4 focus:ring-black/10"
+                >
+                  Continue to payment
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              )}
 
               <div className="mt-5 flex items-center justify-center gap-2 text-xs text-black/40">
                 <LockKeyhole className="h-3.5 w-3.5" />

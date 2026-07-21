@@ -88,18 +88,7 @@ function sanitiseStoredItems(value: unknown): CartItem[] {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
-
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      return stored ? sanitiseStoredItems(JSON.parse(stored)) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(typeof window !== "undefined");
   const [lastAddedCartId, setLastAddedCartId] = useState<string | null>(null);

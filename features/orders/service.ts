@@ -1,5 +1,6 @@
 import { orderRepository } from "./repository";
 import { validatePaymentIntentId } from "./validation";
+import { sendNotification } from "@/features/notifications";
 
 export async function processSuccessfulPayment(paymentIntentId: string) {
   validatePaymentIntentId(paymentIntentId);
@@ -16,6 +17,18 @@ export async function processSuccessfulPayment(paymentIntentId: string) {
     await orderRepository.upsertPayment(order, paymentIntentId);
 
     await orderRepository.createTimeline(order.id);
+  });
+
+  await sendNotification("ORDER_PAID", {
+    customerEmail: order.emailSnapshot,
+    customerName: "Customer",
+    orderNumber: order.orderNumber,
+  });
+
+  await sendNotification("ORDER_PAID", {
+    customerEmail: order.emailSnapshot,
+    customerName: "Customer",
+    orderNumber: order.orderNumber,
   });
 
   return order;

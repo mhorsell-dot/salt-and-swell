@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export const authRepository = {
   findByEmail(email: string) {
@@ -9,7 +10,7 @@ export const authRepository = {
     });
   },
 
-  createCustomer(data: unknown) {
+  createCustomer(data: Prisma.CustomerCreateInput) {
     return prisma.customer.create({
       data,
     });

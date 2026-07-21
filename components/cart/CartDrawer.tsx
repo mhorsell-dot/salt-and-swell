@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ArrowRight, Check, Minus, PackageCheck, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 
 import { useCart, type CartItem } from "./CartProvider";
@@ -32,6 +33,8 @@ function getEstimatedDeliveryText(): string {
 }
 
 export default function CartDrawer() {
+  const mounted = true;
+
   const {
     items,
     itemCount,
@@ -47,6 +50,10 @@ export default function CartDrawer() {
   const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
   const shippingProgress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <>

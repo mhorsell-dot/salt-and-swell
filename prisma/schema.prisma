@@ -55,11 +55,13 @@ model Product {
   collectionId String?
   collection   Collection? @relation(fields: [collectionId], references: [id])
 
-  images     ProductImage[]
-  variants   ProductVariant[]
-  reviews    Review[]
-  orderItems OrderItem[]
+  images        ProductImage[]
+  variants      ProductVariant[]
+  reviews       Review[]
+  orderItems    OrderItem[]
   wishlistItems WishlistItem[]
+
+  addresses CustomerAddress[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -106,9 +108,11 @@ model Customer {
 
   lastLoginAt DateTime?
 
-  orders  Order[]
-  reviews Review[]
+  orders        Order[]
+  reviews       Review[]
   wishlistItems WishlistItem[]
+
+  addresses CustomerAddress[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -152,8 +156,8 @@ model Order {
   shippingPostcode  String
   shippingCountry   String
 
-  customerId String
-  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id])
 
   items OrderItem[]
 
@@ -197,8 +201,8 @@ model Review {
   title   String?
   comment String
 
-  customerId String
-  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id])
 
   productId String
   product   Product @relation(fields: [productId], references: [id])
@@ -304,17 +308,45 @@ enum CustomerStatus {
   DISABLED
 }
 
-
 model WishlistItem {
   id String @id @default(cuid())
 
   customerId String
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   productId String
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
   @@unique([customerId, productId])
+}
+
+model CustomerAddress {
+  id String @id @default(cuid())
+
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  label String @default("Home")
+
+  firstName String
+  lastName  String
+
+  company String?
+
+  address1 String
+  address2 String?
+
+  city     String
+  state    String
+  postcode String
+  country  String @default("Australia")
+
+  isDefault Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?
 }

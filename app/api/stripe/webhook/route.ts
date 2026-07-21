@@ -1,48 +1,121 @@
-import { processSuccessfulPayment } from "@/features/orders/service";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import prisma from "@/lib/prisma";
+
+export const runtime = "nodejs";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.text();
+export async function POST(req: Request) {
+  console.log("========== STRIPE WEBHOOK HIT ==========");
 
-    const signature = req.headers.get("stripe-signature");
+  const body = await req.text();
 
-    if (!signature) {
-      return NextResponse.json({ error: "Missing Stripe signature." }, { status: 400 });
-    }
+  const signature = req.headers.get("stripe-signature");
 
-    const event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET!,
-    );
-
-    switch (event.type) {
-      case "payment_intent.succeeded": {
-        const paymentIntent = event.data.object;
-
-        await processSuccessfulPayment(paymentIntent.id);
-
-        console.log("✅ Payment processed:", paymentIntent.id);
-
-        break;
-      }
-
-      case "payment_intent.payment_failed":
-        console.log("❌ Payment failed:", event.data.object.id);
-        break;
-
-      default:
-        console.log("Unhandled event:", event.type);
-    }
-
-    return NextResponse.json({ received: true });
-  } catch (err) {
-    console.error(err);
-
-    return NextResponse.json({ error: "Webhook Error" }, { status: 400 });
+  if (!signature) {
+    return NextResponse.json({ error: "Missing signature" }, { status: 400 });
   }
+
+  let event: Stripe.Event;
+
+  try {
+    event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!);
+  } catch (error) {
+    console.error("SIGNATURE ERROR", error);
+
+    return NextResponse.json({ error: "Invalid webhook" }, { status: 400 });
+  }
+
+  console.log("STRIPE EVENT:", event.type);
+
+  if (event.type === "payment_intent.succeeded" || event.type === "charge.succeeded") {
+    let paymentIntentId: string | null = null;
+    let orderId: string | null = null;
+
+    if (event.type === "payment_intent.succeeded") {
+      const paymentIntent = event.data.object as Stripe.PaymentIntent;
+
+      paymentIntentId = paymentIntent.id;
+
+      orderId = paymentIntent.metadata.orderId;
+    }
+
+    if (event.type === "charge.succeeded") {
+      const charge = event.data.object as Stripe.Charge;
+
+      paymentIntentId = charge.payment_intent as string;
+
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+      orderId = paymentIntent.metadata.orderId;
+    }
+
+    console.log("ORDER ID:", orderId);
+
+    console.log("FINAL ORDER ID BEFORE UPDATE:", orderId);
+
+    if (orderId) {
+      const order = await prisma.order.findUnique({
+        where: {
+          id: orderId,
+        },
+      });
+
+      console.log("ORDER FOUND:", order);
+
+      console.log("DATABASE ORDER LOOKUP RESULT:", order);
+
+      if (order) {
+        await prisma.order.update({
+          where: {
+            id: orderId,
+          },
+
+          data: {
+            status: "PAID",
+
+            paymentStatus: "PAID",
+
+            paymentProvider: "STRIPE",
+
+            paymentIntentId: paymentIntentId,
+
+            paidAt: new Date(),
+
+            payment: {
+              upsert: {
+                create: {
+                  method: "STRIPE",
+                  status: "PAID",
+                  amount: order.total,
+                  currency: "AUD",
+                  providerReference: paymentIntentId,
+                  transactionDate: new Date(),
+                },
+                update: {
+                  status: "PAID",
+                  providerReference: paymentIntentId,
+                  transactionDate: new Date(),
+                },
+              },
+            },
+
+            events: {
+              create: {
+                event: "PAYMENT_RECEIVED",
+                message: "Stripe payment successful",
+              },
+            },
+          },
+        });
+
+        console.log("DATABASE UPDATE SUCCESS");
+      }
+    }
+  }
+
+  return NextResponse.json({
+    received: true,
+  });
 }

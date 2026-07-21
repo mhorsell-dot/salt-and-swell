@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils/cn";
 interface FormFieldProps {
   id: string;
   label: string;
-  children: ReactElement;
+  children: ReactElement<Record<string, unknown>>;
   helperText?: string;
   error?: string;
   required?: boolean;
@@ -25,13 +25,11 @@ export default function FormField({
 }: FormFieldProps) {
   const describedBy = error ? `${id}-error` : helperText ? `${id}-helper` : undefined;
 
-  const child = isValidElement(children)
-    ? cloneElement(children, {
-        id,
-        error: Boolean(error),
-        "aria-describedby": describedBy,
-      } as unknown)
-    : children;
+  const child = cloneElement(children, {
+    id,
+    error: Boolean(error),
+    "aria-describedby": describedBy,
+  });
 
   return (
     <div className={cn("space-y-2", className)}>

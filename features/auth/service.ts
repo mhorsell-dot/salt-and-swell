@@ -21,3 +21,23 @@ export async function registerCustomer(input: RegisterInput) {
     status: "PENDING",
   });
 }
+
+export async function loginCustomer(input: { email: string; password: string }) {
+  const customer = await authRepository.findByEmail(input.email);
+
+  if (!customer || !customer.passwordHash) {
+    throw new Error("Invalid credentials.");
+  }
+
+  const valid = await import("./password").then(({ verifyPassword }) =>
+    verifyPassword(input.password, customer.passwordHash!),
+  );
+
+  if (!valid) {
+    throw new Error("Invalid credentials.");
+  }
+
+  await authRepository.updateLastLogin(customer.id);
+
+  return customer;
+}

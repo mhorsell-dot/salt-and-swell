@@ -15,7 +15,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "dev:next": "next dev -p 3000"
+    "dev:next": "next dev -p 3000",
+    "next-dev": "next dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

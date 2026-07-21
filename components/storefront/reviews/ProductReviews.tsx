@@ -20,6 +20,14 @@ export default async function ProductReviews({ productId }: { productId: string 
     return null;
   }
 
+  const reviewList = reviews.map((review) => ({
+    ...review,
+    customer: review.customer ?? {
+      firstName: "Guest",
+      lastName: "",
+    },
+  }));
+
   const totalReviews = reviews.length;
 
   const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews;
@@ -51,7 +59,7 @@ export default async function ProductReviews({ productId }: { productId: string 
           />
         </div>
 
-        <ReviewList reviews={reviews} />
+        <ReviewList reviews={reviewList} />
       </div>
     </section>
   );

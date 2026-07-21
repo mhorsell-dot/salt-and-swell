@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export const orderRepository = {
   findByPaymentIntent(paymentIntentId: string) {
@@ -25,7 +26,10 @@ export const orderRepository = {
     });
   },
 
-  async upsertPayment(order: unknown, paymentIntentId: string) {
+  async upsertPayment(
+    order: { id: string; total: Prisma.Decimal; orderNumber: string },
+    paymentIntentId: string,
+  ) {
     return prisma.payment.upsert({
       where: {
         orderId: order.id,
