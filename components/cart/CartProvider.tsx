@@ -106,6 +106,60 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, isHydrated]);
 
   useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    async function restoreReorder() {
+      const reorder = window.localStorage.getItem("salt_swell_reorder");
+
+      if (!reorder) {
+        return;
+      }
+
+      try {
+        const items = JSON.parse(reorder);
+
+        if (!Array.isArray(items)) {
+          return;
+        }
+
+        const converted = items.map((item) => ({
+          productId: item.productId,
+          variantId: item.variantId || item.productId,
+          slug: item.slug || "",
+          name: item.name,
+          price: Number(item.price),
+          imageUrl: item.imageUrl || "",
+          size: item.size || null,
+          colour: item.colour || null,
+          sku: item.sku || null,
+          quantity: item.quantity,
+          inventory: 99,
+        }));
+
+        setTimeout(() => {
+          setItems((current) => [
+            ...current,
+            ...converted.map((item) => ({
+              ...item,
+              cartId: createCartId(item.productId, item.variantId),
+            })),
+          ]);
+
+          setIsOpen(true);
+        }, 0);
+
+        window.localStorage.removeItem("salt_swell_reorder");
+      } catch (error) {
+        console.error("Unable to restore reorder:", error);
+      }
+    }
+
+    restoreReorder();
+  }, [isHydrated]);
+
+  useEffect(() => {
     if (!isOpen) {
       return;
     }

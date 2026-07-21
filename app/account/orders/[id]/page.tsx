@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
 import OrderTimeline from "@/components/orders/OrderTimeline";
 import DeliveryCard from "@/components/orders/DeliveryCard";
+import BuyAgainButton from "@/components/orders/BuyAgainButton";
 import OrderProgress from "@/components/orders/OrderProgress";
 
 function formatCurrency(value: number) {
@@ -58,6 +59,10 @@ export default async function OrderDetailPage({
 
         <div className="mt-8">
           <OrderProgress status={order.status} />
+        </div>
+
+        <div className="mt-8">
+          <BuyAgainButton orderId={order.id} />
         </div>
 
         <section className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
