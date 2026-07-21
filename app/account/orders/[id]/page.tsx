@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { Check, Package, Truck, CreditCard } from "lucide-react";
+
+import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
+import OrderTimeline from "@/components/orders/OrderTimeline";
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("en-AU", {
@@ -48,6 +50,10 @@ export default async function OrderDetailPage({
 
         <p className="mt-2 text-black/50">Placed {order.createdAt.toLocaleDateString("en-AU")}</p>
 
+        <div className="mt-8">
+          <OrderStatusBadge status={order.status} />
+        </div>
+
         <section className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
           <h2 className="text-xl font-semibold">Order summary</h2>
 
@@ -75,56 +81,34 @@ export default async function OrderDetailPage({
         </section>
 
         <section className="mt-8 rounded-3xl bg-white p-8">
-          <h2 className="text-xl font-semibold">Order journey</h2>
+          <h2 className="text-xl font-semibold">Your Order Journey</h2>
 
-          <div className="mt-8 space-y-6">
-            {order.events.length === 0 ? (
-              <p className="text-sm text-black/50">Your order journey will appear here.</p>
-            ) : (
-              order.events.map((event) => (
-                <div key={event.id} className="flex gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white">
-                    <Check className="h-5 w-5" />
-                  </div>
-
-                  <div>
-                    <p className="font-semibold">{event.event.replaceAll("_", " ")}</p>
-
-                    <p className="text-sm text-black/50">{event.message}</p>
-
-                    <p className="mt-1 text-xs text-black/40">
-                      {event.createdAt.toLocaleDateString("en-AU")}
-                    </p>
-                  </div>
-                </div>
-              ))
-            )}
-
-            {order.shipment && (
-              <div className="flex gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white">
-                  <Truck className="h-5 w-5" />
-                </div>
-
-                <div>
-                  <p className="font-semibold">Shipment</p>
-
-                  <p className="text-sm text-black/50">{order.shipment.carrier || "Carrier"}</p>
-
-                  {order.shipment.trackingNumber && (
-                    <a
-                      href={order.shipment.trackingUrl || "#"}
-                      target="_blank"
-                      className="mt-2 inline-block text-sm font-semibold underline"
-                    >
-                      Track:
-                      {order.shipment.trackingNumber}
-                    </a>
-                  )}
-                </div>
-              </div>
-            )}
+          <div className="mt-8">
+            <OrderTimeline
+              events={order.events.map((event) => ({
+                ...event,
+                createdAt: event.createdAt.toISOString(),
+              }))}
+            />
           </div>
+
+          {order.shipment && (
+            <div className="mt-10 border-t border-black/10 pt-8">
+              <h3 className="text-lg font-semibold">Shipment</h3>
+
+              <p className="mt-3 text-black/50">{order.shipment.carrier || "Carrier"}</p>
+
+              {order.shipment.trackingNumber && (
+                <a
+                  href={order.shipment.trackingUrl || "#"}
+                  target="_blank"
+                  className="mt-3 inline-block font-semibold underline"
+                >
+                  Track shipment: {order.shipment.trackingNumber}
+                </a>
+              )}
+            </div>
+          )}
         </section>
       </div>
     </main>
