@@ -8,14 +8,23 @@ export default function PremiumHero() {
     <section className="relative h-screen overflow-hidden">
       <motion.img
         src="/images/hero.jpg"
-        alt="Salt & Swell"
+        alt="Salt & Swell coastal lifestyle"
         initial={{ scale: 1.15 }}
         animate={{ scale: 1 }}
         transition={{ duration: 12 }}
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      <div className="absolute inset-0 bg-black/40" />
+      {/* Cinematic overlay */}
+      <div className="absolute inset-0 bg-black/45" />
+
+      {/* Film grain */}
+      <div
+        className="absolute inset-0 opacity-[0.08]"
+        style={{
+          backgroundImage: "url('/images/noise.png')",
+        }}
+      />
 
       <div className="relative z-10 flex h-full items-center">
         <div className="mx-auto max-w-7xl px-8">
@@ -23,7 +32,12 @@ export default function PremiumHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="uppercase tracking-[0.5em] text-white/80"
+            className="
+              uppercase
+              tracking-[0.5em]
+              text-sm
+              text-white/80
+            "
           >
             Australian Coastal Apparel
           </motion.p>
@@ -32,39 +46,102 @@ export default function PremiumHero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-6 text-7xl font-black leading-none text-white"
+            className="
+              mt-6
+              max-w-4xl
+              text-6xl
+              font-black
+              leading-[0.95]
+              tracking-[-0.05em]
+              text-white
+              sm:text-7xl
+              lg:text-8xl
+            "
           >
-            Live by the tide.
+            Inspired by salt.
             <br />
-            Dress for the journey.
+            Built for the swell.
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="mt-8 max-w-xl text-xl text-white/90"
+            className="
+              mt-8
+              max-w-xl
+              text-xl
+              leading-relaxed
+              text-white/90
+            "
           >
-            Premium Australian apparel inspired by saltwater, road trips and endless summers.
+            Premium Australian apparel inspired by the coastline, slow mornings and endless summer
+            adventures.
           </motion.p>
 
-          <div className="mt-12 flex gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="mt-12 flex flex-wrap gap-4"
+          >
             <Link
               href="/shop"
-              className="rounded-full bg-white px-8 py-4 font-semibold text-black transition hover:scale-105"
+              className="
+                rounded-full
+                bg-white
+                px-10
+                py-4
+                font-semibold
+                text-black
+                transition
+                hover:scale-105
+              "
             >
-              Shop Collection
+              Explore Collection →
             </Link>
 
             <Link
               href="/about"
-              className="rounded-full border border-white px-8 py-4 text-white backdrop-blur-sm"
+              className="
+                rounded-full
+                border
+                border-white/70
+                px-10
+                py-4
+                text-white
+                backdrop-blur-sm
+                transition
+                hover:bg-white
+                hover:text-black
+              "
             >
-              Our Story
+              Discover Our Story
             </Link>
-          </div>
+          </motion.div>
         </div>
       </div>
+
+      {/* Scroll indicator */}
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+        className="
+          absolute
+          bottom-8
+          left-1/2
+          -translate-x-1/2
+          text-xs
+          uppercase
+          tracking-[0.4em]
+          text-white/70
+        "
+      >
+        Scroll
+        <div className="mx-auto mt-3 h-10 w-px bg-white/50" />
+      </motion.div>
     </section>
   );
 }
