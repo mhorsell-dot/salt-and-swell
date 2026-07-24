@@ -36,13 +36,18 @@ const statusMessages: Record<
   },
 };
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
+    const { id } = await params;
+
     const { status } = await req.json();
 
     const order = await prisma.order.update({
       where: {
-        id: params.id,
+        id,
       },
 
       data: {
@@ -68,22 +73,29 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     const update = statusMessages[status as keyof typeof statusMessages];
 
     if (update) {
-      await sendNotification(update.notification, {
-        customerName: `${order.shippingFirstName} ${order.shippingLastName}`,
+      try {
+        await sendNotification(update.notification, {
+          customerName: `${order.shippingFirstName} ${order.shippingLastName}`,
 
-        customerEmail: order.emailSnapshot,
+          customerEmail: order.emailSnapshot,
 
-        orderNumber: order.orderNumber,
-      });
+          orderNumber: order.orderNumber,
+        });
+      } catch (notificationError) {
+        console.error("Notification failed:", notificationError);
+      }
     }
 
     return NextResponse.json(order);
   } catch (error) {
-    console.error(error);
+    console.error("STATUS UPDATE ERROR:", error);
 
     return NextResponse.json(
       {
-        error: "Status update failed",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Status update failed",
       },
       {
         status: 500,

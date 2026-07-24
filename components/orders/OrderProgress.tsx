@@ -1,55 +1,130 @@
-type OrderStatus = "PENDING" | "PAID" | "PACKED" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+"use client";
 
-const stages = ["PENDING", "PAID", "PACKED", "SHIPPED", "DELIVERED"];
+type OrderStatus =
+  | "PENDING"
+  | "PAID"
+  | "PACKED"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELLED";
+
+
+const stages = [
+  "PENDING",
+  "PAID",
+  "PACKED",
+  "SHIPPED",
+  "DELIVERED",
+];
+
 
 const labels = {
   PENDING: "Order Received",
   PAID: "Payment Confirmed",
-  PACKED: "Being Prepared",
+  PACKED: "Preparing Your Gear",
   SHIPPED: "On The Way",
   DELIVERED: "Delivered",
   CANCELLED: "Cancelled",
 };
 
-export default function OrderProgress({ status }: { status: OrderStatus }) {
+
+const descriptions = {
+  PENDING:
+    "Your order has been received and is waiting to be prepared.",
+  PAID:
+    "Your payment has been confirmed and your order is moving forward.",
+  PACKED:
+    "Our team is carefully preparing your Salt & Swell pieces.",
+  SHIPPED:
+    "Your order is on the way. Tracking details will follow shortly.",
+  DELIVERED:
+    "Your order has arrived. Enjoy the coast.",
+  CANCELLED:
+    "This order has been cancelled.",
+};
+
+
+export default function OrderProgress({
+  status,
+}: {
+  status: OrderStatus;
+}) {
+
   if (status === "CANCELLED") {
     return (
-      <div className="rounded-3xl bg-white p-6">
-        <h2 className="text-xl font-semibold">Order Cancelled</h2>
+      <div className="rounded-[2rem] bg-white p-8">
+        <h2 className="text-xl font-semibold">
+          Order Cancelled
+        </h2>
 
-        <p className="mt-2 text-sm text-black/50">This order has been cancelled.</p>
+        <p className="mt-2 text-sm text-black/50">
+          This order has been cancelled.
+        </p>
       </div>
     );
   }
 
+
   const currentIndex = stages.indexOf(status);
 
-  const progress = Math.round(((currentIndex + 1) / stages.length) * 100);
+  const progress = Math.round(
+    ((currentIndex + 1) / stages.length) * 100
+  );
+
 
   return (
-    <div className="rounded-3xl bg-white p-8">
-      <div className="flex justify-between">
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-black/40">Order Journey</p>
+    <section className="rounded-[2rem] bg-white p-8 shadow-sm">
 
-          <h2 className="mt-2 text-2xl font-semibold">{labels[status]}</h2>
+      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-black/40">
+        Salt & Swell Journey
+      </p>
+
+
+      <div className="mt-5 flex items-end justify-between gap-5">
+
+        <div>
+          <h2 className="text-3xl font-semibold tracking-[-0.04em]">
+            {labels[status]}
+          </h2>
+
+          <p className="mt-3 max-w-md text-sm leading-6 text-black/50">
+            {descriptions[status]}
+          </p>
         </div>
+
 
         <div className="text-right">
-          <p className="text-3xl font-semibold">{progress}%</p>
 
-          <p className="text-xs uppercase tracking-wider text-black/40">Complete</p>
+          <p className="text-4xl font-semibold">
+            {progress}%
+          </p>
+
+          <p className="text-xs uppercase tracking-[0.2em] text-black/40">
+            Complete
+          </p>
+
         </div>
+
       </div>
 
+
       <div className="mt-8 h-2 overflow-hidden rounded-full bg-black/10">
+
         <div
-          className="h-full bg-black transition-all"
+          className="h-full rounded-full bg-[#182321] transition-all duration-700"
           style={{
             width: `${progress}%`,
           }}
         />
+
       </div>
-    </div>
+
+
+      <p className="mt-4 text-xs text-black/40">
+        Stage {currentIndex + 1} of {stages.length}
+      </p>
+
+
+    </section>
   );
 }

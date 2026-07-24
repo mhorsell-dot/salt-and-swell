@@ -518,7 +518,7 @@ export default function CheckoutClient() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40">
-                    Order summary
+                    Your order
                   </p>
 
                   <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em]">
@@ -532,13 +532,13 @@ export default function CheckoutClient() {
               <div className="mt-7 divide-y divide-black/8 border-y border-black/8">
                 {items.map((item) => (
                   <div key={item.cartId} className="flex gap-4 py-5">
-                    <div className="flex h-20 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f1eee7]">
+                    <div className="flex h-28 w-22 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#f1eee7]">
                       {item.imageUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={item.imageUrl}
                           alt={item.name}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-cover transition duration-500 hover:scale-105"
                         />
                       ) : (
                         <ShoppingBag className="h-5 w-5 text-black/25" />
@@ -556,7 +556,14 @@ export default function CheckoutClient() {
                             {[item.colour, item.size].filter(Boolean).join(" · ") || "Standard"}
                           </p>
 
-                          <p className="mt-2 text-xs text-black/45">Quantity: {item.quantity}</p>
+                          <p className="mt-2 text-xs text-black/45">
+                              Quantity: {item.quantity}
+                            </p>
+
+                            <p className="mt-3 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-700">
+                              <Check className="h-3 w-3" />
+                              Ready to ship
+                            </p>
                         </div>
 
                         <p className="shrink-0 text-sm font-semibold">
@@ -605,14 +612,14 @@ export default function CheckoutClient() {
                   type="submit"
                   className="mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#171715] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-black/80 focus:outline-none focus:ring-4 focus:ring-black/10"
                 >
-                  Continue to payment
+                  Secure payment
                   <ChevronRight className="h-4 w-4" />
                 </button>
               )}
 
               <div className="mt-5 flex items-center justify-center gap-2 text-xs text-black/40">
                 <LockKeyhole className="h-3.5 w-3.5" />
-                Secure checkout · Payments coming next
+                Secure checkout · Stripe protected payment
               </div>
             </section>
 

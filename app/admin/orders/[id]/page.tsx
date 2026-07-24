@@ -2,15 +2,25 @@ import OrderWorkflow from "@/components/orders/OrderWorkflow";
 import ShipmentPanel from "@/components/admin/orders/ShipmentPanel";
 
 async function getOrder(id: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ""}/api/admin/orders/${id}`, {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "http://localhost:3000";
+
+  const res = await fetch(`${baseUrl}/api/admin/orders/${id}`, {
     cache: "no-store",
   });
 
   return res.json();
 }
 
-export default async function OrderPage({ params }: { params: { id: string } }) {
-  const order = await getOrder(params.id);
+export default async function OrderPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  const order = await getOrder(id);
 
   return (
     <div className="p-10">

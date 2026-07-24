@@ -14,7 +14,7 @@ type CollectionPageProps = {
   }>;
 };
 
-function formatCurrency(value: string): string {
+function formatCurrency(value: string) {
   return new Intl.NumberFormat("en-AU", {
     style: "currency",
     currency: "AUD",
@@ -25,9 +25,7 @@ export async function generateMetadata({ params }: CollectionPageProps): Promise
   const { slug } = await params;
 
   const collection = await prisma.collection.findUnique({
-    where: {
-      slug,
-    },
+    where: { slug },
     select: {
       name: true,
       description: true,
@@ -36,31 +34,24 @@ export async function generateMetadata({ params }: CollectionPageProps): Promise
 
   if (!collection) {
     return {
-      title: "Collection Not Found | Salt & Swell",
+      title: "Collection Not Found",
     };
   }
 
-  const description =
-    collection.description ?? `Shop the ${collection.name} collection from Salt & Swell.`;
-
   return {
     title: `${collection.name} | Salt & Swell`,
-    description: description.slice(0, 160),
-    openGraph: {
-      title: `${collection.name} | Salt & Swell`,
-      description: description.slice(0, 160),
-      type: "website",
-    },
+    description:
+      collection.description ??
+      `Explore the ${collection.name} collection from Salt & Swell.`,
   };
 }
 
 export default async function CollectionPage({ params }: CollectionPageProps) {
+
   const { slug } = await params;
 
   const collection = await prisma.collection.findUnique({
-    where: {
-      slug,
-    },
+    where: { slug },
     include: {
       products: {
         where: {
@@ -68,176 +59,235 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
         },
         include: {
           images: {
-            orderBy: {
-              sortOrder: "asc",
+            orderBy:{
+              sortOrder:"asc",
             },
-            take: 1,
+            take:1,
           },
-          variants: true,
-          category: true,
+          variants:true,
+          category:true,
         },
-        orderBy: [
+        orderBy:[
           {
-            featured: "desc",
+            featured:"desc",
           },
           {
-            createdAt: "desc",
+            createdAt:"desc",
           },
         ],
       },
     },
   });
 
+
   if (!collection) {
     notFound();
   }
 
+
   return (
     <main className="min-h-screen bg-[#f5f3ee] text-[#171715]">
-      <header className="border-b border-white/15 bg-[#182321] text-white">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-10">
-          <Link href="/" className="text-2xl font-semibold tracking-[-0.04em]">
-            Salt &amp; Swell
-          </Link>
 
-          <nav className="flex items-center gap-6">
-            <Link
-              href="/collections"
-              className="hidden text-sm font-semibold text-white/65 transition hover:text-white sm:block"
-            >
-              Collections
-            </Link>
 
-            <Link
-              href="/shop"
-              className="text-sm font-semibold text-white/65 transition hover:text-white"
-            >
-              Shop
-            </Link>
-          </nav>
+      {/* Hero */}
+
+      <section className="relative overflow-hidden bg-[#111412] text-white">
+
+        <div className="absolute inset-0">
+
+          <img
+            src="/images/hero/salt-swell-hero.png"
+            alt={collection.name}
+            className="h-full w-full object-cover opacity-45"
+          />
+
+          <div className="absolute inset-0 bg-black/45" />
+
         </div>
-      </header>
 
-      <section className="border-b border-black/10 px-6 py-16 sm:py-24 lg:px-10">
-        <div className="mx-auto max-w-7xl">
+
+        <div className="relative mx-auto max-w-7xl px-6 py-36 lg:px-10">
+
           <Link
             href="/collections"
-            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-black/50 transition hover:text-black"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-white/60"
           >
             <ArrowLeft className="h-4 w-4" />
             All collections
           </Link>
 
-          <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_0.5fr] lg:items-end">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-black/45">
-                Salt &amp; Swell collection
-              </p>
 
-              <h1 className="mt-5 max-w-4xl text-6xl font-semibold leading-[0.9] tracking-[-0.055em] sm:text-8xl">
-                {collection.name}
-              </h1>
-            </div>
+          <p className="mt-16 text-xs uppercase tracking-[0.4em] text-white/60">
+            Salt & Swell Collection
+          </p>
 
-            <div className="lg:pb-2">
-              {collection.description && (
-                <p className="text-sm leading-7 text-black/55">{collection.description}</p>
-              )}
 
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
-                {collection.products.length} product
-                {collection.products.length === 1 ? "" : "s"}
-              </p>
-            </div>
-          </div>
+          <h1 className="mt-6 max-w-5xl text-6xl font-semibold leading-[0.9] tracking-[-0.05em] sm:text-8xl">
+            {collection.name}
+          </h1>
+
+
+          {collection.description && (
+            <p className="mt-10 max-w-xl text-lg leading-8 text-white/75">
+              {collection.description}
+            </p>
+          )}
+
+
         </div>
+
       </section>
 
-      <section className="px-6 py-16 sm:py-20 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          {collection.products.length === 0 ? (
-            <div className="flex min-h-[420px] flex-col items-center justify-center border border-black/10 bg-white/40 px-6 text-center">
-              <Layers3 className="h-9 w-9 text-black/30" />
 
-              <h2 className="mt-5 text-3xl font-semibold tracking-[-0.035em]">
-                This collection is being prepared.
+
+      {/* Products */}
+
+      <section className="px-6 py-24 lg:px-10">
+
+        <div className="mx-auto max-w-7xl">
+
+
+          <div className="mb-12 flex items-end justify-between border-b border-black/10 pb-6">
+
+            <div>
+
+              <p className="text-xs uppercase tracking-[0.3em] text-black/40">
+                Collection
+              </p>
+
+              <h2 className="mt-3 text-4xl font-semibold">
+                {collection.products.length} pieces
               </h2>
 
-              <p className="mt-4 max-w-md text-sm leading-7 text-black/50">
-                Products assigned to {collection.name} will appear here automatically.
-              </p>
-
-              <Link
-                href="/shop"
-                className="mt-8 inline-flex items-center gap-3 rounded-full bg-[#182321] px-6 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white"
-              >
-                Explore all products
-                <ArrowRight className="h-4 w-4" />
-              </Link>
             </div>
-          ) : (
-            <div className="grid gap-x-5 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {collection.products.map((product) => {
-                const image = product.images[0]?.url ?? "/mockups/products/essential-tee-front.svg";
 
-                const inventory = product.variants.reduce(
-                  (total, variant) => total + variant.inventory,
-                  0,
-                );
+          </div>
+
+
+
+          {collection.products.length === 0 ? (
+
+            <div className="flex min-h-[420px] flex-col items-center justify-center border border-black/10">
+
+              <Layers3 className="h-10 w-10 text-black/30"/>
+
+              <h2 className="mt-6 text-3xl font-semibold">
+                Coming soon
+              </h2>
+
+            </div>
+
+          ) : (
+
+            <div className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+              {collection.products.map(product => {
+
+                const image =
+                  product.images[0]?.url ??
+                  "/images/hero/salt-swell-hero.png";
+
+
+                const inventory =
+                  product.variants.reduce(
+                    (total,v)=> total + v.inventory,
+                    0
+                  );
+
 
                 return (
-                  <Link key={product.id} href={`/shop/${product.slug}`} className="group block">
-                    <div className="relative aspect-[4/5] overflow-hidden bg-[#dedbd3]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
+
+                  <Link
+                    key={product.id}
+                    href={`/shop/${product.slug}`}
+                    className="group"
+                  >
+
+                    <div className="aspect-[4/5] overflow-hidden bg-[#dedbd3]">
+
                       <img
                         src={image}
-                        alt={product.images[0]?.alt || product.name}
-                        className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.025]"
+                        alt={product.name}
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                       />
 
-                      {product.featured && (
-                        <span className="absolute left-4 top-4 bg-white px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-black">
-                          Featured
-                        </span>
-                      )}
-
-                      {product.variants.length > 0 && inventory <= 0 && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                          <span className="bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em]">
-                            Sold out
-                          </span>
-                        </div>
-                      )}
                     </div>
 
-                    <div className="mt-4 flex items-start justify-between gap-4">
-                      <div>
-                        <h2 className="text-sm font-semibold uppercase tracking-[0.04em]">
-                          {product.name}
-                        </h2>
 
-                        <p className="mt-1 text-xs text-black/45">
-                          {product.category?.name ?? "Salt & Swell"}
+                    <div className="mt-5 flex justify-between gap-4">
+
+                      <div>
+
+                        <h3 className="text-sm font-semibold uppercase tracking-[0.08em]">
+                          {product.name}
+                        </h3>
+
+                        <p className="mt-2 text-xs text-black/45">
+                          {product.category?.name ?? collection.name}
                         </p>
 
-                        {product.variants.length > 0 && (
-                          <p className="mt-2 text-xs text-black/40">
-                            {inventory > 0 ? `${inventory} available` : "Out of stock"}
-                          </p>
-                        )}
                       </div>
 
-                      <p className="shrink-0 text-sm font-semibold">
+
+                      <p className="text-sm font-semibold">
                         {formatCurrency(product.price.toString())}
                       </p>
+
+
                     </div>
+
                   </Link>
+
                 );
+
               })}
+
             </div>
+
           )}
+
         </div>
+
       </section>
+
+
+
+      {/* Story */}
+
+      <section className="bg-[#111412] px-6 py-24 text-white lg:px-10">
+
+        <div className="mx-auto max-w-4xl text-center">
+
+          <p className="text-xs uppercase tracking-[0.4em] text-white/50">
+            Salt & Swell
+          </p>
+
+
+          <h2 className="mt-6 text-5xl font-semibold">
+            Designed for life beside the ocean.
+          </h2>
+
+
+          <p className="mt-8 text-lg leading-8 text-white/65">
+            Everyday essentials created for coastal mornings,
+            open roads and wherever the tide takes you.
+          </p>
+
+
+          <Link
+            href="/about"
+            className="mt-10 inline-flex items-center gap-3 border-b border-white pb-2 text-sm uppercase tracking-[0.2em]"
+          >
+            Our story
+            <ArrowRight className="h-4 w-4"/>
+          </Link>
+
+
+        </div>
+
+      </section>
+
+
     </main>
   );
 }

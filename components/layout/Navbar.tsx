@@ -8,6 +8,7 @@ import { Menu, Search, User, Heart, ShoppingBag } from "lucide-react";
 
 import MobileMenu from "./MobileMenu";
 import SearchDrawer from "./SearchDrawer";
+import MegaMenu from "./MegaMenu";
 import SearchResults from "@/components/search/SearchResults";
 import { useCart } from "@/components/cart/CartProvider";
 
@@ -43,16 +44,19 @@ export default function Navbar() {
   return (
     <>
       <motion.header
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.45 }}
-        className={`sticky top-0 z-50 transition-all duration-300 ${
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          duration: 0.7,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "border-b border-black/10 bg-white/95 shadow-md backdrop-blur-xl"
-            : "bg-white/70 backdrop-blur-lg"
+            ? "border-b border-black/5 bg-white/75 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
+            : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
+        <div className="mx-auto flex h-24 max-w-[1600px] items-center justify-between px-8 lg:px-20">
           <div className="flex items-center gap-2 md:hidden">
             <button
               onClick={() => setMenuOpen(true)}
@@ -62,43 +66,65 @@ export default function Navbar() {
             </button>
           </div>
 
-          <Link href="/" className="text-xl font-black uppercase tracking-[0.35em] lg:text-2xl">
+          <Link href="/" className={`text-2xl font-black uppercase tracking-[0.42em] transition-all duration-700 hover:opacity-90 lg:text-3xl ${
+            scrolled ? "text-black" : "text-white"
+          }`}>
             Salt & Swell
           </Link>
 
-          <nav className="hidden items-center gap-8 lg:flex">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`relative text-sm font-semibold uppercase tracking-[0.18em] transition ${
-                  pathname === link.href ? "text-black" : "text-black/70 hover:text-black"
-                }`}
-              >
-                {link.label}
+          <nav className="hidden items-center gap-12 lg:flex">
+            {links.map((link) => {
+              if (link.href === "/shop") {
+                return <MegaMenu key="shop" />;
+              }
 
-                <span
-                  className={`absolute -bottom-2 left-0 h-[2px] bg-black transition-all duration-300 ${
-                    pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`relative text-[13px] font-semibold uppercase tracking-[0.28em] transition ${
+                    pathname === link.href
+                      ? scrolled
+                        ? "text-black"
+                        : "text-white"
+                      : scrolled
+                        ? "text-black/70 hover:text-black"
+                        : "text-white/80 hover:text-white"
                   }`}
-                />
-              </Link>
-            ))}
+                >
+                  {link.label}
+
+                  <span
+                    className={`absolute -bottom-2 left-0 h-[1px] transition-all duration-500 ${
+                      scrolled ? "bg-black" : "bg-white"
+                    } ${
+                      pathname === link.href
+                        ? "w-full"
+                        : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-1">
             <button
               onClick={() => setSearchOpen(true)}
-              className="rounded-full p-2 hover:bg-black/5"
+              className={`rounded-full p-2 transition-colors duration-500 ${scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"}`}
             >
               <Search className="h-5 w-5" />
             </button>
 
-            <button className="rounded-full p-2 hover:bg-black/5">
+            <button className={`rounded-full p-2 transition-colors duration-500 ${scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"}`}>
               <User className="h-5 w-5" />
             </button>
 
-            <Link href="/account/wishlist" className="relative rounded-full p-2 hover:bg-black/5">
+            <Link href="/account/wishlist" className={`relative rounded-full p-2 transition-colors duration-500 ${
+                scrolled
+                  ? "text-black hover:bg-black/5"
+                  : "text-white hover:bg-white/10"
+              }` }>
               <Heart className="h-5 w-5" />
 
               <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[9px] font-bold text-white">
@@ -108,7 +134,11 @@ export default function Navbar() {
 
             <button
               onClick={openCart}
-              className="relative rounded-full p-2 hover:bg-black/5"
+              className={`relative rounded-full p-2 transition-colors duration-500 ${
+                scrolled
+                  ? "text-black hover:bg-black/5"
+                  : "text-white hover:bg-white/10"
+              }` }
               aria-label="Open shopping bag"
             >
               <ShoppingBag className="h-5 w-5" />

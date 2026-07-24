@@ -36,7 +36,7 @@ export default function ShopPage() {
         </div>
       </header>
 
-      <section className="border-b border-black/10 px-6 py-20 sm:py-28 lg:px-10">
+      <section className="border-b border-black/10 px-6 pt-32 pb-20 sm:pt-40 sm:pb-28 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-black/45">
             Salt &amp; Swell catalogue

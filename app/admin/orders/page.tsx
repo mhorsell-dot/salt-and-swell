@@ -1,7 +1,11 @@
 import Link from "next/link";
 
 async function getOrders() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ""}/api/admin/orders`, {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "http://localhost:3000";
+
+  const res = await fetch(`${baseUrl}/api/admin/orders`, {
     cache: "no-store",
   });
 

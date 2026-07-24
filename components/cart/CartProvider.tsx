@@ -7,6 +7,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -47,6 +48,18 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 
 const STORAGE_KEY = "salt-and-swell-cart-v2";
+
+function subscribeToHydration(): () => void {
+  return () => {};
+}
+
+function getClientHydrationSnapshot(): boolean {
+  return true;
+}
+
+function getServerHydrationSnapshot(): boolean {
+  return false;
+}
 
 function createCartId(productId: string, variantId: string): string {
   return `${productId}:${variantId}`;
@@ -90,11 +103,39 @@ function sanitiseStoredItems(value: unknown): CartItem[] {
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(typeof window !== "undefined");
+  const [hasRestoredCart, setHasRestoredCart] = useState(false);
   const [lastAddedCartId, setLastAddedCartId] = useState<string | null>(null);
 
+  const isHydrated = useSyncExternalStore(
+    subscribeToHydration,
+    getClientHydrationSnapshot,
+    getServerHydrationSnapshot,
+  );
+
   useEffect(() => {
-    if (!isHydrated) {
+    if (!isHydrated || hasRestoredCart) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      try {
+        const storedCart = window.localStorage.getItem(STORAGE_KEY);
+
+        if (storedCart) {
+          setItems(sanitiseStoredItems(JSON.parse(storedCart)));
+        }
+      } catch (error) {
+        console.error("Unable to restore cart:", error);
+      } finally {
+        setHasRestoredCart(true);
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [isHydrated, hasRestoredCart]);
+
+  useEffect(() => {
+    if (!isHydrated || !hasRestoredCart) {
       return;
     }
 
@@ -103,10 +144,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error("Unable to save cart:", error);
     }
-  }, [items, isHydrated]);
+  }, [items, isHydrated, hasRestoredCart]);
 
   useEffect(() => {
-    if (!isHydrated) {
+    if (!isHydrated || !hasRestoredCart) {
       return;
     }
 
@@ -157,7 +198,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
 
     restoreReorder();
-  }, [isHydrated]);
+  }, [isHydrated, hasRestoredCart]);
 
   useEffect(() => {
     if (!isOpen) {

@@ -23,6 +23,12 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum Gender {
+  MENS
+  WOMENS
+  UNISEX
+}
+
 model Category {
   id        String    @id @default(cuid())
   name      String
@@ -48,6 +54,8 @@ model Product {
   price       Decimal
   featured    Boolean @default(false)
   active      Boolean @default(true)
+
+  gender Gender @default(UNISEX)
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])

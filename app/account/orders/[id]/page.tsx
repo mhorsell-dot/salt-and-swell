@@ -27,7 +27,20 @@ export default async function OrderDetailPage({
     },
 
     include: {
-      items: true,
+      items: {
+        include: {
+          product: {
+            include: {
+              images: {
+                orderBy: {
+                  sortOrder: "asc",
+                },
+                take: 1,
+              },
+            },
+          },
+        },
+      },
       payment: true,
       shipment: true,
       events: {
@@ -45,13 +58,17 @@ export default async function OrderDetailPage({
   return (
     <main className="min-h-screen bg-[#f4f1ea] px-5 py-16 text-[#171715]">
       <div className="mx-auto max-w-5xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-black/40">
-          Salt & Swell
+        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-black/40">
+          Salt & Swell Journey
         </p>
 
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight">Order {order.orderNumber}</h1>
+        <h1 className="mt-5 text-5xl font-semibold tracking-[-0.05em]">
+          Your order is underway.
+        </h1>
 
-        <p className="mt-2 text-black/50">Placed {order.createdAt.toLocaleDateString("en-AU")}</p>
+        <p className="mt-4 text-black/50">
+          Order {order.orderNumber} · Placed {order.createdAt.toLocaleDateString("en-AU")}
+        </p>
 
         <div className="mt-8">
           <OrderStatusBadge status={order.status} />
