@@ -1,31 +1,33 @@
-type Props = {
-  eyebrow: string;
+import { cn } from "@/lib/cn";
+
+interface Props {
+  eyebrow?: string;
   title: string;
   description?: string;
-};
+  align?: "left" | "center";
+  className?: string;
+}
 
 export default function SectionHeader({
   eyebrow,
   title,
   description,
+  align = "left",
+  className,
 }: Props) {
+  const centered = align === "center";
+
   return (
-    <div className="max-w-3xl">
-
-      <p className="text-xs font-semibold uppercase tracking-[0.4em] text-neutral-500">
-        {eyebrow}
-      </p>
-
-      <h2 className="mt-5 text-5xl font-black tracking-[-0.04em] md:text-6xl">
-        {title}
-      </h2>
-
-      {description && (
-        <p className="mt-6 text-lg leading-8 text-neutral-600">
-          {description}
+    <div className={cn(centered ? "mx-auto max-w-3xl text-center" : "max-w-3xl", className)}>
+      {eyebrow && (
+        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.45em] text-neutral-500">
+          {eyebrow}
         </p>
       )}
 
+      <h2 className="text-4xl font-black tracking-[-0.05em] leading-tight md:text-6xl">{title}</h2>
+
+      {description && <p className="mt-8 text-lg leading-8 text-neutral-600">{description}</p>}
     </div>
   );
 }
