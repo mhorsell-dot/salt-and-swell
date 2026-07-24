@@ -1,3 +1,6 @@
+===== Header =====
+
+===== Navbar =====
 "use client";
 
 import Link from "next/link";
@@ -11,7 +14,6 @@ import SearchDrawer from "./SearchDrawer";
 import MegaMenu from "./MegaMenu";
 import SearchResults from "@/components/search/SearchResults";
 import { useCart } from "@/components/cart/CartProvider";
-import AnnouncementBar from "./AnnouncementBar";
 
 const links = [
   { href: "/shop", label: "Shop" },
@@ -44,7 +46,6 @@ export default function Navbar() {
 
   return (
     <>
-      <AnnouncementBar />
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -52,7 +53,7 @@ export default function Navbar() {
           duration: 0.7,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className={`fixed inset-x-0 top-10 z-50 transition-all duration-500 ${
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           scrolled
             ? "border-b border-black/5 bg-white/75 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
             : "bg-transparent"
@@ -68,12 +69,9 @@ export default function Navbar() {
             </button>
           </div>
 
-          <Link
-            href="/"
-            className={`text-2xl font-black uppercase tracking-[0.42em] transition-all duration-700 hover:opacity-90 lg:text-3xl ${
-              scrolled ? "text-black" : "text-white"
-            }`}
-          >
+          <Link href="/" className={`text-2xl font-black uppercase tracking-[0.42em] transition-all duration-700 hover:opacity-90 lg:text-3xl ${
+            scrolled ? "text-black" : "text-white"
+          }`}>
             Salt & Swell
           </Link>
 
@@ -102,7 +100,11 @@ export default function Navbar() {
                   <span
                     className={`absolute -bottom-2 left-0 h-[1px] transition-all duration-500 ${
                       scrolled ? "bg-black" : "bg-white"
-                    } ${pathname === link.href ? "w-full" : "w-0 group-hover:w-full"}`}
+                    } ${
+                      pathname === link.href
+                        ? "w-full"
+                        : "w-0 group-hover:w-full"
+                    }`}
                   />
                 </Link>
               );
@@ -117,18 +119,15 @@ export default function Navbar() {
               <Search className="h-5 w-5" />
             </button>
 
-            <button
-              className={`rounded-full p-2 transition-colors duration-500 ${scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"}`}
-            >
+            <button className={`rounded-full p-2 transition-colors duration-500 ${scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"}`}>
               <User className="h-5 w-5" />
             </button>
 
-            <Link
-              href="/account/wishlist"
-              className={`relative rounded-full p-2 transition-colors duration-500 ${
-                scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"
-              }`}
-            >
+            <Link href="/account/wishlist" className={`relative rounded-full p-2 transition-colors duration-500 ${
+                scrolled
+                  ? "text-black hover:bg-black/5"
+                  : "text-white hover:bg-white/10"
+              }` }>
               <Heart className="h-5 w-5" />
 
               <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[9px] font-bold text-white">
@@ -139,8 +138,10 @@ export default function Navbar() {
             <button
               onClick={openCart}
               className={`relative rounded-full p-2 transition-colors duration-500 ${
-                scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"
-              }`}
+                scrolled
+                  ? "text-black hover:bg-black/5"
+                  : "text-white hover:bg-white/10"
+              }` }
               aria-label="Open shopping bag"
             >
               <ShoppingBag className="h-5 w-5" />
@@ -171,3 +172,7 @@ export default function Navbar() {
     </>
   );
 }
+
+===== Navigation =====
+
+===== Header (app) =====
