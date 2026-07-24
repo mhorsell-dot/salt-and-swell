@@ -1,0 +1,500 @@
+
+=================================================
+components/home/sections/Collections.tsx
+=================================================
+import Image from "next/image";
+import Link from "next/link";
+
+import {
+  Container,
+  SectionHeader,
+} from "@/components/ui";
+
+const collections = [
+  {
+    title: "Men",
+    description: "Built for cool mornings, salt air and everyday adventure.",
+    image: "/images/collections/mens.png",
+    href: "/shop/gender/mens",
+  },
+  {
+    title: "Women",
+    description: "Timeless coastal essentials with effortless style.",
+    image: "/images/collections/womens.png",
+    href: "/shop/gender/womens",
+  },
+  {
+    title: "Accessories",
+    description: "Complete every journey with premium coastal essentials.",
+    image: "/images/collections/accessories.png",
+    href: "/shop/category/accessories",
+  },
+];
+
+export default function Collections() {
+  return (
+    <section className="bg-[#F7F5F0] py-32">
+      <Container>
+        <SectionHeader
+          eyebrow="Collections"
+          title="Crafted For Every Coastal Moment."
+          description="Designed to move effortlessly from sunrise sessions to slow afternoons by the sea."
+        />
+
+        <div className="mt-20 grid gap-8 lg:grid-cols-12">
+          {collections.map((item, index) => (
+            <Link
+              key={item.title}
+              href={item.href}
+              className={`
+                group
+                relative
+                overflow-hidden
+                rounded-[32px]
+                ${index === 0 ? "lg:col-span-6" : "lg:col-span-3"}
+              `}
+            >
+              <div className="relative h-[720px]">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width:1024px)100vw,50vw"
+                  className="object-cover transition duration-[1400ms] group-hover:scale-110"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+                <div className="absolute inset-x-0 bottom-0 p-10">
+                  <p className="text-xs uppercase tracking-[0.35em] text-white/70">
+                    Salt &amp; Swell
+                  </p>
+
+                  <h3 className="mt-3 text-4xl font-bold text-white">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-4 max-w-sm text-base leading-7 text-white/85">
+                    {item.description}
+                  </p>
+
+                  <div className="mt-8">
+                    <span className="inline-flex rounded-full bg-white px-8 py-3 font-semibold text-black transition-all duration-300 group-hover:bg-black group-hover:text-white">
+                      Shop Collection
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+=================================================
+components/home/sections/FeaturedProducts.tsx
+=================================================
+import Link from "next/link";
+
+import {
+  Button,
+  Container,
+  SectionHeader,
+} from "@/components/ui";
+
+import LiveProductGrid from "@/components/storefront/LiveProductGrid";
+
+export default function FeaturedProducts() {
+  return (
+    <section className="bg-white py-32">
+
+      <Container>
+
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+
+          <SectionHeader
+            eyebrow="Best Sellers"
+            title="Designed To Be Worn Every Day."
+            description="Our favourite pieces, crafted for life beside the ocean."
+          />
+
+          <Button href="/shop">
+            View All Products
+          </Button>
+
+        </div>
+
+        <div className="mt-20">
+
+          <LiveProductGrid
+            featured
+            limit={8}
+          />
+
+        </div>
+
+      </Container>
+
+    </section>
+  );
+}
+
+=================================================
+components/home/sections/Features.tsx
+=================================================
+import {
+  Waves,
+  ShieldCheck,
+  Sun,
+  Truck,
+} from "lucide-react";
+
+const features = [
+  {
+    icon: Waves,
+    title: "Inspired by the Coast",
+    body: "Designed for life beside the ocean.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Premium Quality",
+    body: "Heavyweight fabrics built to last.",
+  },
+  {
+    icon: Sun,
+    title: "Designed in Australia",
+    body: "Made for salty souls everywhere.",
+  },
+  {
+    icon: Truck,
+    title: "Free Shipping",
+    body: "Australia-wide over $150.",
+  },
+];
+
+export default function Features() {
+  return (
+    <section className="border-t border-neutral-200 bg-white">
+      <div className="mx-auto max-w-[1500px] px-8 py-16">
+
+        <div className="grid gap-12 md:grid-cols-2 xl:grid-cols-4">
+
+          {features.map((feature) => {
+            const Icon = feature.icon;
+
+            return (
+              <div
+                key={feature.title}
+                className="flex gap-5"
+              >
+                <Icon
+                  className="mt-1 h-7 w-7 text-black"
+                  strokeWidth={1.5}
+                />
+
+                <div>
+
+                  <h3 className="text-[13px] font-bold uppercase tracking-[0.28em]">
+                    {feature.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-neutral-600">
+                    {feature.body}
+                  </p>
+
+                </div>
+
+              </div>
+            );
+          })}
+
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+=================================================
+components/home/sections/Hero.tsx
+=================================================
+"use client";
+
+import Link from "next/link";
+
+export default function Hero() {
+  return (
+    <section className="relative h-screen overflow-hidden">
+
+      {/* Background */}
+      <div
+        className="absolute inset-0 scale-[1.02] bg-cover bg-center transition-transform duration-[15000ms] ease-linear"
+        style={{
+          backgroundImage: "url('/images/hero/salt-swell-hero.png')",
+        }}
+      />
+
+      {/* Softer overlay */}
+      <div className="absolute inset-0 bg-black/25" />
+
+      {/* Editorial gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/8 to-transparent" />
+
+      {/* Bottom fade */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+
+      <div className="relative z-20 flex h-full items-center">
+
+        <div className="mx-auto w-full max-w-7xl px-8">
+
+          {/* Lower position */}
+          <div className="max-w-4xl pt-24">
+
+            <p className="mb-10 text-xs uppercase tracking-[0.55em] text-white/80">
+              AUSTRALIAN COASTAL APPAREL
+            </p>
+
+            <h1
+              className="
+                font-black
+                uppercase
+                tracking-[-0.055em]
+                leading-[0.92]
+                text-white
+
+                text-5xl
+                md:text-7xl
+                xl:text-[6.4rem]
+              "
+            >
+              SURFWEAR
+              <br />
+              FOR
+              <br />
+              SALTY SOULS.
+            </h1>
+
+            <p className="mt-12 max-w-2xl text-[22px] leading-10 text-white/90">
+              Designed for sunrise sessions,
+              ocean air,
+              road trips
+              and everything in between.
+            </p>
+
+            <div className="mt-16">
+
+              <Link
+                href="/shop"
+                className="
+                  inline-flex
+                  items-center
+                  justify-center
+
+                  rounded-full
+
+                  bg-white
+
+                  px-14
+                  py-5
+
+                  text-sm
+                  font-bold
+                  uppercase
+                  tracking-[0.22em]
+
+                  text-black
+
+                  transition-all
+                  duration-500
+
+                  hover:-translate-y-1
+                  hover:scale-[1.02]
+                  hover:shadow-[0_25px_60px_rgba(0,0,0,.35)]
+                "
+              >
+                Shop Collection
+              </Link>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Scroll */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
+
+        <div className="flex flex-col items-center">
+
+          <span className="text-[10px] uppercase tracking-[0.45em] text-white/70">
+            Scroll
+          </span>
+
+          <div className="mt-3 h-12 w-px bg-white/60" />
+
+        </div>
+
+      </div>
+
+    </section>
+  );
+}
+
+=================================================
+components/home/sections/Journal.tsx
+=================================================
+export default function Journal() {
+  return (
+    <section className="py-32 text-center">
+      <h2 className="text-5xl font-bold">Journal</h2>
+    </section>
+  );
+}
+
+=================================================
+components/home/sections/Lifestyle.tsx
+=================================================
+import Image from "next/image";
+
+import {
+  Container,
+  SectionHeader,
+} from "@/components/ui";
+
+const images = [
+  "/images/lifestyle/lifestyle-1.jpg",
+  "/images/lifestyle/lifestyle-2.jpg",
+  "/images/lifestyle/lifestyle-3.jpg",
+];
+
+export default function Lifestyle() {
+  return (
+    <section className="bg-white py-36">
+
+      <Container>
+
+        <SectionHeader
+          eyebrow="Lifestyle"
+          title="Made For Days That Start Before Sunrise."
+          description="Every collection is inspired by Australia's coastline, long weekends and the freedom of life outdoors."
+        />
+
+        <div className="mt-20 grid gap-8 lg:grid-cols-12">
+
+          <div className="relative overflow-hidden rounded-[36px] lg:col-span-7 h-[700px]">
+            <Image
+              src={images[0]}
+              alt="Salt & Swell Lifestyle"
+              fill
+              className="object-cover transition duration-[1500ms] hover:scale-105"
+            />
+          </div>
+
+          <div className="flex flex-col gap-8 lg:col-span-5">
+
+            <div className="relative overflow-hidden rounded-[36px] h-[336px]">
+              <Image
+                src={images[1]}
+                alt="Salt & Swell Lifestyle"
+                fill
+                className="object-cover transition duration-[1500ms] hover:scale-105"
+              />
+            </div>
+
+            <div className="relative overflow-hidden rounded-[36px] h-[336px]">
+              <Image
+                src={images[2]}
+                alt="Salt & Swell Lifestyle"
+                fill
+                className="object-cover transition duration-[1500ms] hover:scale-105"
+              />
+            </div>
+
+          </div>
+
+        </div>
+
+      </Container>
+
+    </section>
+  );
+}
+
+=================================================
+components/home/sections/Manifesto.tsx
+=================================================
+import { Container } from "@/components/ui";
+
+export default function Manifesto() {
+  return (
+    <section className="bg-[#F7F5F0] py-36">
+
+      <Container>
+
+        <div className="mx-auto max-w-5xl text-center">
+
+          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-neutral-500">
+            Our Philosophy
+          </p>
+
+          <h2 className="mt-8 text-5xl font-black tracking-[-0.05em] leading-tight md:text-7xl">
+            Designed For Life
+            <br />
+            By The Coast.
+          </h2>
+
+          <p className="mx-auto mt-10 max-w-3xl text-xl leading-10 text-neutral-600">
+            Salt &amp; Swell was born from early mornings chasing swell,
+            road trips down the coastline and the belief that the best
+            clothing should feel just as good around a beach fire as it
+            does on the walk home from the surf.
+          </p>
+
+        </div>
+
+        <div className="mt-24 grid gap-10 md:grid-cols-3">
+
+          <div className="rounded-[32px] bg-white p-10 shadow-sm">
+            <h3 className="text-2xl font-bold">
+              Premium Quality
+            </h3>
+
+            <p className="mt-5 leading-8 text-neutral-600">
+              Thoughtfully designed apparel built for everyday wear,
+              premium comfort and long-lasting durability.
+            </p>
+          </div>
+
+          <div className="rounded-[32px] bg-white p-10 shadow-sm">
+            <h3 className="text-2xl font-bold">
+              Coastal Lifestyle
+            </h3>
+
+            <p className="mt-5 leading-8 text-neutral-600">
+              Inspired by Australia's coastline and the people who feel
+              most at home beside the ocean.
+            </p>
+          </div>
+
+          <div className="rounded-[32px] bg-white p-10 shadow-sm">
+            <h3 className="text-2xl font-bold">
+              Built To Last
+            </h3>
+
+            <p className="mt-5 leading-8 text-neutral-600">
+              Timeless pieces designed to outlive trends and become
+              favourites you'll keep reaching for.
+            </p>
+          </div>
+
+        </div>
+
+      </Container>
+
+    </section>
+  );
+}
