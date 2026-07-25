@@ -1,14 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import { X, Heart, Truck, RotateCcw, ShieldCheck } from "lucide-react";
+
+import type { QuickViewProduct } from "./useQuickView";
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  product: QuickViewProduct | null;
 }
 
-export default function QuickViewModal({ open, onClose }: Props) {
-  if (!open) return null;
+export default function QuickViewModal({ open, onClose, product }: Props) {
+  if (!open || !product) return null;
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-md">
@@ -21,26 +25,29 @@ export default function QuickViewModal({ open, onClose }: Props) {
         </button>
 
         <div className="grid lg:grid-cols-2">
-          <div className="bg-neutral-100 h-[700px]" />
+          <div className="relative h-[700px] bg-neutral-100">
+            <Image src={product.image} alt={product.name} fill className="object-cover" />
+          </div>
 
           <div className="p-14">
             <p className="text-xs uppercase tracking-[0.4em] text-neutral-500">Salt & Swell Co.</p>
 
-            <h2 className="mt-4 text-5xl font-black">Heavyweight Hoodie</h2>
+            <h2 className="mt-4 text-5xl font-black">{product.name}</h2>
 
-            <p className="mt-6 text-3xl font-bold">$119</p>
+            <p className="mt-6 text-3xl font-bold">${product.price}</p>
 
             <div className="mt-10 flex gap-3">
-              <button className="rounded-full border px-5 py-3">S</button>
-
-              <button className="rounded-full border px-5 py-3">M</button>
-
-              <button className="rounded-full border px-5 py-3">L</button>
-
-              <button className="rounded-full border px-5 py-3">XL</button>
+              {["S", "M", "L", "XL"].map((size) => (
+                <button
+                  key={size}
+                  className="rounded-full border px-5 py-3 hover:bg-black hover:text-white transition"
+                >
+                  {size}
+                </button>
+              ))}
             </div>
 
-            <button className="mt-10 w-full rounded-full bg-black py-5 font-bold text-white transition hover:bg-neutral-800">
+            <button className="mt-10 w-full rounded-full bg-black py-5 font-bold text-white hover:bg-neutral-800">
               Add To Cart
             </button>
 
@@ -54,7 +61,7 @@ export default function QuickViewModal({ open, onClose }: Props) {
                 <Truck />
                 <div>
                   <p className="font-semibold">Free Shipping</p>
-                  <p className="text-sm text-neutral-500">Orders over $150 Australia-wide</p>
+                  <p className="text-sm text-neutral-500">Orders over $150</p>
                 </div>
               </div>
 
@@ -62,7 +69,7 @@ export default function QuickViewModal({ open, onClose }: Props) {
                 <RotateCcw />
                 <div>
                   <p className="font-semibold">30 Day Returns</p>
-                  <p className="text-sm text-neutral-500">Easy returns on unworn items</p>
+                  <p className="text-sm text-neutral-500">Easy returns</p>
                 </div>
               </div>
 
