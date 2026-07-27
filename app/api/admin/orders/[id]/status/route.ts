@@ -36,10 +36,7 @@ const statusMessages: Record<
   },
 };
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
 
@@ -92,10 +89,7 @@ export async function PATCH(
 
     return NextResponse.json(
       {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Status update failed",
+        error: error instanceof Error ? error.message : "Status update failed",
       },
       {
         status: 500,

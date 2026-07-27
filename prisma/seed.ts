@@ -13,7 +13,6 @@ async function main() {
   await prisma.collection.deleteMany();
   await prisma.category.deleteMany();
 
-
   const mens = await prisma.collection.create({
     data: {
       name: "Men's Coastal Collection",
@@ -27,8 +26,7 @@ async function main() {
     data: {
       name: "Women's Coastal Collection",
       slug: "womens-coastal-collection",
-      description:
-        "Relaxed coastal pieces inspired by Australian beaches and slow summer living.",
+      description: "Relaxed coastal pieces inspired by Australian beaches and slow summer living.",
     },
   });
 
@@ -36,11 +34,9 @@ async function main() {
     data: {
       name: "Salt & Swell Essentials",
       slug: "salt-and-swell-essentials",
-      description:
-        "Everyday staples built around comfort, quality and timeless coastal style.",
+      description: "Everyday staples built around comfort, quality and timeless coastal style.",
     },
   });
-
 
   const tees = await prisma.category.create({
     data: {
@@ -63,7 +59,6 @@ async function main() {
     },
   });
 
-
   const products = [
     {
       name: "Salt & Swell Essential Tee",
@@ -78,8 +73,7 @@ async function main() {
     {
       name: "Coastal Heritage Tee",
       slug: "coastal-heritage-tee",
-      description:
-        "Vintage inspired surf culture styling with premium cotton construction.",
+      description: "Vintage inspired surf culture styling with premium cotton construction.",
       price: 59.95,
       featured: true,
       collectionId: mens.id,
@@ -88,8 +82,7 @@ async function main() {
     {
       name: "Salt Washed Hoodie",
       slug: "salt-washed-hoodie",
-      description:
-        "A premium fleece hoodie designed for cool mornings by the ocean.",
+      description: "A premium fleece hoodie designed for cool mornings by the ocean.",
       price: 119.95,
       featured: true,
       collectionId: mens.id,
@@ -98,8 +91,7 @@ async function main() {
     {
       name: "Coastal Crew Sweat",
       slug: "coastal-crew-sweat",
-      description:
-        "Relaxed heavyweight crew built for evenings beside the coast.",
+      description: "Relaxed heavyweight crew built for evenings beside the coast.",
       price: 99.95,
       featured: false,
       collectionId: essentials.id,
@@ -108,8 +100,7 @@ async function main() {
     {
       name: "Classic Salt & Swell Cap",
       slug: "classic-salt-swell-cap",
-      description:
-        "Six panel cap featuring embroidered Salt & Swell branding.",
+      description: "Six panel cap featuring embroidered Salt & Swell branding.",
       price: 39.95,
       featured: false,
       collectionId: essentials.id,
@@ -118,15 +109,13 @@ async function main() {
     {
       name: "Women's Coastal Tee",
       slug: "womens-coastal-tee",
-      description:
-        "A relaxed fit coastal essential designed for effortless summer days.",
+      description: "A relaxed fit coastal essential designed for effortless summer days.",
       price: 49.95,
       featured: true,
       collectionId: womens.id,
       categoryId: tees.id,
     },
   ];
-
 
   for (const item of products) {
     const product = await prisma.product.create({
@@ -136,20 +125,18 @@ async function main() {
         images: {
           create: [
             {
-              url:
-                item.name.includes("Women's")
-                  ? "/images/collections/womens.png"
-                  : item.name.includes("Essential") || item.name.includes("Classic")
+              url: item.name.includes("Women's")
+                ? "/images/collections/womens.png"
+                : item.name.includes("Essential") || item.name.includes("Classic")
                   ? "/images/collections/mens.png"
                   : "/images/collections/mens.png",
               alt: item.name,
               sortOrder: 0,
             },
             {
-              url:
-                item.name.includes("Women's")
-                  ? "/images/collections/womens.png"
-                  : "/images/collections/mens.png",
+              url: item.name.includes("Women's")
+                ? "/images/collections/womens.png"
+                : "/images/collections/mens.png",
               alt: item.name,
               sortOrder: 1,
             },

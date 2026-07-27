@@ -16,7 +16,6 @@ const collections = [
 export default function Collections() {
   return (
     <section className="bg-white">
-
       {collections.map((collection) => (
         <Link
           key={collection.title}
@@ -33,12 +32,8 @@ export default function Collections() {
           <div className="absolute inset-0 bg-black/35 transition group-hover:bg-black/20" />
 
           <div className="relative z-10 flex h-full items-end px-10 pb-16 md:px-20">
-
             <div>
-
-              <p className="mb-4 text-xs uppercase tracking-[0.45em] text-white/70">
-                COLLECTION
-              </p>
+              <p className="mb-4 text-xs uppercase tracking-[0.45em] text-white/70">COLLECTION</p>
 
               <h2 className="text-6xl font-black tracking-[-0.05em] text-white md:text-8xl">
                 {collection.title}
@@ -47,14 +42,10 @@ export default function Collections() {
               <span className="mt-8 inline-block border-b border-white pb-2 text-sm uppercase tracking-[0.25em] text-white">
                 Explore Collection
               </span>
-
             </div>
-
           </div>
-
         </Link>
       ))}
-
     </section>
   );
 }

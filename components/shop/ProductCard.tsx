@@ -1,75 +1,62 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import WishlistButton from "@/components/wishlist/WishlistButton";
+import { useState } from "react";
 
-type Props = {
-  product: {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-    category: string;
-  };
-};
+import { Product } from "@/types/product";
+import Badge from "@/components/ui/Badge";
+import QuickViewModal from "./QuickViewModal";
+
+interface Props {
+  product: Product;
+}
 
 export default function ProductCard({ product }: Props) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <motion.div
-      whileHover={{
-        y: -6,
-        transition: {
-          duration: 0.35,
-        },
-      }}
-      className="overflow-hidden rounded-3xl bg-white shadow-md transition-shadow duration-500 hover:shadow-2xl"
-    >
-      <div className="relative overflow-hidden">
+    <>
+      <motion.article whileHover={{ y: -8 }} transition={{ duration: 0.25 }} className="group">
+        <div className="relative overflow-hidden rounded-[32px] bg-neutral-100 aspect-[4/5]">
+          {product.badge && (
+            <div className="absolute left-5 top-5 z-20">
+              <Badge>{product.badge}</Badge>
+            </div>
+          )}
 
-        <motion.div
-          whileHover={{
-            scale: 1.03,
-          }}
-          transition={{
-            duration: 0.7,
-          }}
-        >
-          <Image
-            width={800}
-            height={1000}
-            src={product.image}
-            alt={product.name}
-            className="aspect-square w-full object-cover"
-          />
-        </motion.div>
+          <Link href={`/product/${product.slug}`}>
+            <Image
+              src={product.images[0]}
+              alt={product.name}
+              fill
+              className="object-cover transition duration-700 group-hover:scale-105"
+            />
+          </Link>
 
-        <div className="absolute right-4 top-4">
-          <WishlistButton productId={product.id} />
+          <div className="absolute inset-x-0 bottom-6 flex justify-center opacity-0 transition duration-300 group-hover:opacity-100">
+            <button
+              onClick={() => setOpen(true)}
+              className="rounded-full bg-white px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] shadow-xl"
+            >
+              Quick View
+            </button>
+          </div>
         </div>
 
-      </div>
+        <div className="mt-6">
+          <p className="text-xs uppercase tracking-[0.35em] text-neutral-500">
+            {product.collection}
+          </p>
 
-      <div className="p-6">
+          <h3 className="mt-2 text-2xl font-semibold">{product.name}</h3>
 
-        <p className="text-sm uppercase tracking-widest text-slate-400">
-          {product.category}
-        </p>
+          <p className="mt-2 text-lg">${product.price}</p>
+        </div>
+      </motion.article>
 
-        <h3 className="mt-2 text-2xl font-bold">
-          {product.name}
-        </h3>
-
-        <p className="mt-3 text-xl">
-          ${product.price}
-        </p>
-
-        <button className="mt-6 w-full rounded-full bg-slate-900 py-3 text-white transition-all duration-300 hover:bg-black">
-          Add To Cart
-        </button>
-
-      </div>
-
-    </motion.div>
+      <QuickViewModal product={product} open={open} onClose={() => setOpen(false)} />
+    </>
   );
 }

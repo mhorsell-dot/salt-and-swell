@@ -25,74 +25,46 @@ type ProductPurchasePanelProps = {
   variants: Variant[];
 };
 
-export default function ProductPurchasePanel({
-  product,
-  variants,
-}: ProductPurchasePanelProps) {
+export default function ProductPurchasePanel({ product, variants }: ProductPurchasePanelProps) {
   const { addItem, openCart } = useCart();
 
-  const availableVariants = useMemo(
-    () => variants.filter(v => v.inventory > 0),
-    [variants]
-  );
+  const availableVariants = useMemo(() => variants.filter((v) => v.inventory > 0), [variants]);
 
-  const colours = useMemo(
-    () => Array.from(new Set(variants.map(v => v.colour))),
-    [variants]
-  );
+  const colours = useMemo(() => Array.from(new Set(variants.map((v) => v.colour))), [variants]);
 
   const [selectedColour, setSelectedColour] = useState(
-    availableVariants[0]?.colour ?? colours[0] ?? ""
+    availableVariants[0]?.colour ?? colours[0] ?? "",
   );
 
   const availableSizes = useMemo(
     () =>
-      Array.from(
-        new Set(
-          variants
-            .filter(v => v.colour === selectedColour)
-            .map(v => v.size)
-        )
-      ),
-    [variants, selectedColour]
+      Array.from(new Set(variants.filter((v) => v.colour === selectedColour).map((v) => v.size))),
+    [variants, selectedColour],
   );
 
   const initialVariant =
-    availableVariants.find(v => v.colour === selectedColour) ??
-    availableVariants[0];
+    availableVariants.find((v) => v.colour === selectedColour) ?? availableVariants[0];
 
-  const [selectedVariantId, setSelectedVariantId] = useState(
-    initialVariant?.id ?? ""
-  );
+  const [selectedVariantId, setSelectedVariantId] = useState(initialVariant?.id ?? "");
 
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
   const selectedVariant =
-    variants.find(v => v.id === selectedVariantId) ??
-    variants.find(
-      v =>
-        v.colour === selectedColour &&
-        v.inventory > 0
-    );
+    variants.find((v) => v.id === selectedVariantId) ??
+    variants.find((v) => v.colour === selectedColour && v.inventory > 0);
 
   function selectColour(colour: string) {
     setSelectedColour(colour);
 
-    const variant = variants.find(
-      v => v.colour === colour && v.inventory > 0
-    );
+    const variant = variants.find((v) => v.colour === colour && v.inventory > 0);
 
     setSelectedVariantId(variant?.id ?? "");
     setQuantity(1);
   }
 
   function selectSize(size: string) {
-    const variant = variants.find(
-      v =>
-        v.colour === selectedColour &&
-        v.size === size
-    );
+    const variant = variants.find((v) => v.colour === selectedColour && v.size === size);
 
     setSelectedVariantId(variant?.id ?? "");
     setQuantity(1);
@@ -133,7 +105,6 @@ export default function ProductPurchasePanel({
 
   return (
     <div className="mt-8">
-
       {added && (
         <div className="fixed bottom-6 right-6 z-50 w-[380px] overflow-hidden rounded-3xl bg-[#111] text-white shadow-[0_25px_80px_rgba(0,0,0,.35)]">
           <div className="flex items-center gap-4 p-6">
@@ -142,21 +113,14 @@ export default function ProductPurchasePanel({
             </div>
 
             <div>
-              <p className="font-semibold">
-                Added to your bag
-              </p>
+              <p className="font-semibold">Added to your bag</p>
 
-              <p className="text-sm text-white/60">
-                {product.name}
-              </p>
+              <p className="text-sm text-white/60">{product.name}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 border-t border-white/10">
-            <button
-              onClick={openCart}
-              className="py-4 font-semibold hover:bg-white/10"
-            >
+            <button onClick={openCart} className="py-4 font-semibold hover:bg-white/10">
               View Bag
             </button>
 
@@ -173,17 +137,13 @@ export default function ProductPurchasePanel({
       {!!colours.length && (
         <>
           <div className="flex justify-between">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em]">
-              Colour
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em]">Colour</p>
 
-            <p className="text-xs text-black/50">
-              {selectedColour}
-            </p>
+            <p className="text-xs text-black/50">{selectedColour}</p>
           </div>
 
           <div className="mt-4 flex flex-wrap gap-3">
-            {colours.map(colour => {
+            {colours.map((colour) => {
               const selected = colour === selectedColour;
 
               return (
@@ -206,25 +166,16 @@ export default function ProductPurchasePanel({
 
       <div className="mt-10">
         <div className="flex justify-between">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em]">
-            Size
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em]">Size</p>
 
-          <button className="text-xs underline">
-            Size Guide
-          </button>
+          <button className="text-xs underline">Size Guide</button>
         </div>
 
         <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-6">
-          {availableSizes.map(size => {
-            const variant = variants.find(
-              v =>
-                v.colour === selectedColour &&
-                v.size === size
-            );
+          {availableSizes.map((size) => {
+            const variant = variants.find((v) => v.colour === selectedColour && v.size === size);
 
-            const selected =
-              variant?.id === selectedVariant?.id;
+            const selected = variant?.id === selectedVariant?.id;
 
             return (
               <button
@@ -251,36 +202,19 @@ export default function ProductPurchasePanel({
       )}
 
       <div className="mt-8 grid grid-cols-[120px_1fr] gap-4">
-
         <div className="flex h-14 items-center rounded-xl border border-black/15 bg-white shadow-sm">
-
-          <button
-            onClick={() =>
-              setQuantity(q => Math.max(1, q - 1))
-            }
-            className="w-10"
-          >
+          <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="w-10">
             <Minus size={16} />
           </button>
 
-          <div className="flex-1 text-center font-semibold">
-            {quantity}
-          </div>
+          <div className="flex-1 text-center font-semibold">{quantity}</div>
 
           <button
-            onClick={() =>
-              setQuantity(q =>
-                Math.min(
-                  selectedVariant?.inventory ?? 1,
-                  q + 1
-                )
-              )
-            }
+            onClick={() => setQuantity((q) => Math.min(selectedVariant?.inventory ?? 1, q + 1))}
             className="w-10"
           >
             <Plus size={16} />
           </button>
-
         </div>
 
         <button
@@ -292,18 +226,13 @@ export default function ProductPurchasePanel({
 
           {added ? "Added" : "Add to Bag"}
         </button>
-
       </div>
 
       <div className="mt-8 rounded-2xl border border-black/10 bg-white p-5">
         <div className="flex justify-between">
-          <span className="font-medium">
-            Secure Checkout
-          </span>
+          <span className="font-medium">Secure Checkout</span>
 
-          <span className="text-xs uppercase tracking-widest text-black/45">
-            SSL
-          </span>
+          <span className="text-xs uppercase tracking-widest text-black/45">SSL</span>
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-black/60">
@@ -315,18 +244,15 @@ export default function ProductPurchasePanel({
       </div>
 
       <div className="mt-4 rounded-2xl bg-[#f7f6f2] p-5">
-        <h4 className="font-semibold">
-          Shipping
-        </h4>
+        <h4 className="font-semibold">Shipping</h4>
 
         <p className="mt-2 text-sm leading-7 text-black/60">
-          Complimentary Australian shipping on orders over $150.
-          Orders dispatch within one business day.
+          Complimentary Australian shipping on orders over $150. Orders dispatch within one business
+          day.
         </p>
       </div>
 
       <TrustBar />
-
     </div>
   );
 }

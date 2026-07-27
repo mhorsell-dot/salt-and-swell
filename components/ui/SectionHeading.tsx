@@ -1,19 +1,18 @@
-type Props = {
-  eyebrow?: string;
+interface Props {
+  eyebrow: string;
   title: string;
-  subtitle?: string;
-};
+  description?: string;
+  align?: "left" | "center";
+}
 
-export default function SectionHeading({ eyebrow, title, subtitle }: Props) {
+export default function SectionHeading({ eyebrow, title, description, align = "center" }: Props) {
   return (
-    <div className="mb-16 max-w-3xl">
-      {eyebrow && (
-        <p className="mb-4 uppercase tracking-[0.4em] text-sm text-slate-500">{eyebrow}</p>
-      )}
+    <div className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}>
+      <p className="text-xs uppercase tracking-[0.45em] text-neutral-500">{eyebrow}</p>
 
-      <h2 className="text-5xl font-black md:text-6xl">{title}</h2>
+      <h2 className="mt-5 text-5xl font-black tracking-tight md:text-6xl">{title}</h2>
 
-      {subtitle && <p className="mt-6 text-xl leading-9 text-slate-600">{subtitle}</p>}
+      {description && <p className="mt-6 text-lg leading-8 text-neutral-600">{description}</p>}
     </div>
   );
 }

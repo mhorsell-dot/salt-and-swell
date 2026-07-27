@@ -3,31 +3,20 @@
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/store/cart";
 import { useCartDrawer } from "@/components/providers/CartProvider";
+import type { Product } from "@/types/product";
 
 interface Props {
-  id: string;
-  slug: string;
-  name: string;
-  price: number;
-  image: string;
+  product: Product;
 }
 
-export default function AddToCartButton(props: Props) {
+export default function AddToCartButton({ product }: Props) {
   const addItem = useCart((s) => s.addItem);
   const { openCart } = useCartDrawer();
 
   return (
     <button
       onClick={() => {
-        addItem({
-          id: props.id,
-          slug: props.slug,
-          name: props.name,
-          price: props.price,
-          image: props.image,
-          quantity: 1,
-        });
-
+        addItem(product);
         openCart();
       }}
       className="mt-8 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-black text-white transition hover:bg-neutral-800"

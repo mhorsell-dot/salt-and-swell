@@ -10,13 +10,7 @@ interface Props {
 }
 
 export default function CartDrawer({ open, onClose }: Props) {
-  const {
-    items,
-    subtotal,
-    increase,
-    decrease,
-    removeItem,
-  } = useCart();
+  const { items, subtotal, increase, decrease, removeItem } = useCart();
 
   return (
     <>
@@ -41,78 +35,51 @@ export default function CartDrawer({ open, onClose }: Props) {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-
           {items.length === 0 ? (
-            <div className="p-10 text-center text-neutral-500">
-              Your cart is empty.
-            </div>
+            <div className="p-10 text-center text-neutral-500">Your cart is empty.</div>
           ) : (
             items.map((item) => (
-              <div
-                key={item.id}
-                className="flex gap-4 border-b p-5"
-              >
+              <div key={item.id} className="flex gap-4 border-b p-5">
                 <div className="relative h-24 w-24 overflow-hidden rounded-xl bg-neutral-100">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover"
-                  />
+                  <Image src={item.images[0]} alt={item.name} fill className="object-cover" />
                 </div>
 
                 <div className="flex flex-1 flex-col">
+                  <h3 className="font-semibold">{item.name}</h3>
 
-                  <h3 className="font-semibold">
-                    {item.name}
-                  </h3>
-
-                  <p className="mt-1 text-neutral-500">
-                    ${item.price.toFixed(2)}
-                  </p>
+                  <p className="mt-1 text-neutral-500">${item.price.toFixed(2)}</p>
 
                   <div className="mt-auto flex items-center gap-3">
-
                     <button onClick={() => decrease(item.id)}>
-                      <Minus size={18}/>
+                      <Minus size={18} />
                     </button>
 
                     <span>{item.quantity}</span>
 
                     <button onClick={() => increase(item.id)}>
-                      <Plus size={18}/>
+                      <Plus size={18} />
                     </button>
 
-                    <button
-                      className="ml-auto"
-                      onClick={() => removeItem(item.id)}
-                    >
-                      <Trash2 size={18}/>
+                    <button className="ml-auto" onClick={() => removeItem(item.id)}>
+                      <Trash2 size={18} />
                     </button>
-
                   </div>
-
                 </div>
-
               </div>
             ))
           )}
-
         </div>
 
         <div className="border-t p-6">
-
           <div className="mb-5 flex justify-between text-lg font-semibold">
             <span>Subtotal</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>${subtotal().toFixed(2)}</span>
           </div>
 
           <button className="w-full rounded-full bg-black py-4 text-white hover:bg-neutral-800 transition">
             Checkout
           </button>
-
         </div>
-
       </aside>
     </>
   );

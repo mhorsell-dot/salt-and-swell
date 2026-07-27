@@ -5,7 +5,7 @@ import { useCart } from "@/store/cart";
 import { useCartDrawer } from "@/components/providers/CartProvider";
 
 export default function HeaderCartButton() {
-  const count = useCart((s) => s.count);
+  const count = useCart((s) => s.totalItems());
   const { openCart } = useCartDrawer();
 
   return (

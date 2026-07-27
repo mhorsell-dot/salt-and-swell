@@ -80,8 +80,7 @@ export default function MegaMenu() {
             className="absolute left-1/2 top-full z-50 mt-8 w-[1200px] -translate-x-1/2 overflow-hidden rounded-3xl border border-black/10 bg-white shadow-2xl"
           >
             <div className="grid grid-cols-[1fr_1fr_1fr_0.9fr_1.3fr] gap-10 p-10">
-
-              {sections.map(section => (
+              {sections.map((section) => (
                 <div key={section.title}>
                   <h3 className="mb-5 text-xs font-bold tracking-[0.25em] text-black/45">
                     {section.title}
@@ -102,9 +101,7 @@ export default function MegaMenu() {
               ))}
 
               <div>
-                <h3 className="mb-5 text-xs font-bold tracking-[0.25em] text-black/45">
-                  FEATURED
-                </h3>
+                <h3 className="mb-5 text-xs font-bold tracking-[0.25em] text-black/45">FEATURED</h3>
 
                 <div className="space-y-3">
                   {featured.map(([label, href]) => (
@@ -127,9 +124,7 @@ export default function MegaMenu() {
                 />
 
                 <div className="p-8">
-                  <p className="text-xs uppercase tracking-[0.25em] text-white/60">
-                    Winter Drop
-                  </p>
+                  <p className="text-xs uppercase tracking-[0.25em] text-white/60">Winter Drop</p>
 
                   <h2 className="mt-3 text-3xl font-semibold leading-tight">
                     Built for cool coastal mornings.
@@ -144,7 +139,6 @@ export default function MegaMenu() {
                   </Link>
                 </div>
               </div>
-
             </div>
           </motion.div>
         )}

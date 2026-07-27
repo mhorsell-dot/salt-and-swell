@@ -62,9 +62,7 @@ export default async function OrderDetailPage({
           Salt & Swell Journey
         </p>
 
-        <h1 className="mt-5 text-5xl font-semibold tracking-[-0.05em]">
-          Your order is underway.
-        </h1>
+        <h1 className="mt-5 text-5xl font-semibold tracking-[-0.05em]">Your order is underway.</h1>
 
         <p className="mt-4 text-black/50">
           Order {order.orderNumber} · Placed {order.createdAt.toLocaleDateString("en-AU")}

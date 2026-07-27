@@ -11,19 +11,18 @@ const fallbackImages = [
   "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=1200&q=85",
 ];
 
-const colourMap: Record<string,string> = {
-  Black:"#111111",
-  White:"#ffffff",
-  Navy:"#1b2b44",
-  Blue:"#3b82f6",
-  Grey:"#9ca3af",
-  Sand:"#d6c3a5",
-  Beige:"#e7d7bc",
-  Olive:"#6b7d4d",
-  Sage:"#9caf88",
-  Brown:"#8b5a2b",
+const colourMap: Record<string, string> = {
+  Black: "#111111",
+  White: "#ffffff",
+  Navy: "#1b2b44",
+  Blue: "#3b82f6",
+  Grey: "#9ca3af",
+  Sand: "#d6c3a5",
+  Beige: "#e7d7bc",
+  Olive: "#6b7d4d",
+  Sage: "#9caf88",
+  Brown: "#8b5a2b",
 };
-
 
 function formatCurrency(value: string) {
   return new Intl.NumberFormat("en-AU", {
@@ -97,7 +96,7 @@ export default async function LiveProductGrid({
     take: limit,
   });
 
-if (products.length === 0 && showEmptyState) {
+  if (products.length === 0 && showEmptyState) {
     return (
       <div className="mt-10 flex min-h-[360px] flex-col items-center justify-center border border-black/10 bg-white/40 px-6 text-center">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black text-white">
@@ -143,7 +142,9 @@ if (products.length === 0 && showEmptyState) {
         const isLowStock = hasVariants && inventory > 0 && inventory <= 5;
 
         return (
-          <article key={product.id} className="
+          <article
+            key={product.id}
+            className="
 group
 overflow-hidden
 rounded-[28px]
@@ -153,10 +154,11 @@ transition-all
 duration-500
 hover:-translate-y-2
 hover:shadow-2xl
-">
+"
+          >
             <Link href={`/shop/${product.slug}`} className="block">
               <div className="relative aspect-[4/5] overflow-hidden rounded-t-[28px] bg-[#f6f4ef]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {}
                 <Image
                   src={primaryImage}
                   alt={product.images[0]?.alt || product.name}
@@ -165,7 +167,7 @@ hover:shadow-2xl
                   className="absolute inset-0 object-cover transition duration-700 group-hover:scale-105 group-hover:opacity-0"
                 />
 
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {}
                 <Image
                   src={secondaryImage}
                   alt={product.images[1]?.alt || `${product.name} alternate view`}
@@ -176,10 +178,8 @@ hover:shadow-2xl
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
 
-                <button
-                  className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur transition hover:scale-110"
-                >
-                  <Heart className="h-5 w-5"/>
+                <button className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur transition hover:scale-110">
+                  <Heart className="h-5 w-5" />
                 </button>
 
                 <div className="absolute left-4 top-4 flex flex-col items-start gap-2">
@@ -203,8 +203,7 @@ hover:shadow-2xl
                 </div>
 
                 <div className="absolute bottom-4 left-4 right-4 translate-y-3 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <button
-                    className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white text-sm font-semibold shadow-xl transition-all duration-300 hover:bg-black hover:text-white">
+                  <button className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white text-sm font-semibold shadow-xl transition-all duration-300 hover:bg-black hover:text-white">
                     <ShoppingBag className="h-4 w-4" />
                     Quick Add
                   </button>
@@ -214,9 +213,7 @@ hover:shadow-2xl
               <div className="space-y-5 p-6">
                 <div className="flex items-start justify-between gap-5">
                   <div>
-                    <h3 className="text-base font-semibold tracking-tight">
-                      {product.name}
-                    </h3>
+                    <h3 className="text-base font-semibold tracking-tight">{product.name}</h3>
 
                     <p className="mt-2 text-xs uppercase tracking-[0.3em] text-black/40">
                       {product.category?.name ?? product.collection?.name ?? "Salt & Swell"}
@@ -237,9 +234,7 @@ hover:shadow-2xl
                           title={colour}
                           className="h-4 w-4 rounded-full border border-black/15"
                           style={{
-                            backgroundColor:
-                              colourMap[colour] ??
-                              "#d4d4d4",
+                            backgroundColor: colourMap[colour] ?? "#d4d4d4",
                           }}
                         />
                       ))}

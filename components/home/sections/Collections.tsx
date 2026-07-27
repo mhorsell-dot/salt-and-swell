@@ -1,10 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import {
-  Container,
-  SectionHeader,
-} from "@/components/ui";
+import { Container, SectionHeader } from "@/components/ui";
 
 const collections = [
   {
@@ -66,9 +63,7 @@ export default function Collections() {
                     Salt &amp; Swell
                   </p>
 
-                  <h3 className="mt-3 text-4xl font-bold text-white">
-                    {item.title}
-                  </h3>
+                  <h3 className="mt-3 text-4xl font-bold text-white">{item.title}</h3>
 
                   <p className="mt-4 max-w-sm text-base leading-7 text-white/85">
                     {item.description}

@@ -10,11 +10,7 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | null>(null);
 
-export function CartProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function CartProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   const value = useMemo(
@@ -22,17 +18,14 @@ export function CartProvider({
       openCart: () => setOpen(true),
       closeCart: () => setOpen(false),
     }),
-    []
+    [],
   );
 
   return (
     <CartContext.Provider value={value}>
       {children}
 
-      <CartDrawer
-        open={open}
-        onClose={() => setOpen(false)}
-      />
+      <CartDrawer open={open} onClose={() => setOpen(false)} />
     </CartContext.Provider>
   );
 }

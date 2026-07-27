@@ -1,9 +1,6 @@
 import Image from "next/image";
 
-import {
-  Container,
-  SectionHeader,
-} from "@/components/ui";
+import { Container, SectionHeader } from "@/components/ui";
 
 const images = [
   "/images/lifestyle/lifestyle-1.jpg",
@@ -14,9 +11,7 @@ const images = [
 export default function Lifestyle() {
   return (
     <section className="bg-white py-36">
-
       <Container>
-
         <SectionHeader
           eyebrow="Lifestyle"
           title="Made For Days That Start Before Sunrise."
@@ -24,7 +19,6 @@ export default function Lifestyle() {
         />
 
         <div className="mt-20 grid gap-8 lg:grid-cols-12">
-
           <div className="relative overflow-hidden rounded-[36px] lg:col-span-7 h-[700px]">
             <Image
               src={images[0]}
@@ -35,7 +29,6 @@ export default function Lifestyle() {
           </div>
 
           <div className="flex flex-col gap-8 lg:col-span-5">
-
             <div className="relative overflow-hidden rounded-[36px] h-[336px]">
               <Image
                 src={images[1]}
@@ -53,13 +46,9 @@ export default function Lifestyle() {
                 className="object-cover transition duration-[1500ms] hover:scale-105"
               />
             </div>
-
           </div>
-
         </div>
-
       </Container>
-
     </section>
   );
 }

@@ -1,0 +1,63 @@
+import Link from "next/link";
+
+type Product = {
+  id: string;
+  slug: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+};
+
+type CompleteTheLookProps = {
+  title?: string;
+  products: Product[];
+};
+
+export default function CompleteTheLook({
+  title = "Complete the Look",
+  products,
+}: CompleteTheLookProps) {
+  if (!products.length) return null;
+
+  return (
+    <section className="mt-24 border-t border-black/10 pt-16">
+      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-black/50">
+        {title}
+      </p>
+
+      <h2 className="mt-3 text-3xl font-semibold tracking-tight">
+        Styled together.
+      </h2>
+
+      <p className="mt-3 max-w-2xl text-black/60">
+        Pair your favourite Salt &amp; Swell pieces for the complete coastal look.
+      </p>
+
+      <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {products.map((product) => (
+          <Link
+            key={product.id}
+            href={`/shop/${product.slug}`}
+            className="group"
+          >
+            <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-stone-100">
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              />
+            </div>
+
+            <h3 className="mt-4 text-lg font-medium transition group-hover:underline">
+              {product.name}
+            </h3>
+
+            <p className="mt-1 text-black/60">
+              ${product.price.toFixed(2)}
+            </p>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}

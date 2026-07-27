@@ -28,12 +28,9 @@ export default function FeaturedProducts() {
   return (
     <section className="bg-white py-32">
       <div className="mx-auto max-w-7xl px-8">
-
         <div className="mb-20 flex items-end justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.45em] text-neutral-500">
-              NEW ARRIVALS
-            </p>
+            <p className="text-xs uppercase tracking-[0.45em] text-neutral-500">NEW ARRIVALS</p>
 
             <h2 className="mt-5 max-w-3xl text-5xl font-black tracking-[-0.05em] md:text-6xl">
               Made for mornings by the coast.
@@ -50,13 +47,8 @@ export default function FeaturedProducts() {
 
         <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-4">
           {products.map((product) => (
-            <Link
-              key={product.title}
-              href="/shop"
-              className="group"
-            >
+            <Link key={product.title} href="/shop" className="group">
               <div className="relative overflow-hidden rounded-3xl bg-neutral-100">
-
                 <Image
                   src={product.image}
                   alt={product.title}
@@ -70,23 +62,16 @@ export default function FeaturedProducts() {
                     Quick View
                   </span>
                 </div>
-
               </div>
 
               <div className="mt-6">
-                <h3 className="text-lg font-semibold">
-                  {product.title}
-                </h3>
+                <h3 className="text-lg font-semibold">{product.title}</h3>
 
-                <p className="mt-2 text-neutral-500">
-                  {product.price}
-                </p>
+                <p className="mt-2 text-neutral-500">{product.price}</p>
               </div>
-
             </Link>
           ))}
         </div>
-
       </div>
     </section>
   );

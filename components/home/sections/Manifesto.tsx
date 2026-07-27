@@ -1,71 +1,121 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { Container } from "@/components/ui";
+
+const values = [
+  {
+    title: "Premium Craftsmanship",
+    body: "Purpose-built apparel created with premium materials and timeless construction.",
+  },
+  {
+    title: "Australian Designed",
+    body: "Inspired by Australia's coastline, long weekends and life beside the ocean.",
+  },
+  {
+    title: "Timeless Style",
+    body: "Clean silhouettes and understated graphics that outlast seasonal trends.",
+  },
+  {
+    title: "Made To Explore",
+    body: "Designed for early mornings, road trips, beach fires and everyday adventures.",
+  },
+];
 
 export default function Manifesto() {
   return (
-    <section className="bg-[#F7F5F0] py-36">
-
+    <section className="bg-[#F7F5F0] py-32 lg:py-40">
       <Container>
-
         <div className="mx-auto max-w-5xl text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-xs uppercase tracking-[0.55em] text-neutral-500"
+          >
+            OUR MANIFESTO
+          </motion.p>
 
-          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-neutral-500">
-            Our Philosophy
-          </p>
-
-          <h2 className="mt-8 text-5xl font-black tracking-[-0.05em] leading-tight md:text-7xl">
-            Designed For Life
+          <motion.h2
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mt-8 text-5xl font-black leading-[0.92] tracking-[-0.05em] md:text-7xl"
+          >
+            BUILT FOR
             <br />
-            By The Coast.
-          </h2>
+            SALTY SOULS.
+          </motion.h2>
 
-          <p className="mx-auto mt-10 max-w-3xl text-xl leading-10 text-neutral-600">
-            Salt &amp; Swell was born from early mornings chasing swell,
-            road trips down the coastline and the belief that the best
-            clothing should feel just as good around a beach fire as it
-            does on the walk home from the surf.
-          </p>
+          <motion.p
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15, duration: 0.8 }}
+            className="mx-auto mt-10 max-w-3xl text-lg leading-9 text-neutral-600 md:text-xl md:leading-10"
+          >
+            Salt &amp; Swell exists for those who chase sunrise instead of schedules, saltwater
+            instead of shortcuts and moments measured by tides rather than time.
+          </motion.p>
 
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="mt-14"
+          >
+            <Link
+              href="/about"
+              className="inline-flex items-center rounded-full border border-black px-10 py-4 text-sm font-semibold uppercase tracking-[0.25em] transition-all duration-300 hover:bg-black hover:text-white"
+            >
+              Discover Our Story
+            </Link>
+          </motion.div>
         </div>
-
-        <div className="mt-24 grid gap-10 md:grid-cols-3">
-
-          <div className="rounded-[32px] bg-white p-10 shadow-sm">
-            <h3 className="text-2xl font-bold">
-              Premium Quality
-            </h3>
-
-            <p className="mt-5 leading-8 text-neutral-600">
-              Thoughtfully designed apparel built for everyday wear,
-              premium comfort and long-lasting durability.
-            </p>
-          </div>
-
-          <div className="rounded-[32px] bg-white p-10 shadow-sm">
-            <h3 className="text-2xl font-bold">
-              Coastal Lifestyle
-            </h3>
-
-            <p className="mt-5 leading-8 text-neutral-600">
-              Inspired by Australia's coastline and the people who feel
-              most at home beside the ocean.
-            </p>
-          </div>
-
-          <div className="rounded-[32px] bg-white p-10 shadow-sm">
-            <h3 className="text-2xl font-bold">
-              Built To Last
-            </h3>
-
-            <p className="mt-5 leading-8 text-neutral-600">
-              Timeless pieces designed to outlive trends and become
-              favourites you'll keep reaching for.
-            </p>
-          </div>
-
-        </div>
-
       </Container>
 
+      <motion.div
+        initial={{ opacity: 0, scale: 0.98 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1 }}
+        className="mx-auto mt-24 max-w-7xl overflow-hidden rounded-[40px]"
+      >
+        <div className="relative h-[420px] md:h-[650px]">
+          <Image
+            src="/images/hero/salt-swell-hero.png"
+            alt="Salt & Swell Lifestyle"
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+      </motion.div>
+
+      <Container>
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="mt-24 grid gap-12 md:grid-cols-2 xl:grid-cols-4"
+        >
+          {values.map((item) => (
+            <div key={item.title}>
+              <div className="mb-6 h-px w-16 bg-black" />
+
+              <h3 className="text-xl font-bold tracking-tight">{item.title}</h3>
+
+              <p className="mt-4 leading-8 text-neutral-600">{item.body}</p>
+            </div>
+          ))}
+        </motion.div>
+      </Container>
     </section>
   );
 }

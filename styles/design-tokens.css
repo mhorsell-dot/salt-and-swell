@@ -1,0 +1,26 @@
+:root {
+  /* Brand Colours */
+  --color-background: #faf8f4;
+  --color-surface: #ffffff;
+  --color-text: #111111;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-accent: #0f766e;
+
+  /* Radius */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.08);
+
+  /* Layout */
+  --container: 1280px;
+
+  /* Motion */
+  --transition-fast: 180ms ease;
+  --transition-normal: 300ms ease;
+}

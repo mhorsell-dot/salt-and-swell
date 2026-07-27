@@ -1,0 +1,71 @@
+import { Container } from "@/components/ui";
+
+export default function Manifesto() {
+  return (
+    <section className="bg-[#F7F5F0] py-36">
+
+      <Container>
+
+        <div className="mx-auto max-w-5xl text-center">
+
+          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-neutral-500">
+            Our Philosophy
+          </p>
+
+          <h2 className="mt-8 text-5xl font-black tracking-[-0.05em] leading-tight md:text-7xl">
+            Designed For Life
+            <br />
+            By The Coast.
+          </h2>
+
+          <p className="mx-auto mt-10 max-w-3xl text-xl leading-10 text-neutral-600">
+            Salt &amp; Swell was born from early mornings chasing swell,
+            road trips down the coastline and the belief that the best
+            clothing should feel just as good around a beach fire as it
+            does on the walk home from the surf.
+          </p>
+
+        </div>
+
+        <div className="mt-24 grid gap-10 md:grid-cols-3">
+
+          <div className="rounded-[32px] bg-white p-10 shadow-sm">
+            <h3 className="text-2xl font-bold">
+              Premium Quality
+            </h3>
+
+            <p className="mt-5 leading-8 text-neutral-600">
+              Thoughtfully designed apparel built for everyday wear,
+              premium comfort and long-lasting durability.
+            </p>
+          </div>
+
+          <div className="rounded-[32px] bg-white p-10 shadow-sm">
+            <h3 className="text-2xl font-bold">
+              Coastal Lifestyle
+            </h3>
+
+            <p className="mt-5 leading-8 text-neutral-600">
+              Inspired by Australia&apos;s coastline and the people who feel
+              most at home beside the ocean.
+            </p>
+          </div>
+
+          <div className="rounded-[32px] bg-white p-10 shadow-sm">
+            <h3 className="text-2xl font-bold">
+              Built To Last
+            </h3>
+
+            <p className="mt-5 leading-8 text-neutral-600">
+              Timeless pieces designed to outlive trends and become
+              favourites you&apos;ll keep reaching for.
+            </p>
+          </div>
+
+        </div>
+
+      </Container>
+
+    </section>
+  );
+}

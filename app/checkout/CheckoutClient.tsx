@@ -556,14 +556,12 @@ export default function CheckoutClient() {
                             {[item.colour, item.size].filter(Boolean).join(" · ") || "Standard"}
                           </p>
 
-                          <p className="mt-2 text-xs text-black/45">
-                              Quantity: {item.quantity}
-                            </p>
+                          <p className="mt-2 text-xs text-black/45">Quantity: {item.quantity}</p>
 
-                            <p className="mt-3 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-700">
-                              <Check className="h-3 w-3" />
-                              Ready to ship
-                            </p>
+                          <p className="mt-3 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-700">
+                            <Check className="h-3 w-3" />
+                            Ready to ship
+                          </p>
                         </div>
 
                         <p className="shrink-0 text-sm font-semibold">

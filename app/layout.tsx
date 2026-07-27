@@ -19,11 +19,7 @@ export const metadata: Metadata = {
   description: "Surfwear For Salty Souls",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -31,9 +27,7 @@ export default function RootLayout({
           <AnnouncementBar />
           <Navbar />
 
-          <main className="min-h-screen">
-            {children}
-          </main>
+          <main className="min-h-screen">{children}</main>
 
           <Footer />
         </CartShell>

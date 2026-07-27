@@ -1,17 +1,10 @@
 import { NotificationPayload, NotificationType } from "./types";
 import { sendOrderEmail } from "@/features/email";
 
-
-function buildMessage(
-  type: NotificationType,
-  payload: NotificationPayload,
-) {
-
+function buildMessage(type: NotificationType, payload: NotificationPayload) {
   const name = payload.customerName.split(" ")[0];
 
-
   switch (type) {
-
     case "ORDER_PAID":
       return `
 Hi ${name},
@@ -25,7 +18,6 @@ We'll keep you updated as your order moves through its journey.
 Thank you for supporting Salt & Swell.
       `.trim();
 
-
     case "ORDER_PACKED":
       return `
 Hi ${name},
@@ -36,7 +28,6 @@ Order ${payload.orderNumber} has been packed and is ready for its next step.
 
 Adventure is almost on the way.
       `.trim();
-
 
     case "ORDER_SHIPPED":
       return `
@@ -52,7 +43,6 @@ ${payload.trackingNumber || "Tracking details coming soon"}
 We can't wait for you to enjoy your new pieces.
       `.trim();
 
-
     case "ORDER_DELIVERED":
       return `
 Hi ${name},
@@ -64,7 +54,6 @@ We hope your new pieces become part of your next coastal adventure.
 Thanks for joining the Salt & Swell community.
       `.trim();
 
-
     case "WISHLIST_BACK_IN_STOCK":
       return `
 Hi ${name},
@@ -74,7 +63,6 @@ Good news.
 ${payload.productName} from your wishlist is back in stock.
       `.trim();
 
-
     case "WISHLIST_PRICE_DROP":
       return `
 Hi ${name},
@@ -82,23 +70,17 @@ Hi ${name},
 ${payload.productName} from your wishlist is now available at a new price.
       `.trim();
 
-
     case "WISHLIST_REMINDER":
       return `
 Hi ${name},
 
 ${payload.productName} is still waiting in your Salt & Swell wishlist.
       `.trim();
-
   }
 }
 
-
-
 function emailTitle(type: NotificationType) {
-
-  switch(type){
-
+  switch (type) {
     case "ORDER_PAID":
       return "Your order has been confirmed 🌊";
 
@@ -113,29 +95,17 @@ function emailTitle(type: NotificationType) {
 
     default:
       return "Salt & Swell update";
-
   }
-
 }
 
-
-
-export async function sendNotification(
-  type: NotificationType,
-  payload: NotificationPayload,
-) {
-
+export async function sendNotification(type: NotificationType, payload: NotificationPayload) {
   const message = buildMessage(type, payload);
-
-
 
   console.log("🌊 SALT & SWELL NOTIFICATION", {
     type,
     to: payload.customerEmail,
     message,
   });
-
-
 
   /*
   if (
@@ -161,11 +131,8 @@ export async function sendNotification(
   }
   */
 
-
-
   return {
     success: true,
     message,
   };
-
 }
