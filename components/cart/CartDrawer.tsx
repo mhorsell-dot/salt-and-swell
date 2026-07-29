@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function CartDrawer({ open, onClose }: Props) {
-  const { items, subtotal, increase, decrease, removeItem } = useCart();
+  const { items, subtotal, updateQuantity, removeItem } = useCart();
 
   return (
     <>
@@ -39,9 +39,9 @@ export default function CartDrawer({ open, onClose }: Props) {
             <div className="p-10 text-center text-neutral-500">Your cart is empty.</div>
           ) : (
             items.map((item) => (
-              <div key={item.id} className="flex gap-4 border-b p-5">
+              <div key={item.cartId} className="flex gap-4 border-b p-5">
                 <div className="relative h-24 w-24 overflow-hidden rounded-xl bg-neutral-100">
-                  <Image src={item.images[0]} alt={item.name} fill className="object-cover" />
+                  <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
                 </div>
 
                 <div className="flex flex-1 flex-col">
@@ -50,17 +50,17 @@ export default function CartDrawer({ open, onClose }: Props) {
                   <p className="mt-1 text-neutral-500">${item.price.toFixed(2)}</p>
 
                   <div className="mt-auto flex items-center gap-3">
-                    <button onClick={() => decrease(item.id)}>
+                    <button onClick={() => updateQuantity(item.cartId, item.quantity - 1)}>
                       <Minus size={18} />
                     </button>
 
                     <span>{item.quantity}</span>
 
-                    <button onClick={() => increase(item.id)}>
+                    <button onClick={() => updateQuantity(item.cartId, item.quantity + 1)}>
                       <Plus size={18} />
                     </button>
 
-                    <button className="ml-auto" onClick={() => removeItem(item.id)}>
+                    <button className="ml-auto" onClick={() => removeItem(item.cartId)}>
                       <Trash2 size={18} />
                     </button>
                   </div>
@@ -73,7 +73,7 @@ export default function CartDrawer({ open, onClose }: Props) {
         <div className="border-t p-6">
           <div className="mb-5 flex justify-between text-lg font-semibold">
             <span>Subtotal</span>
-            <span>${subtotal().toFixed(2)}</span>
+            <span>${subtotal.toFixed(2)}</span>
           </div>
 
           <button className="w-full rounded-full bg-black py-4 text-white hover:bg-neutral-800 transition">

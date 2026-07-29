@@ -2,11 +2,9 @@
 
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
-import { useCartDrawer } from "@/components/cart/CartProvider";
 
 export default function HeaderCartButton() {
-  const count = useCart((s) => s.totalItems());
-  const { openCart } = useCartDrawer();
+  const { itemCount, openCart } = useCart();
 
   return (
     <button
@@ -16,9 +14,9 @@ export default function HeaderCartButton() {
     >
       <ShoppingBag className="h-6 w-6" />
 
-      {count > 0 && (
+      {itemCount > 0 && (
         <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-black px-1 text-xs font-semibold text-white">
-          {count}
+          {itemCount}
         </span>
       )}
     </button>

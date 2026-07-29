@@ -2,22 +2,15 @@
 
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
-import { useCartDrawer } from "@/components/cart/CartProvider";
 import type { Product } from "@/types/product";
 
 interface Props {
   product: Product;
-
   quantity?: number;
-
   size?: string;
-
   colour?: string;
-
   variantId?: string;
-
   sku?: string;
-
   stock?: number;
 }
 
@@ -28,37 +21,25 @@ export default function AddToCartButton({
   colour,
   variantId,
   sku,
-  stock,
+  stock = 999,
 }: Props) {
-  const addItem = useCart((s) => s.addItem);
-
-  const { openCart } = useCartDrawer();
+  const { addItem, openCart } = useCart();
 
   return (
     <button
       onClick={() => {
         addItem({
           productId: product.id,
-
-          variantId,
-
-          sku,
-
+          variantId: variantId ?? product.id,
           slug: product.slug,
-
           name: product.name,
-
-          image: product.images[0] ?? "",
-
-          colour,
-
+          price: product.price,
+          imageUrl: product.images[0] ?? "",
           size,
-
-          unitPrice: product.price,
-
+          colour,
+          sku,
           quantity,
-
-          stock,
+          inventory: stock,
         });
 
         openCart();
