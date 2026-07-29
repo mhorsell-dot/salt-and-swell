@@ -1,5 +1,3 @@
-"use client";
-
 import Hero from "./Hero";
 import Editorial from "./Editorial";
 import Collections from "./Collections";

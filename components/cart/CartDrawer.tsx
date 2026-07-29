@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { X, Plus, Minus, Trash2 } from "lucide-react";
-import { useCart } from "@/store/cart";
+import { useCart } from "@/components/cart/CartProvider";
 
 interface Props {
   open: boolean;

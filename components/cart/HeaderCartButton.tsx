@@ -1,8 +1,8 @@
 "use client";
 
 import { ShoppingBag } from "lucide-react";
-import { useCart } from "@/store/cart";
-import { useCartDrawer } from "@/components/providers/CartProvider";
+import { useCart } from "@/components/cart/CartProvider";
+import { useCartDrawer } from "@/components/cart/CartProvider";
 
 export default function HeaderCartButton() {
   const count = useCart((s) => s.totalItems());

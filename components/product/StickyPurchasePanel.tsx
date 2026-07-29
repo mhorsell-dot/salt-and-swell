@@ -10,7 +10,8 @@ interface Props {
 }
 
 export default function StickyPurchasePanel({ product }: Props) {
-  const [size, setSize] = useState(product.sizes[0] ?? "M");
+  const [size, setSize] = useState(product.sizes[0] ?? "");
+  const [colour, setColour] = useState(product.colours[0] ?? "");
   const [qty, setQty] = useState(1);
 
   return (
@@ -32,9 +33,32 @@ export default function StickyPurchasePanel({ product }: Props) {
         or 4 interest-free payments available at checkout
       </p>
 
+      {product.colours.length > 0 && (
+        <div className="mt-10">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em]">Colour</p>
+
+          <div className="flex flex-wrap gap-3">
+            {product.colours.map((item) => (
+              <button
+                key={item}
+                onClick={() => setColour(item)}
+                className={`rounded-full border px-5 py-2 text-sm transition ${
+                  colour === item
+                    ? "border-black bg-black text-white"
+                    : "border-neutral-300 hover:border-black"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="mt-10">
         <div className="mb-4 flex items-center justify-between">
           <span className="text-sm font-semibold uppercase tracking-[0.2em]">Size</span>
+
           <button className="text-sm underline underline-offset-4">Size Guide</button>
         </div>
 
@@ -72,7 +96,7 @@ export default function StickyPurchasePanel({ product }: Props) {
       </div>
 
       <div className="mt-10">
-        <AddToCartButton product={product} />
+        <AddToCartButton product={product} quantity={qty} size={size} colour={colour} />
       </div>
 
       <button className="mt-4 flex h-14 w-full items-center justify-center gap-3 rounded-full border border-neutral-300 transition hover:border-black">
