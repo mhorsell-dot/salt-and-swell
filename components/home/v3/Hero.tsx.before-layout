@@ -20,7 +20,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/65" />
 
       {/* Content */}
-      <div className="relative z-10 flex h-full items-center pt-32 lg:pt-40">
+      <div className="relative z-10 flex h-full items-center">
         <div className="mx-auto w-full max-w-7xl px-8 lg:px-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -28,19 +28,20 @@ export default function Hero() {
             transition={{ duration: 0.9 }}
             className="max-w-2xl"
           >
-            <p className="mb-10 text-xs uppercase tracking-[0.55em] text-white/70">
+            <p className="mb-6 text-xs uppercase tracking-[0.55em] text-white/70">
               SOUTH AUSTRALIAN COASTAL APPAREL
             </p>
 
-            <h1 className="text-5xl md:text-6xl xl:text-7xl font-extralight leading-[0.98] tracking-tight text-white md:text-7xl xl:text-8xl">
+            <h1 className="text-6xl font-extralight leading-[0.98] tracking-tight text-white md:text-7xl xl:text-8xl">
               Made for
               <br />
               salty souls.
             </h1>
 
             <p className="mt-8 max-w-xl text-lg leading-8 text-white/80">
-              Premium coastal apparel inspired by South Australia&apos;s rugged coastline. Designed
-              with timeless simplicity for mornings by the ocean and everyday life.
+              Premium coastal apparel inspired by South Australia&apos;s rugged
+              coastline. Designed with timeless simplicity for mornings by the
+              ocean and everyday life.
             </p>
 
             <div className="mt-12 flex flex-wrap gap-5">
@@ -71,7 +72,9 @@ export default function Hero() {
       >
         <div className="flex flex-col items-center gap-3">
           <div className="h-12 w-px bg-white/40" />
-          <span className="text-[10px] uppercase tracking-[0.45em] text-white/60">Scroll</span>
+          <span className="text-[10px] uppercase tracking-[0.45em] text-white/60">
+            Scroll
+          </span>
         </div>
       </motion.div>
     </section>
