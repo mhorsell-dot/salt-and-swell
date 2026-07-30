@@ -15,8 +15,79 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Salt & Swell",
-  description: "Surfwear For Salty Souls",
+  metadataBase: new URL("https://saltandswell.com.au"),
+
+  title: {
+    default: "Salt & Swell Co | Premium Coastal Apparel",
+    template: "%s | Salt & Swell Co",
+  },
+
+  description:
+    "Premium Australian coastal apparel inspired by life beside the ocean. Timeless hoodies, tees, caps and accessories designed for everyday adventures.",
+
+  keywords: [
+    "Salt & Swell",
+    "Australian clothing",
+    "coastal clothing",
+    "surf apparel",
+    "premium hoodies",
+    "beach clothing",
+    "streetwear",
+    "caps",
+    "coastal lifestyle",
+  ],
+
+  authors: [
+    {
+      name: "Salt & Swell Co",
+    },
+  ],
+
+  creator: "Salt & Swell Co",
+
+  publisher: "Salt & Swell Co",
+
+  applicationName: "Salt & Swell",
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
+  alternates: {
+    canonical: "/",
+  },
+
+  openGraph: {
+    type: "website",
+    locale: "en_AU",
+    url: "https://saltandswell.com.au",
+    siteName: "Salt & Swell Co",
+    title: "Salt & Swell Co | Premium Coastal Apparel",
+    description: "Premium Australian coastal apparel inspired by life beside the ocean.",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Salt & Swell Co",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Salt & Swell Co",
+    description: "Premium Australian coastal apparel inspired by life beside the ocean.",
+    images: ["/images/og-image.jpg"],
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+
+  themeColor: "#F8F6F2",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

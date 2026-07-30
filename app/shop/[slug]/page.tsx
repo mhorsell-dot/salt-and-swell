@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import prisma from "@/lib/prisma";
@@ -6,11 +7,13 @@ import ProductLayout from "@/components/product/ProductLayout";
 import ProductFeatures from "@/components/product/ProductFeatures";
 import ProductGallery from "@/components/storefront/ProductGallery";
 import ProductPurchasePanel from "@/components/storefront/ProductPurchasePanel";
+import ProductInformation from "@/components/storefront/ProductInformation";
+import RelatedProducts from "@/components/storefront/RelatedProducts";
+import RecentlyViewedProducts from "@/components/storefront/RecentlyViewedProducts";
+import TrackRecentlyViewed from "@/components/storefront/TrackRecentlyViewed";
 
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-
-  const product = await prisma.product.findUnique({
+async function getProduct(slug: string) {
+  return prisma.product.findUnique({
     where: { slug },
     include: {
       images: {
@@ -23,6 +26,64 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       },
     },
   });
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const product = await getProduct(slug);
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+    };
+  }
+
+  const image =
+    product.images[0]?.url ??
+    "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80";
+
+  const description =
+    product.description ?? "Premium Australian coastal apparel designed for everyday adventures.";
+
+  return {
+    title: product.name,
+    description,
+
+    alternates: {
+      canonical: `/shop/${product.slug}`,
+    },
+
+    openGraph: {
+      title: product.name,
+      description,
+      type: "website",
+      url: `/shop/${product.slug}`,
+      images: [
+        {
+          url: image,
+          alt: product.name,
+        },
+      ],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description,
+      images: [image],
+    },
+  };
+}
+
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
+  const product = await getProduct(slug);
 
   if (!product) notFound();
 
@@ -41,8 +102,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           },
         ];
 
+  const trackedProduct = {
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    price: Number(product.price),
+    imageUrl: galleryImages[0].url,
+  };
+
   return (
     <>
+      <TrackRecentlyViewed product={trackedProduct} />
+
       <ProductLayout
         gallery={
           <ProductGallery
@@ -51,22 +122,22 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             featured={product.featured ?? false}
           />
         }
-        purchase={
-          <ProductPurchasePanel
-            product={{
-              id: product.id,
-              slug: product.slug,
-              name: product.name,
-              price: Number(product.price),
-              imageUrl: galleryImages[0].url,
-            }}
-            variants={product.variants}
-          />
-        }
+        purchase={<ProductPurchasePanel product={trackedProduct} variants={product.variants} />}
       />
 
-      <div className="mx-auto max-w-[1600px] px-6 pb-24">
+      <div className="mx-auto max-w-7xl px-6 pb-12">
         <ProductFeatures />
+        <ProductInformation />
+      </div>
+
+      <RelatedProducts
+        productId={product.id}
+        categoryId={product.categoryId}
+        collectionId={product.collectionId}
+      />
+
+      <div className="mx-auto max-w-7xl px-6 pb-24">
+        <RecentlyViewedProducts />
       </div>
     </>
   );

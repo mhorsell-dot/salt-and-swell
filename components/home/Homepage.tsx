@@ -1,5 +1,5 @@
-import HomepageV3 from "./v3/HomepageV3";
+import HomepageV4 from "./v4/HomepageV4";
 
 export default function Homepage() {
-  return <HomepageV3 />;
+  return <HomepageV4 />;
 }

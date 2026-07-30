@@ -70,15 +70,19 @@ export default function Navbar() {
           </div>
 
           <Link href="/" className="transition-opacity duration-300 hover:opacity-90">
-  <Image
-    src={scrolled ? "/images/branding/salt-swell-logo-black.png" : "/images/branding/salt-swell-logo-white.png"}
-    alt="Salt & Swell Co."
-    width={220}
-    height={60}
-    priority
-    className="h-auto w-40 lg:w-52"
-  />
-</Link>
+            <Image
+              src={
+                scrolled
+                  ? "/images/branding/salt-swell-logo-black.png"
+                  : "/images/branding/salt-swell-logo-white.png"
+              }
+              alt="Salt & Swell Co."
+              width={220}
+              height={60}
+              priority
+              className="h-auto w-56 lg:w-72"
+            />
+          </Link>
 
           <nav className="hidden items-center gap-14 xl:gap-16 lg:flex">
             {links.map((link) => {

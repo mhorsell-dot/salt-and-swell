@@ -46,3 +46,17 @@ h4 {
   background: #111;
   color: #fff;
 }
+
+/* ==========================================================
+   Salt & Swell Hero Animation
+   ========================================================== */
+
+@keyframes heroZoom {
+  from {
+    transform: scale(1.05);
+  }
+
+  to {
+    transform: scale(1.12);
+  }
+}

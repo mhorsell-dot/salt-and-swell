@@ -12,19 +12,17 @@ import SearchDrawer from "./SearchDrawer";
 import MegaMenu from "./MegaMenu";
 import SearchResults from "@/components/search/SearchResults";
 import { useCart } from "@/components/cart/CartProvider";
-import AnnouncementBar from "./AnnouncementBar";
 
 const links = [
   { href: "/shop", label: "Shop" },
   { href: "/collections", label: "Collections" },
   { href: "/journal", label: "Journal" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
-  const { itemCount, openCart } = useCart();
   const pathname = usePathname();
+  const { itemCount, openCart } = useCart();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -32,73 +30,62 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 24);
 
-    onScroll();
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
 
-    window.addEventListener("scroll", onScroll);
-
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const textColour = scrolled ? "text-black" : "text-white";
 
   return (
     <>
-      <AnnouncementBar />
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{
-          duration: 0.7,
-          ease: [0.22, 1, 0.36, 1],
-        }}
+        transition={{ duration: 0.8 }}
         className={`fixed inset-x-0 top-10 z-50 transition-all duration-500 ${
           scrolled
-            ? "border-b border-black/5 bg-white/75 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
+            ? "border-b border-white/20 bg-white/70 shadow-lg backdrop-blur-2xl"
             : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex h-28 max-w-[1600px] items-center justify-between px-8 lg:px-20">
-          <div className="flex items-center gap-2 md:hidden">
-            <button
-              onClick={() => setMenuOpen(true)}
-              className="rounded-full p-2 transition hover:bg-black/5"
-            >
-              <Menu className="h-6 w-6" />
-            </button>
-          </div>
+        <div className="mx-auto flex h-28 max-w-[1700px] items-center justify-between px-8 lg:px-14">
+          <button
+            onClick={() => setMenuOpen(true)}
+            className={`transition-transform duration-300 hover:scale-110 lg:hidden ${textColour}`}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
 
-          <Link href="/" className="transition-opacity duration-300 hover:opacity-90">
+          <Link href="/" className="shrink-0 transition-transform duration-300 hover:scale-[1.02]">
             <Image
               src={
                 scrolled
                   ? "/images/branding/salt-swell-logo-black.png"
                   : "/images/branding/salt-swell-logo-white.png"
               }
-              alt="Salt & Swell Co."
+              alt="Salt & Swell Co"
               width={220}
-              height={60}
+              height={70}
               priority
-              className="h-auto w-56 lg:w-72"
+              className="h-auto w-56 md:w-64 lg:w-80"
             />
           </Link>
 
-          <nav className="hidden items-center gap-14 xl:gap-16 lg:flex">
-            {links.map((link) => {
-              if (link.href === "/shop") {
-                return <MegaMenu key="shop" />;
-              }
-
-              return (
+          <nav className="hidden items-center gap-16 xl:gap-20 lg:flex">
+            {links.map((link) =>
+              link.href === "/shop" ? (
+                <MegaMenu key="shop" />
+              ) : (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`group relative text-[13px] font-semibold uppercase tracking-[0.28em] transition ${
+                  className={`group relative text-[12px] uppercase tracking-[0.28em] transition-colors duration-300 ${
                     pathname === link.href
-                      ? scrolled
-                        ? "text-black"
-                        : "text-white"
+                      ? textColour
                       : scrolled
                         ? "text-black/70 hover:text-black"
                         : "text-white/80 hover:text-white"
@@ -107,53 +94,50 @@ export default function Navbar() {
                   {link.label}
 
                   <span
-                    className={`absolute -bottom-2 left-0 h-[1px] transition-all duration-500 ${
-                      scrolled ? "bg-black" : "bg-white"
-                    } ${pathname === link.href ? "w-full" : "w-0 group-hover:w-full"}`}
+                    className={`absolute -bottom-2 left-0 h-px bg-current transition-all duration-300 ${
+                      pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
                   />
                 </Link>
-              );
-            })}
+              ),
+            )}
           </nav>
 
           <div className="flex items-center gap-1">
-            <button
-              onClick={() => setSearchOpen(true)}
-              className={`rounded-full p-2 transition-colors duration-500 ${scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"}`}
-            >
-              <Search className="h-5 w-5" />
-            </button>
-
-            <button
-              className={`rounded-full p-2 transition-colors duration-500 ${scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"}`}
-            >
-              <User className="h-5 w-5" />
-            </button>
+            {[
+              {
+                icon: <Search className="h-5 w-5" />,
+                action: () => setSearchOpen(true),
+              },
+              {
+                icon: <User className="h-5 w-5" />,
+                hidden: "hidden md:flex",
+              },
+            ].map((item, index) => (
+              <button
+                key={index}
+                onClick={item.action}
+                className={`${item.hidden ?? ""} ${textColour} flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 hover:backdrop-blur-lg`}
+              >
+                {item.icon}
+              </button>
+            ))}
 
             <Link
               href="/account/wishlist"
-              className={`group relative rounded-full p-2 transition-colors duration-500 ${
-                scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"
-              }`}
+              className={`hidden md:flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 hover:backdrop-blur-lg ${textColour}`}
             >
               <Heart className="h-5 w-5" />
-
-              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[9px] font-bold text-white">
-                1
-              </span>
             </Link>
 
             <button
               onClick={openCart}
-              className={`group relative rounded-full p-2 transition-colors duration-500 ${
-                scrolled ? "text-black hover:bg-black/5" : "text-white hover:bg-white/10"
-              }`}
-              aria-label="Open shopping bag"
+              className={`relative flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 hover:backdrop-blur-lg ${textColour}`}
             >
               <ShoppingBag className="h-5 w-5" />
 
               {itemCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black text-[10px] font-bold text-white">
+                <span className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black text-[10px] font-semibold text-white">
                   {itemCount}
                 </span>
               )}
