@@ -88,7 +88,7 @@ export default function Manifesto() {
       >
         <div className="relative h-[420px] md:h-[650px]">
           <Image
-            src="/images/hero/salt-swell-hero.png"
+            src="/images/hero/salt-swell-hero.webp"
             alt="Salt & Swell Lifestyle"
             fill
             sizes="100vw"

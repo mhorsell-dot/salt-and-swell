@@ -118,7 +118,7 @@ export default function MegaMenu() {
 
               <div className="overflow-hidden rounded-3xl bg-[#182321] text-white">
                 <img
-                  src="/images/collections/mens.png"
+                  src="/images/collections/mens.webp"
                   alt="Winter Collection"
                   className="h-56 w-full object-cover"
                 />

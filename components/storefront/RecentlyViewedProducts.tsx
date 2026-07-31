@@ -21,22 +21,19 @@ function formatCurrency(value: number) {
   }).format(value);
 }
 
-function loadRecentlyViewed(): Product[] {
-  if (typeof window === "undefined") {
-    return [];
-  }
-
-  try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-}
-
 export default function RecentlyViewedProducts() {
-  const [products] = useState<Product[]>(loadRecentlyViewed);
+  const [products] = useState<Product[]>(() => {
+    if (typeof window === "undefined") {
+      return [];
+    }
+
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
 
   if (products.length === 0) {
     return null;

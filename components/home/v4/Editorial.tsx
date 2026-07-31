@@ -27,7 +27,7 @@ export default function Editorial() {
         >
           <div className="relative aspect-[4/5]">
             <Image
-              src="/images/editorial/coastal-story.jpg"
+              src="/images/editorial/coastal-story.webp"
               alt="Salt & Swell lifestyle"
               fill
               className="object-cover transition duration-[1800ms] group-hover:scale-105"

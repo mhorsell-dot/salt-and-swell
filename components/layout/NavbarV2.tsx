@@ -55,11 +55,11 @@ export default function Navbar() {
         }}
         className={`fixed inset-x-0 top-10 z-50 transition-all duration-500 ${
           scrolled
-            ? "border-b border-black/5 bg-white/75 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
+            ? "border-b border-black/5 bg-white/75 backdrop-blur-2xl shadow-lg"
             : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex h-28 max-w-[1600px] items-center justify-between px-8 lg:px-20">
+        <div className="mx-auto flex h-24 max-w-[1600px] items-center justify-between px-8 lg:px-20">
           <div className="flex items-center gap-2 md:hidden">
             <button
               onClick={() => setMenuOpen(true)}
@@ -73,18 +73,18 @@ export default function Navbar() {
             <Image
               src={
                 scrolled
-                  ? "/images/branding/salt-swell-logo-black.png"
-                  : "/images/branding/salt-swell-logo-white.png"
+                  ? "/images/branding/salt-swell-logo-black.webp"
+                  : "/images/branding/salt-swell-logo-white.webp"
               }
               alt="Salt & Swell Co."
               width={220}
               height={60}
               priority
-              className="h-auto w-56 lg:w-72"
+              className="h-auto w-52 lg:w-64"
             />
           </Link>
 
-          <nav className="hidden items-center gap-14 xl:gap-16 lg:flex">
+          <nav className="hidden items-center gap-10 xl:gap-12 lg:flex">
             {links.map((link) => {
               if (link.href === "/shop") {
                 return <MegaMenu key="shop" />;
@@ -94,7 +94,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`group relative text-[13px] font-semibold uppercase tracking-[0.28em] transition ${
+                  className={`group relative text-[13px] font-semibold uppercase tracking-[0.18em] transition ${
                     pathname === link.href
                       ? scrolled
                         ? "text-black"
@@ -137,10 +137,6 @@ export default function Navbar() {
               }`}
             >
               <Heart className="h-5 w-5" />
-
-              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[9px] font-bold text-white">
-                1
-              </span>
             </Link>
 
             <button

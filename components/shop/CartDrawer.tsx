@@ -22,14 +22,14 @@ const items: CartItem[] = [
     id: "1",
     name: "Classic Hoodie",
     price: 99,
-    image: "/images/hero/salt-swell-hero.png",
+    image: "/images/hero/salt-swell-hero.webp",
     quantity: 1,
   },
   {
     id: "2",
     name: "Coastal Tee",
     price: 59,
-    image: "/images/hero/salt-swell-hero.png",
+    image: "/images/hero/salt-swell-hero.webp",
     quantity: 2,
   },
 ];

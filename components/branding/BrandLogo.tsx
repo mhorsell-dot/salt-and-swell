@@ -5,7 +5,7 @@ export default function BrandLogo() {
   return (
     <Link href="/" className="flex items-center gap-4">
       <Image
-        src="/branding/logo.png"
+        src="/branding/logo.webp"
         alt="Salt & Swell"
         width={56}
         height={56}

@@ -43,10 +43,10 @@ export const products: Product[] = [
     returns: "30-day returns on unworn garments.",
 
     images: [
-      "/images/products/classic-hoodie/front.jpg",
-      "/images/products/classic-hoodie/back.jpg",
-      "/images/products/classic-hoodie/detail.jpg",
-      "/images/products/classic-hoodie/lifestyle.jpg",
+      "/images/products/product-1.webp",
+      "/images/products/product-2.webp",
+      "/images/products/product-3.webp",
+      "/images/products/product-4.webp",
     ],
 
     colours: ["Black", "Sand", "Stone"],
@@ -73,7 +73,7 @@ export const products: Product[] = [
 
     description: "Premium cotton tee inspired by Australia's coastline.",
 
-    images: ["/images/products/coastal-tee/front.jpg"],
+    images: ["/images/products/product-2.webp"],
 
     colours: ["White", "Black"],
 
@@ -95,7 +95,7 @@ export const products: Product[] = [
 
     description: "Premium curved peak cap with embroidered Salt & Swell branding.",
 
-    images: ["/images/products/surf-cap/front.jpg"],
+    images: ["/images/products/product-3.webp"],
 
     colours: ["Black", "Stone"],
 

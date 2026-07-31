@@ -7,7 +7,7 @@ export default function AboutPage() {
       <section className="relative flex min-h-[80vh] items-center overflow-hidden bg-[#111412] text-white">
         <div className="absolute inset-0">
           <img
-            src="/images/hero/salt-swell-hero.png"
+            src="/images/hero/salt-swell-hero.webp"
             alt="Salt & Swell coastal lifestyle"
             className="h-full w-full object-cover opacity-50"
           />

@@ -45,3 +45,17 @@ next-env.d.ts
 !public/uploads/
 !public/uploads/products/
 !public/uploads/products/**
+# Lighthouse
+*.report.html
+*.report.json
+
+# Playwright
+playwright-report/
+test-results/
+
+# Local reports
+reports/
+
+# Backup files
+*.bak
+*.backup

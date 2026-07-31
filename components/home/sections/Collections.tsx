@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 
 import { Container } from "@/components/ui";
@@ -22,22 +19,22 @@ const collections = [
     subtitle: "Premium Coastal Wear",
     description:
       "Relaxed essentials inspired by cool mornings, salt air and weekends by the ocean.",
-    image: "/images/collections/mens.png",
+    image: "/images/collections/mens.webp",
     href: "/shop/gender/mens",
   },
   {
     title: "Women",
     subtitle: "Modern Essentials",
     description: "Timeless silhouettes designed for effortless coastal living.",
-    image: "/images/collections/womens.png",
+    image: "/images/collections/womens.webp",
     href: "/shop/gender/womens",
   },
   {
     title: "Accessories",
     subtitle: "Complete The Journey",
     description: "Premium finishing pieces for life beside the coast.",
-    image: "/images/collections/accessories.png",
-    href: "/shop/category/accessories",
+    image: "/images/collections/accessories.webp",
+    href: "/shop?category=accessories",
   },
 ];
 
@@ -68,17 +65,7 @@ export default function Collections() {
 
         <div className="grid gap-8 lg:grid-cols-12">
           {collections.map((item, index) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.15,
-              }}
-              className={index === 0 ? "lg:col-span-6" : "lg:col-span-3"}
-            >
+            <div key={item.title} className={index === 0 ? "lg:col-span-6" : "lg:col-span-3"}>
               <Link
                 href={item.href}
                 className="group relative block overflow-hidden rounded-[36px]"
@@ -118,7 +105,7 @@ export default function Collections() {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </Container>

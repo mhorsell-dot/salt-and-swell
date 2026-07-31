@@ -14,34 +14,32 @@ const body = Inter({
 
 export default function FeaturedProducts() {
   return (
-    <section className="bg-white py-36">
+    <section className="bg-white py-28">
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div className="max-w-3xl">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
             <p className={`${body.className} text-xs uppercase tracking-[0.35em] text-neutral-500`}>
-              Featured Collection
+              New Arrivals
             </p>
 
             <h2
-              className={`${heading.className} mt-5 text-5xl leading-tight text-neutral-900 md:text-6xl`}
+              className={`${heading.className} mt-4 text-5xl leading-[1.05] text-neutral-900 md:text-6xl`}
             >
-              Designed For
+              Designed for
               <br />
-              Everyday Coastal Living.
+              life by the coast.
             </h2>
 
-            <p className={`${body.className} mt-8 max-w-2xl text-lg leading-8 text-neutral-600`}>
-              Discover our most-loved pieces—premium apparel crafted for slow mornings, ocean air
-              and weekends spent exploring the coast.
+            <p className={`${body.className} mt-6 text-lg leading-8 text-neutral-600`}>
+              Timeless essentials inspired by slow mornings, salt air and everyday Australian
+              living.
             </p>
           </div>
 
-          <div>
-            <Button href="/shop">Shop All Products</Button>
-          </div>
+          <Button href="/shop">Shop All</Button>
         </div>
 
-        <div className="mt-20">
+        <div className="mt-16">
           <LiveProductGrid featured limit={8} />
         </div>
       </Container>

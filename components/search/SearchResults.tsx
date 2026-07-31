@@ -76,7 +76,7 @@ export default function SearchResults({ query }: Props) {
           className="flex items-center gap-4 rounded-xl p-3 transition hover:bg-neutral-100"
         >
           <img
-            src={product.images[0]?.url ?? "/images/product-placeholder.jpg"}
+            src={product.images[0]?.url ?? "/images/product-placeholder.webp"}
             alt={product.name}
             className="h-20 w-20 rounded-lg object-cover"
           />

@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Menu, Search, User, Heart, ShoppingBag } from "lucide-react";
+import dynamic from "next/dynamic";
 
-import MobileMenu from "./MobileMenu";
-import SearchDrawer from "./SearchDrawer";
-import MegaMenu from "./MegaMenu";
+const MobileMenu = dynamic(() => import("./MobileMenu"));
+const SearchDrawer = dynamic(() => import("./SearchDrawer"));
+const MegaMenu = dynamic(() => import("./MegaMenu"));
+
 import SearchResults from "@/components/search/SearchResults";
 import { useCart } from "@/components/cart/CartProvider";
 
@@ -64,8 +66,8 @@ export default function Navbar() {
             <Image
               src={
                 scrolled
-                  ? "/images/branding/salt-swell-logo-black.png"
-                  : "/images/branding/salt-swell-logo-white.png"
+                  ? "/images/branding/salt-swell-logo-black.webp"
+                  : "/images/branding/salt-swell-logo-white.webp"
               }
               alt="Salt & Swell Co"
               width={220}

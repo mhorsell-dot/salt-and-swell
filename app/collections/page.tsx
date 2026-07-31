@@ -36,7 +36,7 @@ export default async function CollectionsPage() {
       <section className="relative overflow-hidden bg-[#111412] text-white">
         <div className="absolute inset-0">
           <img
-            src="/images/hero/salt-swell-hero.png"
+            src="/images/hero/salt-swell-hero.webp"
             alt="Salt & Swell coastal lifestyle"
             className="h-full w-full object-cover opacity-45"
           />
@@ -77,7 +77,7 @@ export default async function CollectionsPage() {
             <div className="space-y-10">
               {collections.map((collection) => {
                 const image =
-                  collection.products[0]?.images[0]?.url ?? "/images/hero/salt-swell-hero.png";
+                  collection.products[0]?.images[0]?.url ?? "/images/hero/salt-swell-hero.webp";
 
                 return (
                   <Link

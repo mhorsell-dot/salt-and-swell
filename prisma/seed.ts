@@ -126,17 +126,17 @@ async function main() {
           create: [
             {
               url: item.name.includes("Women's")
-                ? "/images/collections/womens.png"
+                ? "/images/collections/womens.webp"
                 : item.name.includes("Essential") || item.name.includes("Classic")
-                  ? "/images/collections/mens.png"
-                  : "/images/collections/mens.png",
+                  ? "/images/collections/mens.webp"
+                  : "/images/collections/mens.webp",
               alt: item.name,
               sortOrder: 0,
             },
             {
               url: item.name.includes("Women's")
-                ? "/images/collections/womens.png"
-                : "/images/collections/mens.png",
+                ? "/images/collections/womens.webp"
+                : "/images/collections/mens.webp",
               alt: item.name,
               sortOrder: 1,
             },

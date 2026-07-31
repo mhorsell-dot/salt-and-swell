@@ -60,3 +60,4 @@ h4 {
     transform: scale(1.12);
   }
 }
+@import "./animations.css";

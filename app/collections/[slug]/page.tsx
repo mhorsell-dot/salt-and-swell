@@ -88,7 +88,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
       <section className="relative overflow-hidden bg-[#111412] text-white">
         <div className="absolute inset-0">
           <img
-            src="/images/hero/salt-swell-hero.png"
+            src="/images/hero/salt-swell-hero.webp"
             alt={collection.name}
             className="h-full w-full object-cover opacity-45"
           />
@@ -142,7 +142,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
           ) : (
             <div className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {collection.products.map((product) => {
-                const image = product.images[0]?.url ?? "/images/hero/salt-swell-hero.png";
+                const image = product.images[0]?.url ?? "/images/hero/salt-swell-hero.webp";
 
                 const inventory = product.variants.reduce((total, v) => total + v.inventory, 0);
 

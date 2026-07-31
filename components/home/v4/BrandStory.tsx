@@ -22,7 +22,7 @@ export default function BrandStory() {
 
         <div className="relative aspect-[4/5] overflow-hidden">
           <Image
-            src="/images/lifestyle/banner.png"
+            src="/images/lifestyle/banner.webp"
             alt="Salt & Swell"
             fill
             className="object-cover"

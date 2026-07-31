@@ -1,0 +1,10 @@
+import { test, expect } from "@playwright/test";
+
+test("Basic homepage interaction", async ({ page }) => {
+  await page.goto("http://localhost:3000");
+
+  await expect(page.locator("body")).toBeVisible();
+
+  const links = page.locator("a");
+  await expect(links.first()).toBeVisible();
+});

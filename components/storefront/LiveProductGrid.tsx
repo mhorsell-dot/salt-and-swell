@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Heart, Package } from "lucide-react";
+import { ArrowRight, Package } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
@@ -127,11 +127,6 @@ export default async function LiveProductGrid({
                   fill
                   className="object-cover scale-105 opacity-0 transition-all duration-[1400ms] ease-out group-hover:scale-100 group-hover:opacity-100"
                 />
-
-                <button className="absolute right-5 top-5 rounded-full bg-white/90 p-3 shadow-lg backdrop-blur-md transition-all duration-300 group-hover:scale-110">
-                  <Heart className="h-4 w-4" />
-                </button>
-
                 {product.featured && (
                   <div className="absolute left-5 top-5 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.3em]">
                     NEW SEASON

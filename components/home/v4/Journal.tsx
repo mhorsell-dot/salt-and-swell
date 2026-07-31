@@ -3,15 +3,15 @@ import Image from "next/image";
 const posts = [
   {
     title: "Life By The Sea",
-    image: "/images/lifestyle/banner.png",
+    image: "/images/lifestyle/banner.webp",
   },
   {
     title: "Quiet Luxury",
-    image: "/images/collections/mens.png",
+    image: "/images/collections/mens.webp",
   },
   {
     title: "Australian Coast",
-    image: "/images/collections/womens.png",
+    image: "/images/collections/womens.webp",
   },
 ];
 

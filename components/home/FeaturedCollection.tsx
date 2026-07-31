@@ -9,7 +9,7 @@ export default function FeaturedCollection() {
     <section className="relative overflow-hidden bg-black text-white">
       <div className="absolute inset-0">
         <Image
-          src="/images/editorial/featured-collection.jpg"
+          src="/images/editorial/featured-collection.webp"
           alt="Featured Collection"
           fill
           sizes="100vw"

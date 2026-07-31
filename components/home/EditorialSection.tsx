@@ -44,7 +44,7 @@ export default function EditorialSection() {
           className="overflow-hidden rounded-3xl"
         >
           <img
-            src="/images/editorial/coastal-life.jpg"
+            src="/images/editorial/coastal-life.webp"
             alt="Salt and Swell Lifestyle"
             className="h-[700px] w-full object-cover transition duration-700 hover:scale-105"
           />

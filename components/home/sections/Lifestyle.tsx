@@ -3,9 +3,9 @@ import Image from "next/image";
 import { Container, SectionHeader } from "@/components/ui";
 
 const images = [
-  "/images/lifestyle/lifestyle-1.jpg",
-  "/images/lifestyle/lifestyle-2.jpg",
-  "/images/lifestyle/lifestyle-3.jpg",
+  "/images/lifestyle/lifestyle-1.webp",
+  "/images/lifestyle/lifestyle-2.webp",
+  "/images/lifestyle/lifestyle-3.webp",
 ];
 
 export default function Lifestyle() {

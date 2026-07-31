@@ -5,7 +5,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Expand } from "lucide-react";
 import { useDrag } from "@use-gesture/react";
 
-import ProductLightbox from "@/components/product/lightbox/ProductLightbox";
+import dynamic from "next/dynamic";
+
+const ProductLightbox = dynamic(() => import("@/components/product/lightbox/ProductLightbox"), {
+  ssr: false,
+});
 
 type GalleryImage = {
   id: string;
@@ -224,14 +228,16 @@ export default function ProductGallery({
         )}
       </div>
 
-      <ProductLightbox
-        productName={productName}
-        images={images}
-        activeIndex={activeIndex}
-        open={lightboxOpen}
-        onClose={() => setLightboxOpen(false)}
-        onIndexChange={setActiveIndex}
-      />
+      {lightboxOpen && (
+        <ProductLightbox
+          productName={productName}
+          images={images}
+          activeIndex={activeIndex}
+          open={lightboxOpen}
+          onClose={() => setLightboxOpen(false)}
+          onIndexChange={setActiveIndex}
+        />
+      )}
     </>
   );
 }

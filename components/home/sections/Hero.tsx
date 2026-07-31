@@ -10,7 +10,7 @@ export default function Hero() {
       <div
         className="absolute inset-0 scale-[1.03] bg-cover bg-center transition-transform duration-[18000ms] ease-linear"
         style={{
-          backgroundImage: "url('/images/hero/salt-swell-hero.png')",
+          backgroundImage: "url('/images/hero/salt-swell-hero.webp')",
         }}
       />
 
