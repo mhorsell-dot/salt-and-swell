@@ -7,6 +7,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -48,6 +49,18 @@ const CartContext = createContext<CartContextValue | null>(null);
 
 const STORAGE_KEY = "salt-and-swell-cart-v2";
 
+function subscribeToHydration(): () => void {
+  return () => {};
+}
+
+function getClientHydrationSnapshot(): boolean {
+  return true;
+}
+
+function getServerHydrationSnapshot(): boolean {
+  return false;
+}
+
 function createCartId(productId: string, variantId: string): string {
   return `${productId}:${variantId}`;
 }
@@ -80,10 +93,7 @@ function sanitiseStoredItems(value: unknown): CartItem[] {
       cartId: item.cartId || createCartId(item.productId, item.variantId),
       quantity: Math.max(
         1,
-        Math.min(
-          Math.floor(item.quantity),
-          Math.max(1, Math.floor(item.inventory)),
-        ),
+        Math.min(Math.floor(item.quantity), Math.max(1, Math.floor(item.inventory))),
       ),
       inventory: Math.max(0, Math.floor(item.inventory)),
     }))
@@ -91,28 +101,41 @@ function sanitiseStoredItems(value: unknown): CartItem[] {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
-
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      return stored ? sanitiseStoredItems(JSON.parse(stored)) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
+  const [hasRestoredCart, setHasRestoredCart] = useState(false);
   const [lastAddedCartId, setLastAddedCartId] = useState<string | null>(null);
 
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
+  const isHydrated = useSyncExternalStore(
+    subscribeToHydration,
+    getClientHydrationSnapshot,
+    getServerHydrationSnapshot,
+  );
 
   useEffect(() => {
-    if (!isHydrated) {
+    if (!isHydrated || hasRestoredCart) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      try {
+        const storedCart = window.localStorage.getItem(STORAGE_KEY);
+
+        if (storedCart) {
+          setItems(sanitiseStoredItems(JSON.parse(storedCart)));
+        }
+      } catch (error) {
+        console.error("Unable to restore cart:", error);
+      } finally {
+        setHasRestoredCart(true);
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [isHydrated, hasRestoredCart]);
+
+  useEffect(() => {
+    if (!isHydrated || !hasRestoredCart) {
       return;
     }
 
@@ -121,7 +144,61 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error("Unable to save cart:", error);
     }
-  }, [items, isHydrated]);
+  }, [items, isHydrated, hasRestoredCart]);
+
+  useEffect(() => {
+    if (!isHydrated || !hasRestoredCart) {
+      return;
+    }
+
+    async function restoreReorder() {
+      const reorder = window.localStorage.getItem("salt_swell_reorder");
+
+      if (!reorder) {
+        return;
+      }
+
+      try {
+        const items = JSON.parse(reorder);
+
+        if (!Array.isArray(items)) {
+          return;
+        }
+
+        const converted = items.map((item) => ({
+          productId: item.productId,
+          variantId: item.variantId || item.productId,
+          slug: item.slug || "",
+          name: item.name,
+          price: Number(item.price),
+          imageUrl: item.imageUrl || "",
+          size: item.size || null,
+          colour: item.colour || null,
+          sku: item.sku || null,
+          quantity: item.quantity,
+          inventory: 99,
+        }));
+
+        setTimeout(() => {
+          setItems((current) => [
+            ...current,
+            ...converted.map((item) => ({
+              ...item,
+              cartId: createCartId(item.productId, item.variantId),
+            })),
+          ]);
+
+          setIsOpen(true);
+        }, 0);
+
+        window.localStorage.removeItem("salt_swell_reorder");
+      } catch (error) {
+        console.error("Unable to restore reorder:", error);
+      }
+    }
+
+    restoreReorder();
+  }, [isHydrated, hasRestoredCart]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -172,10 +249,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
               ...item,
               ...input,
               cartId,
-              quantity: Math.min(
-                item.quantity + input.quantity,
-                input.inventory,
-              ),
+              quantity: Math.min(item.quantity + input.quantity, input.inventory),
             }
           : item,
       );
@@ -195,10 +269,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         item.cartId === cartId
           ? {
               ...item,
-              quantity: Math.max(
-                1,
-                Math.min(Math.floor(quantity), item.inventory),
-              ),
+              quantity: Math.max(1, Math.min(Math.floor(quantity), item.inventory)),
             }
           : item,
       ),
@@ -206,9 +277,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const removeItem = useCallback((cartId: string) => {
-    setItems((currentItems) =>
-      currentItems.filter((item) => item.cartId !== cartId),
-    );
+    setItems((currentItems) => currentItems.filter((item) => item.cartId !== cartId));
   }, []);
 
   const clearCart = useCallback(() => {
@@ -227,10 +296,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setIsOpen((current) => !current);
   }, []);
 
-  const itemCount = useMemo(
-    () => items.reduce((total, item) => total + item.quantity, 0),
-    [items],
-  );
+  const itemCount = useMemo(() => items.reduce((total, item) => total + item.quantity, 0), [items]);
 
   const subtotal = useMemo(
     () => items.reduce((total, item) => total + item.price * item.quantity, 0),

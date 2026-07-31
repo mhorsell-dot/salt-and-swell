@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Package, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowRight, Package } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
@@ -10,6 +11,19 @@ const fallbackImages = [
   "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=1200&q=85",
 ];
 
+const colourMap: Record<string, string> = {
+  Black: "#111111",
+  White: "#ffffff",
+  Navy: "#1b2b44",
+  Blue: "#3b82f6",
+  Grey: "#9ca3af",
+  Sand: "#d6c3a5",
+  Beige: "#e7d7bc",
+  Olive: "#6b7d4d",
+  Sage: "#9caf88",
+  Brown: "#8b5a2b",
+};
+
 function formatCurrency(value: string) {
   return new Intl.NumberFormat("en-AU", {
     style: "currency",
@@ -17,59 +31,61 @@ function formatCurrency(value: string) {
   }).format(Number(value));
 }
 
+type LiveProductGridProps = {
+  limit?: number;
+  showEmptyState?: boolean;
+  category?: string;
+  collection?: string;
+  featured?: boolean;
+  gender?: "MENS" | "WOMENS" | "UNISEX";
+};
+
 export default async function LiveProductGrid({
   limit,
   showEmptyState = true,
-}: {
-  limit?: number;
-  showEmptyState?: boolean;
-}) {
+  category,
+  collection,
+  featured,
+  gender,
+}: LiveProductGridProps) {
   const products = await prisma.product.findMany({
     where: {
       active: true,
+      ...(gender && { gender }),
+      ...(featured !== undefined && { featured }),
+      ...(category && { category: { slug: category } }),
+      ...(collection && { collection: { slug: collection } }),
     },
     include: {
       category: true,
       collection: true,
       images: {
-        orderBy: {
-          sortOrder: "asc",
-        },
+        orderBy: { sortOrder: "asc" },
       },
       variants: true,
     },
-    orderBy: [
-      {
-        featured: "desc",
-      },
-      {
-        createdAt: "desc",
-      },
-    ],
+    orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
     take: limit,
   });
 
   if (products.length === 0 && showEmptyState) {
     return (
-      <div className="mt-10 flex min-h-[360px] flex-col items-center justify-center border border-black/10 bg-white/40 px-6 text-center">
+      <div className="mt-10 flex min-h-[360px] flex-col items-center justify-center border border-neutral-200 bg-white px-6 text-center">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black text-white">
           <Package className="h-6 w-6" />
         </div>
 
-        <h3 className="mt-6 text-2xl font-semibold tracking-tight">
-          The first collection is coming.
-        </h3>
+        <h3 className="mt-6 text-2xl font-light">The first collection is coming.</h3>
 
-        <p className="mt-3 max-w-md text-sm leading-7 text-black/55">
-          Products created and activated through the Salt &amp; Swell admin will
-          automatically appear here.
+        <p className="mt-4 max-w-md text-neutral-500">
+          Products created through the Salt &amp; Swell admin will appear here automatically.
         </p>
 
         <Link
           href="/admin/products/new"
-          className="mt-7 inline-flex items-center gap-3 border-b border-black pb-2 text-xs font-semibold uppercase tracking-[0.16em]"
+          className="mt-8 inline-flex items-center gap-2 border-b border-black pb-2 text-xs uppercase tracking-[0.3em]"
         >
-          Create a product
+          Create Product
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
@@ -77,111 +93,87 @@ export default async function LiveProductGrid({
   }
 
   return (
-    <div className="mt-10 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-4">
       {products.map((product, index) => {
         const primaryImage =
-          product.images[0]?.url ??
-          fallbackImages[index % fallbackImages.length];
+          product.images[0]?.url ?? fallbackImages[index % fallbackImages.length];
 
         const secondaryImage = product.images[1]?.url ?? primaryImage;
 
-        const inventory = product.variants.reduce(
-          (total, variant) => total + variant.inventory,
-          0,
-        );
+        const inventory = product.variants.reduce((total, variant) => total + variant.inventory, 0);
+
+        const colours = Array.from(new Set(product.variants.map((v) => v.colour).filter(Boolean)));
 
         const hasVariants = product.variants.length > 0;
         const isOutOfStock = hasVariants && inventory === 0;
-        const isLowStock = hasVariants && inventory > 0 && inventory <= 5;
 
         return (
-          <article key={product.id} className="group">
-            <Link href={`/shop/${product.slug}`} className="block">
-              <div className="relative aspect-[4/5] overflow-hidden bg-[#e7e4dc]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+          <article
+            key={product.id}
+            className="group overflow-hidden rounded-[28px] bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
+          >
+            <Link href={`/shop/${product.slug}`}>
+              <div className="relative aspect-[3/4] overflow-hidden rounded-[28px] bg-[#F7F5F1]">
+                <Image
                   src={primaryImage}
-                  alt={product.images[0]?.alt || product.name}
-                  className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.025] group-hover:opacity-0"
+                  alt={product.name}
+                  fill
+                  className="object-cover transition-all duration-1000 ease-out group-hover:scale-110 group-hover:opacity-0"
                 />
 
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={secondaryImage}
-                  alt={
-                    product.images[1]?.alt || `${product.name} alternate view`
-                  }
-                  className="absolute inset-0 h-full w-full scale-[1.025] object-cover opacity-0 transition duration-700 group-hover:scale-100 group-hover:opacity-100"
+                  alt={product.name}
+                  fill
+                  className="object-cover scale-105 opacity-0 transition-all duration-[1400ms] ease-out group-hover:scale-100 group-hover:opacity-100"
                 />
+                {product.featured && (
+                  <div className="absolute left-5 top-5 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.3em]">
+                    NEW SEASON
+                  </div>
+                )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+                {isOutOfStock && (
+                  <div className="absolute left-5 top-16 rounded-full bg-black px-4 py-2 text-[10px] uppercase tracking-[0.3em] text-white">
+                    SOLD OUT
+                  </div>
+                )}
 
-                <div className="absolute left-4 top-4 flex flex-col items-start gap-2">
-                  {product.featured && (
-                    <span className="inline-flex items-center gap-1.5 bg-white px-3 py-2 text-[9px] font-bold uppercase tracking-[0.17em] text-black shadow-sm">
-                      <Sparkles className="h-3 w-3" />
-                      Featured
-                    </span>
-                  )}
-
-                  {isOutOfStock && (
-                    <span className="bg-black px-3 py-2 text-[9px] font-bold uppercase tracking-[0.17em] text-white">
-                      Sold out
-                    </span>
-                  )}
-
-                  {isLowStock && (
-                    <span className="bg-[#ded8ca] px-3 py-2 text-[9px] font-bold uppercase tracking-[0.17em] text-black">
-                      Low stock
-                    </span>
-                  )}
-                </div>
-
-                <div className="absolute bottom-4 left-4 right-4 translate-y-3 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <span className="flex h-12 items-center justify-center gap-2 bg-white text-xs font-semibold uppercase tracking-[0.14em] text-black shadow-sm">
-                    <ShoppingBag className="h-4 w-4" />
-                    View product
-                  </span>
+                <div className="absolute inset-x-6 bottom-6 translate-y-8 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                  <div className="rounded-full bg-white/95 p-2 shadow-xl backdrop-blur-xl">
+                    <div className="flex items-center justify-center rounded-full bg-black px-6 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-neutral-800">
+                      Quick Shop
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="mt-5">
-                <div className="flex items-start justify-between gap-5">
+              <div className="space-y-5 px-2 pt-6">
+                <div className="flex justify-between gap-4">
                   <div>
-                    <h3 className="text-sm font-semibold uppercase tracking-[0.04em]">
+                    <h3 className="text-lg font-light tracking-wide transition-colors duration-300 group-hover:text-neutral-900">
                       {product.name}
                     </h3>
 
-                    <p className="mt-1.5 text-sm text-black/50">
-                      {product.category?.name ??
-                        product.collection?.name ??
-                        "Salt & Swell"}
+                    <p className="mt-2 text-[11px] uppercase tracking-[0.35em] text-neutral-500">
+                      {product.category?.name ?? product.collection?.name ?? "Salt & Swell"}
                     </p>
                   </div>
 
-                  <p className="shrink-0 text-sm font-semibold">
-                    {formatCurrency(product.price.toString())}
-                  </p>
+                  <p className="text-lg font-medium">{formatCurrency(product.price.toString())}</p>
                 </div>
 
-                {hasVariants && (
-                  <div className="mt-3 flex items-center justify-between border-t border-black/10 pt-3">
-                    <p className="text-xs text-black/45">
-                      {product.variants.length} size option
-                      {product.variants.length === 1 ? "" : "s"}
-                    </p>
-
-                    <p
-                      className={
-                        isOutOfStock
-                          ? "text-xs font-semibold text-red-700"
-                          : isLowStock
-                            ? "text-xs font-semibold text-amber-700"
-                            : "text-xs font-semibold text-black/55"
-                      }
-                    >
-                      {isOutOfStock ? "Unavailable" : `${inventory} available`}
-                    </p>
+                {hasVariants && colours.length > 0 && (
+                  <div className="flex gap-2">
+                    {colours.slice(0, 5).map((colour) => (
+                      <span
+                        key={colour}
+                        className="h-3 w-3 rounded-full border border-neutral-300"
+                        style={{
+                          backgroundColor: colourMap[colour] ?? "#cccccc",
+                        }}
+                      />
+                    ))}
                   </div>
                 )}
               </div>

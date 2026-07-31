@@ -26,10 +26,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
     });
 
     if (!image) {
-      return redirectTo(
-        request,
-        `/admin/products/${productId}/images?error=image-not-found`,
-      );
+      return redirectTo(request, `/admin/products/${productId}/images?error=image-not-found`);
     }
 
     await prisma.productImage.delete({
@@ -75,9 +72,6 @@ export async function POST(request: NextRequest, context: RouteContext) {
   } catch (error: unknown) {
     console.error("Image deletion failed:", error);
 
-    return redirectTo(
-      request,
-      `/admin/products/${productId}/images?error=server`,
-    );
+    return redirectTo(request, `/admin/products/${productId}/images?error=server`);
   }
 }

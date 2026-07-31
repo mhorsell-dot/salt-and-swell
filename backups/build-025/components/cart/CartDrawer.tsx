@@ -13,16 +13,8 @@ function formatCurrency(value: number): string {
 }
 
 export default function CartDrawer() {
-  const {
-    items,
-    itemCount,
-    subtotal,
-    isOpen,
-    closeCart,
-    openCart,
-    removeItem,
-    updateQuantity,
-  } = useCart();
+  const { items, itemCount, subtotal, isOpen, closeCart, openCart, removeItem, updateQuantity } =
+    useCart();
 
   return (
     <>
@@ -83,13 +75,11 @@ export default function CartDrawer() {
               <ShoppingBag className="h-7 w-7" />
             </div>
 
-            <h2 className="mt-6 text-2xl font-semibold tracking-tight">
-              Your bag is empty.
-            </h2>
+            <h2 className="mt-6 text-2xl font-semibold tracking-tight">Your bag is empty.</h2>
 
             <p className="mt-3 max-w-xs text-sm leading-7 text-black/55">
-              Explore the current Salt &amp; Swell collection and add something
-              made for life beside the ocean.
+              Explore the current Salt &amp; Swell collection and add something made for life beside
+              the ocean.
             </p>
 
             <Link
@@ -156,9 +146,7 @@ export default function CartDrawer() {
                         <div className="flex h-10 items-center border border-black/15">
                           <button
                             type="button"
-                            onClick={() =>
-                              updateQuantity(item.cartId, item.quantity - 1)
-                            }
+                            onClick={() => updateQuantity(item.cartId, item.quantity - 1)}
                             disabled={item.quantity <= 1}
                             className="flex h-full w-9 items-center justify-center disabled:opacity-30"
                           >
@@ -171,9 +159,7 @@ export default function CartDrawer() {
 
                           <button
                             type="button"
-                            onClick={() =>
-                              updateQuantity(item.cartId, item.quantity + 1)
-                            }
+                            onClick={() => updateQuantity(item.cartId, item.quantity + 1)}
                             disabled={item.quantity >= item.inventory}
                             className="flex h-full w-9 items-center justify-center disabled:opacity-30"
                           >
@@ -193,13 +179,9 @@ export default function CartDrawer() {
 
             <footer className="border-t border-black/10 bg-white/45 px-6 py-6">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold uppercase tracking-[0.12em]">
-                  Subtotal
-                </p>
+                <p className="text-sm font-semibold uppercase tracking-[0.12em]">Subtotal</p>
 
-                <p className="text-xl font-semibold">
-                  {formatCurrency(subtotal)}
-                </p>
+                <p className="text-xl font-semibold">{formatCurrency(subtotal)}</p>
               </div>
 
               <p className="mt-2 text-xs leading-5 text-black/50">

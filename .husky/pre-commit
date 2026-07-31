@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+echo ""
+echo "Running lint-staged..."
+
+npx lint-staged
+
+RESULT=$?
+
+if [ $RESULT -ne 0 ]; then
+  echo ""
+  echo "❌ Commit blocked."
+  exit $RESULT
+fi
+
+echo ""
+echo "✅ All checks passed."

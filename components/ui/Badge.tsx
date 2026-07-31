@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 
-type Props = {
+interface Props {
   children: ReactNode;
-};
+}
 
 export default function Badge({ children }: Props) {
   return (
-    <span className="inline-flex items-center rounded-full border border-black/10 bg-[#f7f5ef] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em]">
+    <span className="inline-flex rounded-full bg-black px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white">
       {children}
     </span>
   );

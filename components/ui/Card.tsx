@@ -8,14 +8,16 @@ type Props = {
 export default function Card({ children, className = "" }: Props) {
   return (
     <div
-      className={[
-        "rounded-[2rem]",
-        "border border-black/8",
-        "bg-white",
-        "shadow-[0_18px_60px_rgba(0,0,0,0.05)]",
-        "transition-all",
-        className,
-      ].join(" ")}
+      className={`
+rounded-[32px]
+bg-white
+shadow-sm
+transition-all
+duration-500
+hover:-translate-y-2
+hover:shadow-2xl
+${className}
+`}
     >
       {children}
     </div>

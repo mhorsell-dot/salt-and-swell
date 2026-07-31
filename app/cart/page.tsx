@@ -25,22 +25,12 @@ function formatCurrency(value: number): string {
 }
 
 export default function CartPage() {
-  const {
-    items,
-    itemCount,
-    subtotal,
-    isHydrated,
-    updateQuantity,
-    removeItem,
-    clearCart,
-  } = useCart();
+  const { items, itemCount, subtotal, isHydrated, updateQuantity, removeItem, clearCart } =
+    useCart();
 
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
-  const shippingProgress = Math.min(
-    100,
-    (subtotal / FREE_SHIPPING_THRESHOLD) * 100,
-  );
+  const shippingProgress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
 
   if (!isHydrated) {
     return (
@@ -105,14 +95,10 @@ export default function CartPage() {
             <div>
               <div className="border-b border-black/10 pb-5">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold">
-                    Complimentary delivery progress
-                  </p>
+                  <p className="text-sm font-semibold">Complimentary delivery progress</p>
 
                   <p className="text-xs font-semibold text-black/45">
-                    {remaining <= 0
-                      ? "Unlocked"
-                      : `${formatCurrency(remaining)} remaining`}
+                    {remaining <= 0 ? "Unlocked" : `${formatCurrency(remaining)} remaining`}
                   </p>
                 </div>
 
@@ -126,15 +112,10 @@ export default function CartPage() {
 
               <div className="divide-y divide-black/10">
                 {items.map((item) => {
-                  const variantDetails = [item.colour, item.size]
-                    .filter(Boolean)
-                    .join(" / ");
+                  const variantDetails = [item.colour, item.size].filter(Boolean).join(" / ");
 
                   return (
-                    <article
-                      key={item.cartId}
-                      className="grid gap-5 py-7 sm:grid-cols-[150px_1fr]"
-                    >
+                    <article key={item.cartId} className="grid gap-5 py-7 sm:grid-cols-[150px_1fr]">
                       <Link
                         href={`/shop/${item.slug}`}
                         className="aspect-[4/5] overflow-hidden bg-[#dfdbd2]"
@@ -159,9 +140,7 @@ export default function CartPage() {
                               </Link>
 
                               {variantDetails && (
-                                <p className="mt-2 text-sm text-black/45">
-                                  {variantDetails}
-                                </p>
+                                <p className="mt-2 text-sm text-black/45">{variantDetails}</p>
                               )}
 
                               {item.sku && (
@@ -181,9 +160,7 @@ export default function CartPage() {
                           <div className="flex h-11 items-center rounded-full border border-black/15 bg-white/45">
                             <button
                               type="button"
-                              onClick={() =>
-                                updateQuantity(item.cartId, item.quantity - 1)
-                              }
+                              onClick={() => updateQuantity(item.cartId, item.quantity - 1)}
                               disabled={item.quantity <= 1}
                               aria-label="Decrease quantity"
                               className="flex h-11 w-11 items-center justify-center disabled:opacity-25"
@@ -197,9 +174,7 @@ export default function CartPage() {
 
                             <button
                               type="button"
-                              onClick={() =>
-                                updateQuantity(item.cartId, item.quantity + 1)
-                              }
+                              onClick={() => updateQuantity(item.cartId, item.quantity + 1)}
                               disabled={item.quantity >= item.inventory}
                               aria-label="Increase quantity"
                               className="flex h-11 w-11 items-center justify-center disabled:opacity-25"
@@ -240,9 +215,7 @@ export default function CartPage() {
               <div className="mt-6 space-y-4 border-b border-black/10 pb-6 text-sm">
                 <div className="flex justify-between gap-4">
                   <span className="text-black/55">Subtotal</span>
-                  <span className="font-semibold">
-                    {formatCurrency(subtotal)}
-                  </span>
+                  <span className="font-semibold">{formatCurrency(subtotal)}</span>
                 </div>
 
                 <div className="flex justify-between gap-4">
@@ -325,13 +298,11 @@ function EmptyCart() {
           <ShoppingBag className="h-10 w-10 text-black/35" />
         </div>
 
-        <h2 className="mt-8 text-4xl font-semibold tracking-[-0.045em]">
-          Your bag is waiting
-        </h2>
+        <h2 className="mt-8 text-4xl font-semibold tracking-[-0.045em]">Your bag is waiting</h2>
 
         <p className="mt-4 max-w-md text-sm leading-7 text-black/50">
-          Explore coastal essentials designed for everyday wear, weekends away
-          and life beside the ocean.
+          Explore coastal essentials designed for everyday wear, weekends away and life beside the
+          ocean.
         </p>
 
         <Link

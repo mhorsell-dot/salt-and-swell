@@ -57,10 +57,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
     );
 
     if (files.length === 0) {
-      return redirectTo(
-        request,
-        `/admin/products/${productId}/images?error=no-files`,
-      );
+      return redirectTo(request, `/admin/products/${productId}/images?error=no-files`);
     }
 
     const invalidFile = files.find(
@@ -68,10 +65,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
     );
 
     if (invalidFile) {
-      return redirectTo(
-        request,
-        `/admin/products/${productId}/images?error=invalid-file`,
-      );
+      return redirectTo(request, `/admin/products/${productId}/images?error=invalid-file`);
     }
 
     const currentImageCount = await prisma.productImage.count({
@@ -80,13 +74,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
       },
     });
 
-    const uploadDirectory = path.join(
-      process.cwd(),
-      "public",
-      "uploads",
-      "products",
-      productId,
-    );
+    const uploadDirectory = path.join(process.cwd(), "public", "uploads", "products", productId);
 
     await mkdir(uploadDirectory, {
       recursive: true,
@@ -113,16 +101,10 @@ export async function POST(request: NextRequest, context: RouteContext) {
       });
     }
 
-    return redirectTo(
-      request,
-      `/admin/products/${productId}/images?uploaded=1`,
-    );
+    return redirectTo(request, `/admin/products/${productId}/images?uploaded=1`);
   } catch (error: unknown) {
     console.error("Image upload failed:", error);
 
-    return redirectTo(
-      request,
-      `/admin/products/${productId}/images?error=server`,
-    );
+    return redirectTo(request, `/admin/products/${productId}/images?error=server`);
   }
 }

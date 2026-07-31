@@ -1,0 +1,4 @@
+./.lintstagedrc.json
+./package-lock.json
+./package.json
+./tsconfig.json

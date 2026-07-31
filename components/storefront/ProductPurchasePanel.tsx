@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Check, Minus, Plus, ShoppingBag } from "lucide-react";
-
 import { useCart } from "@/components/cart/CartProvider";
+import TrustBar from "@/components/storefront/TrustBar";
 
 type Variant = {
   id: string;
@@ -24,21 +25,12 @@ type ProductPurchasePanelProps = {
   variants: Variant[];
 };
 
-export default function ProductPurchasePanel({
-  product,
-  variants,
-}: ProductPurchasePanelProps) {
-  const { addItem } = useCart();
+export default function ProductPurchasePanel({ product, variants }: ProductPurchasePanelProps) {
+  const { addItem, openCart } = useCart();
 
-  const availableVariants = useMemo(
-    () => variants.filter((variant) => variant.inventory > 0),
-    [variants],
-  );
+  const availableVariants = useMemo(() => variants.filter((v) => v.inventory > 0), [variants]);
 
-  const colours = useMemo(
-    () => Array.from(new Set(variants.map((variant) => variant.colour))),
-    [variants],
-  );
+  const colours = useMemo(() => Array.from(new Set(variants.map((v) => v.colour))), [variants]);
 
   const [selectedColour, setSelectedColour] = useState(
     availableVariants[0]?.colour ?? colours[0] ?? "",
@@ -46,58 +38,40 @@ export default function ProductPurchasePanel({
 
   const availableSizes = useMemo(
     () =>
-      Array.from(
-        new Set(
-          variants
-            .filter((variant) => variant.colour === selectedColour)
-            .map((variant) => variant.size),
-        ),
-      ),
+      Array.from(new Set(variants.filter((v) => v.colour === selectedColour).map((v) => v.size))),
     [variants, selectedColour],
   );
 
   const initialVariant =
-    availableVariants.find((variant) => variant.colour === selectedColour) ??
-    availableVariants[0];
+    availableVariants.find((v) => v.colour === selectedColour) ?? availableVariants[0];
 
-  const [selectedVariantId, setSelectedVariantId] = useState(
-    initialVariant?.id ?? "",
-  );
+  const [selectedVariantId, setSelectedVariantId] = useState(initialVariant?.id ?? "");
 
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
   const selectedVariant =
-    variants.find((variant) => variant.id === selectedVariantId) ??
-    variants.find(
-      (variant) => variant.colour === selectedColour && variant.inventory > 0,
-    );
+    variants.find((v) => v.id === selectedVariantId) ??
+    variants.find((v) => v.colour === selectedColour && v.inventory > 0);
 
   function selectColour(colour: string) {
     setSelectedColour(colour);
 
-    const firstVariant = variants.find(
-      (variant) => variant.colour === colour && variant.inventory > 0,
-    );
+    const variant = variants.find((v) => v.colour === colour && v.inventory > 0);
 
-    setSelectedVariantId(firstVariant?.id ?? "");
+    setSelectedVariantId(variant?.id ?? "");
     setQuantity(1);
   }
 
   function selectSize(size: string) {
-    const variant = variants.find(
-      (candidate) =>
-        candidate.colour === selectedColour && candidate.size === size,
-    );
+    const variant = variants.find((v) => v.colour === selectedColour && v.size === size);
 
     setSelectedVariantId(variant?.id ?? "");
     setQuantity(1);
   }
 
   function handleAddToBag() {
-    if (!selectedVariant || selectedVariant.inventory <= 0) {
-      return;
-    }
+    if (!selectedVariant || selectedVariant.inventory <= 0) return;
 
     addItem({
       productId: product.id,
@@ -107,22 +81,23 @@ export default function ProductPurchasePanel({
       size: selectedVariant.size,
       colour: selectedVariant.colour,
       sku: selectedVariant.sku,
-      price: product.price,
       quantity,
       inventory: selectedVariant.inventory,
       imageUrl: product.imageUrl,
+      price: product.price,
     });
 
     setAdded(true);
 
-    window.setTimeout(() => {
+    setTimeout(() => {
       setAdded(false);
-    }, 1800);
+      openCart();
+    }, 900);
   }
 
   if (variants.length === 0) {
     return (
-      <div className="mt-8 border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-6 text-amber-900">
+      <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5">
         This product does not have any purchasable variants yet.
       </div>
     );
@@ -130,29 +105,55 @@ export default function ProductPurchasePanel({
 
   return (
     <div className="mt-8">
-      {colours.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em]">
-              Colour
-            </p>
+      {added && (
+        <div className="fixed bottom-6 right-6 z-50 w-[380px] overflow-hidden rounded-3xl bg-[#111] text-white shadow-[0_25px_80px_rgba(0,0,0,.35)]">
+          <div className="flex items-center gap-4 p-6">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black">
+              <Check className="h-6 w-6" />
+            </div>
+
+            <div>
+              <p className="font-semibold">Added to your bag</p>
+
+              <p className="text-sm text-white/60">{product.name}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 border-t border-white/10">
+            <button onClick={openCart} className="py-4 font-semibold hover:bg-white/10">
+              View Bag
+            </button>
+
+            <Link
+              href="/checkout"
+              className="border-l border-white/10 py-4 text-center font-semibold hover:bg-white/10"
+            >
+              Checkout
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {!!colours.length && (
+        <>
+          <div className="flex justify-between">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em]">Colour</p>
 
             <p className="text-xs text-black/50">{selectedColour}</p>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-3">
             {colours.map((colour) => {
-              const isSelected = colour === selectedColour;
+              const selected = colour === selectedColour;
 
               return (
                 <button
                   key={colour}
-                  type="button"
                   onClick={() => selectColour(colour)}
                   className={
-                    isSelected
-                      ? "border border-black bg-black px-4 py-3 text-sm font-medium text-white"
-                      : "border border-black/20 px-4 py-3 text-sm font-medium transition hover:border-black"
+                    selected
+                      ? "rounded-full border-2 border-black bg-black px-5 py-3 text-sm text-white shadow-lg"
+                      : "rounded-full border border-black/15 bg-white px-5 py-3 text-sm transition hover:border-black hover:shadow-md"
                   }
                 >
                   {colour}
@@ -160,44 +161,31 @@ export default function ProductPurchasePanel({
               );
             })}
           </div>
-        </div>
+        </>
       )}
 
-      <div className="mt-8">
-        <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em]">
-            Size
-          </p>
+      <div className="mt-10">
+        <div className="flex justify-between">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em]">Size</p>
 
-          <button
-            type="button"
-            className="text-xs font-semibold text-black/50 underline underline-offset-4"
-          >
-            Size guide
-          </button>
+          <button className="text-xs underline">Size Guide</button>
         </div>
 
-        <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-6">
+        <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-6">
           {availableSizes.map((size) => {
-            const variant = variants.find(
-              (candidate) =>
-                candidate.colour === selectedColour && candidate.size === size,
-            );
+            const variant = variants.find((v) => v.colour === selectedColour && v.size === size);
 
-            const isSelected = variant?.id === selectedVariant?.id;
-
-            const disabled = !variant || variant.inventory <= 0;
+            const selected = variant?.id === selectedVariant?.id;
 
             return (
               <button
                 key={size}
-                type="button"
-                disabled={disabled}
+                disabled={!variant || variant.inventory <= 0}
                 onClick={() => selectSize(size)}
                 className={
-                  isSelected
-                    ? "h-12 border border-black bg-black text-sm font-semibold text-white"
-                    : "h-12 border border-black/20 text-sm font-semibold transition hover:border-black disabled:cursor-not-allowed disabled:bg-black/5 disabled:text-black/25"
+                  selected
+                    ? "h-14 rounded-xl border-2 border-black bg-black text-white shadow-lg"
+                    : "h-14 rounded-xl border border-black/15 bg-white hover:border-black hover:shadow-md disabled:opacity-30"
                 }
               >
                 {size}
@@ -208,64 +196,63 @@ export default function ProductPurchasePanel({
       </div>
 
       {selectedVariant && (
-        <p className="mt-4 text-xs text-black/50">
-          {selectedVariant.inventory} available in {selectedVariant.colour},
-          size {selectedVariant.size}
-        </p>
+        <div className="mt-5 inline-flex rounded-full bg-emerald-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-emerald-700">
+          {selectedVariant.inventory} Available
+        </div>
       )}
 
-      <div className="mt-8 grid grid-cols-[120px_1fr] gap-3">
-        <div className="flex h-14 items-center border border-black/20">
-          <button
-            type="button"
-            onClick={() => setQuantity((current) => Math.max(1, current - 1))}
-            disabled={quantity <= 1}
-            className="flex h-full w-10 items-center justify-center disabled:opacity-30"
-          >
-            <Minus className="h-4 w-4" />
+      <div className="mt-8 grid grid-cols-[120px_1fr] gap-4">
+        <div className="flex h-14 items-center rounded-xl border border-black/15 bg-white shadow-sm">
+          <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="w-10">
+            <Minus size={16} />
           </button>
 
-          <span className="flex min-w-10 flex-1 items-center justify-center text-sm font-semibold">
-            {quantity}
-          </span>
+          <div className="flex-1 text-center font-semibold">{quantity}</div>
 
           <button
-            type="button"
-            onClick={() =>
-              setQuantity((current) =>
-                Math.min(selectedVariant?.inventory ?? 1, current + 1),
-              )
-            }
-            disabled={!selectedVariant || quantity >= selectedVariant.inventory}
-            className="flex h-full w-10 items-center justify-center disabled:opacity-30"
+            onClick={() => setQuantity((q) => Math.min(selectedVariant?.inventory ?? 1, q + 1))}
+            className="w-10"
           >
-            <Plus className="h-4 w-4" />
+            <Plus size={16} />
           </button>
         </div>
 
         <button
-          type="button"
           onClick={handleAddToBag}
-          disabled={!selectedVariant || selectedVariant.inventory <= 0}
-          className={
-            added
-              ? "inline-flex h-14 items-center justify-center gap-3 bg-emerald-700 px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white"
-              : "inline-flex h-14 items-center justify-center gap-3 bg-black px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-black/80 disabled:cursor-not-allowed disabled:bg-black/30"
-          }
+          disabled={!selectedVariant}
+          className="flex h-14 items-center justify-center gap-3 rounded-xl bg-[#182321] text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:bg-[#243530] hover:shadow-2xl disabled:opacity-40"
         >
-          {added ? (
-            <>
-              <Check className="h-5 w-5" />
-              Added to bag
-            </>
-          ) : (
-            <>
-              <ShoppingBag className="h-5 w-5" />
-              Add to bag
-            </>
-          )}
+          <ShoppingBag size={18} />
+
+          {added ? "Added" : "Add to Bag"}
         </button>
       </div>
+
+      <div className="mt-8 rounded-2xl border border-black/10 bg-white p-5">
+        <div className="flex justify-between">
+          <span className="font-medium">Secure Checkout</span>
+
+          <span className="text-xs uppercase tracking-widest text-black/45">SSL</span>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-black/60">
+          <div>✓ Visa</div>
+          <div>✓ Mastercard</div>
+          <div>✓ Apple Pay</div>
+          <div>✓ Google Pay</div>
+        </div>
+      </div>
+
+      <div className="mt-4 rounded-2xl bg-[#f7f6f2] p-5">
+        <h4 className="font-semibold">Shipping</h4>
+
+        <p className="mt-2 text-sm leading-7 text-black/60">
+          Complimentary Australian shipping on orders over $150. Orders dispatch within one business
+          day.
+        </p>
+      </div>
+
+      <TrustBar />
     </div>
   );
 }

@@ -1,27 +1,13 @@
 import { ReactNode } from "react";
+import clsx from "clsx";
 
-type Props = {
+interface Props {
   children: ReactNode;
   className?: string;
-};
+}
 
-export default function Container({
-  children,
-  className = "",
-}: Props) {
+export default function Container({ children, className }: Props) {
   return (
-    <div
-      className={[
-        "mx-auto",
-        "w-full",
-        "max-w-7xl",
-        "px-5",
-        "sm:px-8",
-        "lg:px-10",
-        className,
-      ].join(" ")}
-    >
-      {children}
-    </div>
+    <div className={clsx("mx-auto w-full max-w-[1280px] px-6 lg:px-8", className)}>{children}</div>
   );
 }

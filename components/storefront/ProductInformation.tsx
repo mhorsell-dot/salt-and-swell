@@ -27,9 +27,7 @@ const sections = [
 ];
 
 export default function ProductInformation() {
-  const [openSection, setOpenSection] = useState<string | null>(
-    "Product details",
-  );
+  const [openSection, setOpenSection] = useState<string | null>("Product details");
 
   return (
     <div className="mt-10 border-t border-black/10">
@@ -48,11 +46,7 @@ export default function ProductInformation() {
               </span>
 
               <ChevronDown
-                className={
-                  isOpen
-                    ? "h-4 w-4 rotate-180 transition"
-                    : "h-4 w-4 transition"
-                }
+                className={isOpen ? "h-4 w-4 rotate-180 transition" : "h-4 w-4 transition"}
               />
             </button>
 
@@ -64,9 +58,7 @@ export default function ProductInformation() {
               }
             >
               <div className="overflow-hidden">
-                <p className="max-w-xl pb-6 text-sm leading-7 text-black/60">
-                  {section.content}
-                </p>
+                <p className="max-w-xl pb-6 text-sm leading-7 text-black/60">{section.content}</p>
               </div>
             </div>
           </div>

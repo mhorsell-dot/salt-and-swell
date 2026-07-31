@@ -1,13 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  AlertTriangle,
-  ArrowLeft,
-  ImageIcon,
-  Star,
-  Trash2,
-  Upload,
-} from "lucide-react";
+import { AlertTriangle, ArrowLeft, ImageIcon, Star, Trash2, Upload } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
@@ -40,10 +33,7 @@ function getErrorMessage(error?: string): string | null {
   }
 }
 
-export default async function ImagesPage({
-  params,
-  searchParams,
-}: ImagesPageProps) {
+export default async function ImagesPage({ params, searchParams }: ImagesPageProps) {
   const { id } = await params;
   const query = await searchParams;
 
@@ -110,13 +100,10 @@ export default async function ImagesPage({
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-neutral-950">
-              Upload product images
-            </h2>
+            <h2 className="text-lg font-semibold text-neutral-950">Upload product images</h2>
 
             <p className="mt-1 text-sm leading-6 text-neutral-500">
-              Select multiple JPG, PNG or WebP images. Each image can be up to 8
-              MB.
+              Select multiple JPG, PNG or WebP images. Each image can be up to 8 MB.
             </p>
           </div>
         </div>
@@ -134,9 +121,7 @@ export default async function ImagesPage({
               Choose product images
             </span>
 
-            <span className="mt-2 text-xs text-neutral-500">
-              Multiple files may be selected
-            </span>
+            <span className="mt-2 text-xs text-neutral-500">Multiple files may be selected</span>
 
             <input
               type="file"
@@ -161,9 +146,7 @@ export default async function ImagesPage({
       <section className="rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
         <div className="flex items-start justify-between gap-5">
           <div>
-            <h2 className="text-lg font-semibold text-neutral-950">
-              Product gallery
-            </h2>
+            <h2 className="text-lg font-semibold text-neutral-950">Product gallery</h2>
 
             <p className="mt-1 text-sm text-neutral-500">
               The first image is used as the primary storefront image.
@@ -180,13 +163,10 @@ export default async function ImagesPage({
           <div className="mt-7 flex min-h-72 flex-col items-center justify-center rounded-3xl border border-dashed border-neutral-300 bg-neutral-50 px-6 text-center">
             <ImageIcon className="h-9 w-9 text-neutral-300" />
 
-            <h3 className="mt-4 text-lg font-semibold text-neutral-950">
-              No product images yet
-            </h3>
+            <h3 className="mt-4 text-lg font-semibold text-neutral-950">No product images yet</h3>
 
             <p className="mt-2 max-w-md text-sm leading-6 text-neutral-500">
-              Upload the first image to replace the storefront fallback
-              photography.
+              Upload the first image to replace the storefront fallback photography.
             </p>
           </div>
         ) : (
@@ -214,13 +194,9 @@ export default async function ImagesPage({
 
                 <div className="flex items-center justify-between gap-4 p-4">
                   <div>
-                    <p className="text-sm font-semibold text-neutral-950">
-                      Image {index + 1}
-                    </p>
+                    <p className="text-sm font-semibold text-neutral-950">Image {index + 1}</p>
 
-                    <p className="mt-1 text-xs text-neutral-500">
-                      Sort position {image.sortOrder}
-                    </p>
+                    <p className="mt-1 text-xs text-neutral-500">Sort position {image.sortOrder}</p>
                   </div>
 
                   <form

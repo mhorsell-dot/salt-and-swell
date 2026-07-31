@@ -1,4 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -33,9 +33,7 @@ async function main() {
   });
 
   if (!product) {
-    throw new Error(
-      "No product was found. Create a product before attaching mockups."
-    );
+    throw new Error("No product was found. Create a product before attaching mockups.");
   }
 
   for (const [index, mockup] of mockups.entries()) {
@@ -44,42 +42,27 @@ async function main() {
         productId: product.id,
         url: mockup.url,
       },
-      select: {
-        id: true,
-      },
     });
 
-    if (existing) {
-      await prisma.productImage.update({
-        where: {
-          id: existing.id,
-        },
+    if (!existing) {
+      await prisma.productImage.create({
         data: {
+          productId: product.id,
+          url: mockup.url,
           alt: mockup.alt,
           sortOrder: index,
         },
       });
-
-      continue;
     }
-
-    await prisma.productImage.create({
-      data: {
-        productId: product.id,
-        url: mockup.url,
-        alt: mockup.alt,
-        sortOrder: index,
-      },
-    });
   }
 
-  console.log(`Attached ${mockups.length} mockups to "${product.name}".`);
+  console.log(`Mockups attached to ${product.name}`);
 }
 
 main()
   .catch((error) => {
     console.error(error);
-    process.exitCode = 1;
+    process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();

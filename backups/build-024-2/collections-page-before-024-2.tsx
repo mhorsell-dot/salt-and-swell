@@ -58,8 +58,8 @@ export default async function CollectionsPage() {
           </h1>
 
           <p className="mt-7 max-w-xl text-sm leading-7 text-black/55">
-            Explore considered ranges inspired by the Australian coast, open
-            roads and everyday life beside the ocean.
+            Explore considered ranges inspired by the Australian coast, open roads and everyday life
+            beside the ocean.
           </p>
         </div>
       </section>
@@ -70,9 +70,7 @@ export default async function CollectionsPage() {
             <div className="flex min-h-96 flex-col items-center justify-center border border-black/10 bg-white/40 px-6 text-center">
               <Layers3 className="h-9 w-9 text-black/30" />
 
-              <h2 className="mt-5 text-2xl font-semibold">
-                Collections are coming.
-              </h2>
+              <h2 className="mt-5 text-2xl font-semibold">Collections are coming.</h2>
 
               <p className="mt-3 max-w-md text-sm leading-7 text-black/50">
                 New curated Salt &amp; Swell ranges will appear here.

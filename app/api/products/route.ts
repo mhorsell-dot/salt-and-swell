@@ -11,10 +11,7 @@ export async function GET() {
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json(
-      { error: "Failed to fetch products." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch products." }, { status: 500 });
   }
 }
 
@@ -27,24 +24,19 @@ export async function POST(request: NextRequest) {
     const product = await createProduct(validated);
 
     return NextResponse.json(product, { status: 201 });
-
   } catch (error: unknown) {
-
     if (error instanceof ZodError) {
       return NextResponse.json(
         {
           error: "Validation failed",
           issues: error.issues,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     console.error(error);
 
-    return NextResponse.json(
-      { error: "Unable to create product." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Unable to create product." }, { status: 500 });
   }
 }

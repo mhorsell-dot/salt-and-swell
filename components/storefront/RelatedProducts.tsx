@@ -25,10 +25,7 @@ export default async function RelatedProducts({
         not: productId,
       },
       active: true,
-      OR: [
-        ...(categoryId ? [{ categoryId }] : []),
-        ...(collectionId ? [{ collectionId }] : []),
-      ],
+      OR: [...(categoryId ? [{ categoryId }] : []), ...(collectionId ? [{ collectionId }] : [])],
     },
     include: {
       images: {
@@ -64,9 +61,7 @@ export default async function RelatedProducts({
               Continue exploring
             </p>
 
-            <h2 className="mt-3 text-4xl font-semibold tracking-[-0.04em]">
-              You may also like
-            </h2>
+            <h2 className="mt-3 text-4xl font-semibold tracking-[-0.04em]">You may also like</h2>
           </div>
 
           <Link
@@ -80,9 +75,7 @@ export default async function RelatedProducts({
 
         <div className="mt-8 grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => {
-            const image =
-              product.images[0]?.url ??
-              "/mockups/products/essential-tee-front.svg";
+            const image = product.images[0]?.url ?? "/mockups/products/essential-tee-front.svg";
 
             const inventory = product.variants.reduce(
               (total, variant) => total + variant.inventory,
@@ -90,11 +83,7 @@ export default async function RelatedProducts({
             );
 
             return (
-              <Link
-                key={product.id}
-                href={`/shop/${product.slug}`}
-                className="group block"
-              >
+              <Link key={product.id} href={`/shop/${product.slug}`} className="group block">
                 <div className="aspect-[4/5] overflow-hidden bg-[#e7e4dc]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -116,9 +105,7 @@ export default async function RelatedProducts({
 
                     {product.variants.length > 0 && (
                       <p className="mt-2 text-xs text-black/40">
-                        {inventory > 0
-                          ? `${inventory} available`
-                          : "Out of stock"}
+                        {inventory > 0 ? `${inventory} available` : "Out of stock"}
                       </p>
                     )}
                   </div>

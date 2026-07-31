@@ -11,6 +11,8 @@ import {
   Truck,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import StripeProvider from "./components/StripeProvider";
+import StripePaymentForm from "./components/StripePaymentForm";
 
 import { useCart } from "@/components/cart/CartProvider";
 
@@ -25,9 +27,21 @@ import SavingsCard from "./components/SavingsCard";
 import PromoCard from "./components/PromoCard";
 import GiftCard from "./components/GiftCard";
 import ExpressCheckout from "./components/ExpressCheckout";
-
+import SavedAddressSelector from "./components/SavedAddressSelector";
 
 type ShippingMethod = "standard" | "express";
+
+type SavedAddress = {
+  id: string;
+  label: string;
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  postcode: string;
+  country: string;
+};
 
 const STANDARD_SHIPPING = 9.95;
 const EXPRESS_SHIPPING = 16.95;
@@ -43,22 +57,144 @@ function formatCurrency(value: number): string {
 export default function CheckoutClient() {
   const { items, itemCount, subtotal, isHydrated } = useCart();
 
-  const [shippingMethod, setShippingMethod] =
-    useState<ShippingMethod>("standard");
+  const [shippingMethod, setShippingMethod] = useState<ShippingMethod>("standard");
+
+  const [selectedAddress, setSelectedAddress] = useState<SavedAddress | null>(null);
+
+  const [saveAddress, setSaveAddress] = useState(false);
 
   const [submitted, setSubmitted] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [paymentReady, setPaymentReady] = useState(false);
 
-  const standardShipping =
-    subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
+  const standardShipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
 
-  const shipping =
-    shippingMethod === "express" ? EXPRESS_SHIPPING : standardShipping;
+  const shipping = shippingMethod === "express" ? EXPRESS_SHIPPING : standardShipping;
 
   const total = subtotal + shipping;
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSavedAddressSelect(address: SavedAddress) {
+    setSelectedAddress(address);
+
+    const fields = {
+      firstName: address.firstName,
+      lastName: address.lastName,
+      address1: address.address1,
+      city: address.city,
+      state: address.state,
+      postcode: address.postcode,
+      country: address.country,
+    };
+
+    Object.entries(fields).forEach(([name, value]) => {
+      const input = document.querySelector(`[name="${name}"]`) as
+        HTMLInputElement | HTMLSelectElement | null;
+
+      if (input) {
+        input.value = value || "";
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    });
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    console.log("CHECKOUT SUBMIT STARTED");
+
     event.preventDefault();
-    setSubmitted(true);
+
+    const formData = new FormData(event.currentTarget);
+
+    const checkoutCustomer = {
+      firstName: String(formData.get("firstName") || ""),
+
+      lastName: String(formData.get("lastName") || ""),
+
+      email: String(formData.get("email") || ""),
+
+      phone: String(formData.get("phone") || ""),
+    };
+
+    const shippingDetails = {
+      firstName: String(formData.get("firstName") || ""),
+
+      lastName: String(formData.get("lastName") || ""),
+
+      address1: String(formData.get("address") || ""),
+
+      address2: String(formData.get("addressLine2") || ""),
+
+      city: String(formData.get("suburb") || ""),
+
+      state: String(formData.get("state") || ""),
+
+      postcode: String(formData.get("postcode") || ""),
+
+      country: String(formData.get("country") || "Australia"),
+    };
+
+    console.log("Creating order...");
+    console.table(items);
+    console.log(
+      "FULL CART PAYLOAD",
+      JSON.stringify(
+        {
+          items,
+          checkoutCustomer,
+          shippingDetails,
+        },
+        null,
+        2,
+      ),
+    );
+
+    const orderResponse = await fetch("/api/orders/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items,
+
+        email: checkoutCustomer.email,
+
+        phone: checkoutCustomer.phone,
+
+        shipping: shippingDetails,
+
+        saveAddress,
+      }),
+    });
+
+    const orderData = await orderResponse.json();
+
+    console.log("ORDER RESPONSE:", orderData);
+
+    if (!orderResponse.ok) {
+      console.error(orderData);
+      return;
+    }
+
+    const paymentResponse = await fetch("/api/orders/payment-intent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderId: orderData.orderId,
+      }),
+    });
+
+    const paymentData = await paymentResponse.json();
+
+    if (!paymentResponse.ok) {
+      console.error(paymentData);
+      return;
+    }
+
+    setOrderId(orderData.orderId);
+    setClientSecret(paymentData.clientSecret);
+    setPaymentReady(true);
 
     window.scrollTo({
       top: 0,
@@ -81,7 +217,7 @@ export default function CheckoutClient() {
     );
   }
 
-  if (items.length === 0) {
+  if (isHydrated && items.length === 0) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#f4f1ea] px-5 py-20 text-[#171715]">
         <section className="w-full max-w-xl rounded-[2rem] border border-black/10 bg-white px-7 py-12 text-center shadow-[0_24px_80px_rgba(0,0,0,0.07)] sm:px-12">
@@ -98,8 +234,7 @@ export default function CheckoutClient() {
           </h1>
 
           <p className="mx-auto mt-5 max-w-md text-sm leading-7 text-black/55">
-            Add something from the latest Salt &amp; Swell collection before
-            heading to checkout.
+            Add something from the latest Salt &amp; Swell collection before heading to checkout.
           </p>
 
           <Link
@@ -139,13 +274,10 @@ export default function CheckoutClient() {
             Salt &amp; Swell
           </p>
 
-          <h1 className="mt-3 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
-            Checkout
-          </h1>
+          <h1 className="mt-3 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Checkout</h1>
 
           <p className="mt-4 text-sm leading-7 text-black/55">
-            Complete your delivery details and review your order before moving
-            to secure payment.
+            Complete your delivery details and review your order before moving to secure payment.
           </p>
         </div>
 
@@ -158,18 +290,38 @@ export default function CheckoutClient() {
             <div>
               <p className="font-semibold">Your details are ready.</p>
               <p className="mt-1 text-sm leading-6 text-[#315c43]/75">
-                Secure online payment will be connected in Build 026B. Your cart
-                has not been cleared or charged.
+                Secure online payment will be connected in Build 026B. Your cart has not been
+                cleared or charged.
               </p>
             </div>
           </div>
         )}
 
         <form
+          noValidate
           onSubmit={handleSubmit}
           className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_420px]"
         >
           <div className="space-y-7">
+            <SavedAddressSelector onSelect={handleSavedAddressSelect} />
+
+            <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-2xl border border-black/10 bg-white p-5">
+              <input
+                type="checkbox"
+                checked={saveAddress}
+                onChange={(e) => setSaveAddress(e.target.checked)}
+                className="mt-1 h-4 w-4"
+              />
+
+              <span>
+                <span className="block font-semibold">Save this address to my account</span>
+
+                <span className="mt-1 block text-sm text-black/50">
+                  Use this address for faster checkout next time.
+                </span>
+              </span>
+            </label>
+
             <section className="rounded-[2rem] border border-black/8 bg-white p-6 shadow-[0_18px_60px_rgba(0,0,0,0.05)] sm:p-8">
               <div className="flex items-center gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#171715] text-sm font-semibold text-white">
@@ -177,9 +329,7 @@ export default function CheckoutClient() {
                 </div>
 
                 <div>
-                  <h2 className="text-xl font-semibold tracking-[-0.025em]">
-                    Contact information
-                  </h2>
+                  <h2 className="text-xl font-semibold tracking-[-0.025em]">Contact information</h2>
                   <p className="mt-1 text-sm text-black/45">
                     We’ll send your receipt and delivery updates here.
                   </p>
@@ -224,8 +374,7 @@ export default function CheckoutClient() {
                   name="marketing"
                   className="mt-1 h-4 w-4 rounded border-black/20 accent-black"
                 />
-                Keep me updated with new drops, restocks and Salt &amp; Swell
-                stories.
+                Keep me updated with new drops, restocks and Salt &amp; Swell stories.
               </label>
             </section>
 
@@ -236,9 +385,7 @@ export default function CheckoutClient() {
                 </div>
 
                 <div>
-                  <h2 className="text-xl font-semibold tracking-[-0.025em]">
-                    Delivery address
-                  </h2>
+                  <h2 className="text-xl font-semibold tracking-[-0.025em]">Delivery address</h2>
                   <p className="mt-1 text-sm text-black/45">
                     Australian delivery addresses are supported.
                   </p>
@@ -263,12 +410,7 @@ export default function CheckoutClient() {
                   />
                 </div>
 
-                <CheckoutField
-                  id="suburb"
-                  label="Suburb"
-                  autoComplete="address-level2"
-                  required
-                />
+                <CheckoutField id="suburb" label="Suburb" autoComplete="address-level2" required />
 
                 <label className="block">
                   <span className="text-xs font-semibold uppercase tracking-[0.13em] text-black/55">
@@ -328,9 +470,7 @@ export default function CheckoutClient() {
                 </div>
 
                 <div>
-                  <h2 className="text-xl font-semibold tracking-[-0.025em]">
-                    Delivery method
-                  </h2>
+                  <h2 className="text-xl font-semibold tracking-[-0.025em]">Delivery method</h2>
                   <p className="mt-1 text-sm text-black/45">
                     Choose how quickly you’d like your order.
                   </p>
@@ -344,11 +484,7 @@ export default function CheckoutClient() {
                   value="standard"
                   title="Standard delivery"
                   description="Estimated 3–7 business days"
-                  price={
-                    standardShipping === 0
-                      ? "Free"
-                      : formatCurrency(standardShipping)
-                  }
+                  price={standardShipping === 0 ? "Free" : formatCurrency(standardShipping)}
                   icon={<Truck className="h-5 w-5" />}
                   onChange={() => setShippingMethod("standard")}
                 />
@@ -369,23 +505,20 @@ export default function CheckoutClient() {
 
           <TrustSection />
 
-            <SavingsCard savings={0} />
+          <SavingsCard savings={0} />
 
-            <ShippingProgress
-              subtotal={subtotal}
-              threshold={FREE_SHIPPING_THRESHOLD}
-            />
+          <ShippingProgress subtotal={subtotal} threshold={FREE_SHIPPING_THRESHOLD} />
 
-            <PromoCard />
+          <PromoCard />
 
-            <GiftCard />
+          <GiftCard />
 
           <aside className="lg:sticky lg:top-6">
             <section className="rounded-[2rem] border border-black/8 bg-white p-6 shadow-[0_24px_80px_rgba(0,0,0,0.07)] sm:p-7">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40">
-                    Order summary
+                    Your order
                   </p>
 
                   <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em]">
@@ -399,13 +532,13 @@ export default function CheckoutClient() {
               <div className="mt-7 divide-y divide-black/8 border-y border-black/8">
                 {items.map((item) => (
                   <div key={item.cartId} className="flex gap-4 py-5">
-                    <div className="flex h-20 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f1eee7]">
+                    <div className="flex h-28 w-22 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#f1eee7]">
                       {item.imageUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={item.imageUrl}
                           alt={item.name}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-cover transition duration-500 hover:scale-105"
                         />
                       ) : (
                         <ShoppingBag className="h-5 w-5 text-black/25" />
@@ -420,13 +553,14 @@ export default function CheckoutClient() {
                           </p>
 
                           <p className="mt-1 text-xs text-black/45">
-                            {[item.colour, item.size]
-                              .filter(Boolean)
-                              .join(" · ") || "Standard"}
+                            {[item.colour, item.size].filter(Boolean).join(" · ") || "Standard"}
                           </p>
 
-                          <p className="mt-2 text-xs text-black/45">
-                            Quantity: {item.quantity}
+                          <p className="mt-2 text-xs text-black/45">Quantity: {item.quantity}</p>
+
+                          <p className="mt-3 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-700">
+                            <Check className="h-3 w-3" />
+                            Ready to ship
                           </p>
                         </div>
 
@@ -443,11 +577,7 @@ export default function CheckoutClient() {
                 <SummaryRow label="Subtotal" value={formatCurrency(subtotal)} />
 
                 <SummaryRow
-                  label={
-                    shippingMethod === "express"
-                      ? "Express delivery"
-                      : "Standard delivery"
-                  }
+                  label={shippingMethod === "express" ? "Express delivery" : "Standard delivery"}
                   value={shipping === 0 ? "Free" : formatCurrency(shipping)}
                 />
               </div>
@@ -455,9 +585,7 @@ export default function CheckoutClient() {
               <div className="flex items-end justify-between border-t border-black/10 pt-5">
                 <div>
                   <p className="text-sm font-semibold">Total</p>
-                  <p className="mt-1 text-xs text-black/40">
-                    Including applicable GST
-                  </p>
+                  <p className="mt-1 text-xs text-black/40">Including applicable GST</p>
                 </div>
 
                 <p className="text-2xl font-semibold tracking-[-0.035em]">
@@ -465,23 +593,37 @@ export default function CheckoutClient() {
                 </p>
               </div>
 
-              <button
-                type="submit"
-                className="mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#171715] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-black/80 focus:outline-none focus:ring-4 focus:ring-black/10"
-              >
-                Continue to payment
-                <ChevronRight className="h-4 w-4" />
-              </button>
+              {paymentReady && clientSecret && (
+                <div className="mt-8 rounded-3xl border border-black/10 bg-white p-6">
+                  <h3 className="text-lg font-semibold">Payment details</h3>
+
+                  <div className="mt-5">
+                    <StripeProvider clientSecret={clientSecret}>
+                      <StripePaymentForm />
+                    </StripeProvider>
+                  </div>
+                </div>
+              )}
+
+              {!paymentReady && (
+                <button
+                  type="submit"
+                  className="mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#171715] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-black/80 focus:outline-none focus:ring-4 focus:ring-black/10"
+                >
+                  Secure payment
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              )}
 
               <div className="mt-5 flex items-center justify-center gap-2 text-xs text-black/40">
                 <LockKeyhole className="h-3.5 w-3.5" />
-                Secure checkout · Payments coming next
+                Secure checkout · Stripe protected payment
               </div>
             </section>
 
             <div className="mt-5 rounded-2xl border border-black/8 bg-white/55 p-5 text-sm leading-6 text-black/50">
-              Free standard delivery applies automatically when your subtotal
-              reaches {formatCurrency(FREE_SHIPPING_THRESHOLD)}.
+              Free standard delivery applies automatically when your subtotal reaches{" "}
+              {formatCurrency(FREE_SHIPPING_THRESHOLD)}.
             </div>
           </aside>
         </form>

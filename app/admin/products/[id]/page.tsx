@@ -77,10 +77,7 @@ export default async function ProductManagementPage({
     notFound();
   }
 
-  const totalInventory = product.variants.reduce(
-    (total, variant) => total + variant.inventory,
-    0,
-  );
+  const totalInventory = product.variants.reduce((total, variant) => total + variant.inventory, 0);
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
@@ -103,9 +100,7 @@ export default async function ProductManagementPage({
               {product.name}
             </h1>
 
-            <p className="mt-2 text-sm text-neutral-500">
-              /shop/{product.slug}
-            </p>
+            <p className="mt-2 text-sm text-neutral-500">/shop/{product.slug}</p>
           </div>
 
           <div className="flex flex-wrap gap-3">
@@ -335,9 +330,7 @@ export default async function ProductManagementPage({
 
           <div className="mt-7 grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
-              <p className="text-sm font-semibold text-neutral-950">
-                Product images
-              </p>
+              <p className="text-sm font-semibold text-neutral-950">Product images</p>
 
               <p className="mt-2 text-sm leading-6 text-neutral-500">
                 {product.images.length} image
@@ -346,14 +339,11 @@ export default async function ProductManagementPage({
             </div>
 
             <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
-              <p className="text-sm font-semibold text-neutral-950">
-                Product variants
-              </p>
+              <p className="text-sm font-semibold text-neutral-950">Product variants</p>
 
               <p className="mt-2 text-sm leading-6 text-neutral-500">
                 {product.variants.length} variant
-                {product.variants.length === 1 ? "" : "s"} with {totalInventory}{" "}
-                total units.
+                {product.variants.length === 1 ? "" : "s"} with {totalInventory} total units.
               </p>
             </div>
           </div>
@@ -373,13 +363,11 @@ export default async function ProductManagementPage({
       <section className="rounded-3xl border border-red-200 bg-red-50 p-6 sm:p-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-red-950">
-              Delete product
-            </h2>
+            <h2 className="text-lg font-semibold text-red-950">Delete product</h2>
 
             <p className="mt-2 max-w-2xl text-sm leading-6 text-red-800/70">
-              Permanently remove this product, its images, variants and reviews.
-              Products with order history cannot be deleted.
+              Permanently remove this product, its images, variants and reviews. Products with order
+              history cannot be deleted.
             </p>
           </div>
 
@@ -439,10 +427,7 @@ function Field({
 }) {
   return (
     <div>
-      <label
-        htmlFor={htmlFor}
-        className="mb-2 block text-sm font-semibold text-neutral-800"
-      >
+      <label htmlFor={htmlFor} className="mb-2 block text-sm font-semibold text-neutral-800">
         {label}
 
         {required && <span className="ml-1 text-red-500">*</span>}
@@ -450,9 +435,7 @@ function Field({
 
       {children}
 
-      {help && (
-        <p className="mt-2 text-xs leading-5 text-neutral-500">{help}</p>
-      )}
+      {help && <p className="mt-2 text-xs leading-5 text-neutral-500">{help}</p>}
     </div>
   );
 }
@@ -486,24 +469,14 @@ function ToggleCard({
   );
 }
 
-function StatCard({
-  label,
-  value,
-  icon,
-}: {
-  label: string;
-  value: string;
-  icon: React.ReactNode;
-}) {
+function StatCard({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) {
   return (
     <div className="rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-neutral-500">{label}</p>
 
-          <p className="mt-3 text-xl font-semibold tracking-tight text-neutral-950">
-            {value}
-          </p>
+          <p className="mt-3 text-xl font-semibold tracking-tight text-neutral-950">{value}</p>
         </div>
 
         <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-neutral-100 text-neutral-700">

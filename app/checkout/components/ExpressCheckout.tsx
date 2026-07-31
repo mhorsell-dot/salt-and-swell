@@ -1,8 +1,4 @@
-import {
-  Apple,
-  CreditCard,
-  Wallet,
-} from "lucide-react";
+import { Apple, CreditCard, Wallet } from "lucide-react";
 
 const buttons = [
   {
@@ -34,15 +30,10 @@ const buttons = [
 export default function ExpressCheckout() {
   return (
     <section className="rounded-[2rem] border border-black/8 bg-white p-6 shadow-sm">
-
-      <p className="text-xs uppercase tracking-[0.3em] text-black/45">
-        Express Checkout
-      </p>
+      <p className="text-xs uppercase tracking-[0.3em] text-black/45">Express Checkout</p>
 
       <div className="mt-5 grid gap-4">
-
         {buttons.map((button) => {
-
           const Icon = button.icon;
 
           return (
@@ -55,23 +46,16 @@ export default function ExpressCheckout() {
               {button.name}
             </button>
           );
-
         })}
-
       </div>
 
       <div className="my-7 flex items-center gap-4">
-
         <div className="h-px flex-1 bg-black/10" />
 
-        <span className="text-xs uppercase tracking-[0.25em] text-black/40">
-          OR
-        </span>
+        <span className="text-xs uppercase tracking-[0.25em] text-black/40">OR</span>
 
         <div className="h-px flex-1 bg-black/10" />
-
       </div>
-
     </section>
   );
 }

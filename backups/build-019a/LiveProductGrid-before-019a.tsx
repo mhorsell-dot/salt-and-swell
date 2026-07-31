@@ -61,8 +61,8 @@ export default async function LiveProductGrid({
         </h3>
 
         <p className="mt-3 max-w-md text-sm leading-7 text-black/55">
-          Products created and activated through the Salt &amp; Swell admin will
-          automatically appear here.
+          Products created and activated through the Salt &amp; Swell admin will automatically
+          appear here.
         </p>
 
         <Link
@@ -79,14 +79,9 @@ export default async function LiveProductGrid({
   return (
     <div className="mt-10 grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
       {products.map((product, index) => {
-        const image =
-          product.images[0]?.url ??
-          fallbackImages[index % fallbackImages.length];
+        const image = product.images[0]?.url ?? fallbackImages[index % fallbackImages.length];
 
-        const inventory = product.variants.reduce(
-          (total, variant) => total + variant.inventory,
-          0,
-        );
+        const inventory = product.variants.reduce((total, variant) => total + variant.inventory, 0);
 
         return (
           <article key={product.id} className="group">
@@ -114,21 +109,15 @@ export default async function LiveProductGrid({
 
               <div className="mt-4 flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-sm font-semibold uppercase tracking-wide">
-                    {product.name}
-                  </h3>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide">{product.name}</h3>
 
                   <p className="mt-1 text-sm text-black/55">
-                    {product.category?.name ??
-                      product.collection?.name ??
-                      "Salt & Swell"}
+                    {product.category?.name ?? product.collection?.name ?? "Salt & Swell"}
                   </p>
 
                   {product.variants.length > 0 && (
                     <p className="mt-1 text-xs text-black/40">
-                      {inventory > 0
-                        ? `${inventory} available`
-                        : "Out of stock"}
+                      {inventory > 0 ? `${inventory} available` : "Out of stock"}
                     </p>
                   )}
                 </div>

@@ -46,9 +46,7 @@ export default function SalesChart() {
               </div>
             </div>
 
-            <span className="text-[11px] font-medium text-slate-400">
-              {item.label}
-            </span>
+            <span className="text-[11px] font-medium text-slate-400">{item.label}</span>
           </div>
         ))}
       </div>

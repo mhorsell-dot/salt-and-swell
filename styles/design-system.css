@@ -1,20 +1,18 @@
-:root{
-
---navy:#0B1530;
---sand:#F4E7D0;
---cream:#FAF6EE;
---ocean:#1F6D8A;
---grey:#65707D;
-
+:root {
+  --navy: #0b1530;
+  --sand: #f4e7d0;
+  --cream: #faf6ee;
+  --ocean: #1f6d8a;
+  --grey: #65707d;
 }
 
-html{
-scroll-behavior:smooth;
+html {
+  scroll-behavior: smooth;
 }
 
-body{
-background:var(--cream);
-color:var(--navy);
--webkit-font-smoothing:antialiased;
-text-rendering:optimizeLegibility;
+body {
+  background: var(--cream);
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }

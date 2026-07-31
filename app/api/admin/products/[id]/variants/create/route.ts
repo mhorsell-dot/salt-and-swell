@@ -27,31 +27,19 @@ export async function POST(request: NextRequest, context: RouteContext) {
     const inventory = Number(inventoryValue);
 
     if (!size) {
-      return redirectTo(
-        request,
-        `/admin/products/${productId}/variants?error=size`,
-      );
+      return redirectTo(request, `/admin/products/${productId}/variants?error=size`);
     }
 
     if (!colour) {
-      return redirectTo(
-        request,
-        `/admin/products/${productId}/variants?error=colour`,
-      );
+      return redirectTo(request, `/admin/products/${productId}/variants?error=colour`);
     }
 
     if (!sku) {
-      return redirectTo(
-        request,
-        `/admin/products/${productId}/variants?error=sku`,
-      );
+      return redirectTo(request, `/admin/products/${productId}/variants?error=sku`);
     }
 
     if (!Number.isInteger(inventory) || inventory < 0) {
-      return redirectTo(
-        request,
-        `/admin/products/${productId}/variants?error=inventory`,
-      );
+      return redirectTo(request, `/admin/products/${productId}/variants?error=inventory`);
     }
 
     const product = await prisma.product.findUnique({
@@ -77,10 +65,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
     });
 
     if (existingSku) {
-      return redirectTo(
-        request,
-        `/admin/products/${productId}/variants?error=sku-exists`,
-      );
+      return redirectTo(request, `/admin/products/${productId}/variants?error=sku-exists`);
     }
 
     await prisma.productVariant.create({
@@ -93,16 +78,10 @@ export async function POST(request: NextRequest, context: RouteContext) {
       },
     });
 
-    return redirectTo(
-      request,
-      `/admin/products/${productId}/variants?created=1`,
-    );
+    return redirectTo(request, `/admin/products/${productId}/variants?created=1`);
   } catch (error: unknown) {
     console.error("Variant creation failed:", error);
 
-    return redirectTo(
-      request,
-      `/admin/products/${productId}/variants?error=server`,
-    );
+    return redirectTo(request, `/admin/products/${productId}/variants?error=server`);
   }
 }

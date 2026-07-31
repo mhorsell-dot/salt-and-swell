@@ -44,10 +44,7 @@ export async function POST(request: NextRequest) {
     const featured = formData.get("featured") === "on";
 
     if (!name) {
-      return NextResponse.redirect(
-        new URL("/admin/products/new?error=name", request.url),
-        303,
-      );
+      return NextResponse.redirect(new URL("/admin/products/new?error=name", request.url), 303);
     }
 
     if (!description) {
@@ -60,10 +57,7 @@ export async function POST(request: NextRequest) {
     const price = Number(priceValue);
 
     if (!Number.isFinite(price) || price < 0) {
-      return NextResponse.redirect(
-        new URL("/admin/products/new?error=price", request.url),
-        303,
-      );
+      return NextResponse.redirect(new URL("/admin/products/new?error=price", request.url), 303);
     }
 
     const slug = await createUniqueSlug(name);
@@ -88,9 +82,6 @@ export async function POST(request: NextRequest) {
   } catch (error: unknown) {
     console.error("Product creation failed:", error);
 
-    return NextResponse.redirect(
-      new URL("/admin/products/new?error=server", request.url),
-      303,
-    );
+    return NextResponse.redirect(new URL("/admin/products/new?error=server", request.url), 303);
   }
 }
