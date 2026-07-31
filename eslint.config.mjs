@@ -15,6 +15,7 @@ export default defineConfig([
       "chatgpt-export/**",
       "coverage/**",
       "dist/**",
+      "scripts/optimize-images.cjs",
     ],
   },
 ]);
